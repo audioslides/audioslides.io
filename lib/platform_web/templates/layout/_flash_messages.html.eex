@@ -1,0 +1,17 @@
+<%= if get_flash(@conn, :info) do %>
+  <p class="alert alert-info alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= get_flash(@conn, :info) %>
+  </p>
+<% end %>
+
+<%= if get_flash(@conn, :error) do %>
+  <p class="alert alert-danger alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= get_flash(@conn, :error) %>
+  </p>
+<% end %>

@@ -1,0 +1,55 @@
+<h2><%= @presentation.name %></h2>
+<section>
+  <div class="embed-responsive embed-responsive-16by9">
+      <video controls>
+        <source src="/content/<%= @presentation.id %>.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+  </div>
+</section>
+
+<%= if current_user(@conn) do %>
+  <section>
+    <h3>Manage Video</h3>
+    <div class="btn-toolbar mb-4">
+      <%= link "Sync", to: presentation_path(@conn, :sync, @presentation), method: :post, class: "btn btn-primary" %>
+      <span><%= link "Generate Video", to: presentation_path(@conn, :generate_video, @presentation), method: :post, class: "btn btn-secondary" %></span>
+      <span><%= link "Edit", to: presentation_path(@conn, :edit, @presentation), class: "btn btn-secondary" %></span>
+      <span><%= link "Delete", to: presentation_path(@conn, :delete, @presentation), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></span>
+    </div>
+
+
+    <ul>
+      <li>
+        <strong>Voice language:</strong>
+        <%= @presentation.voice_language %>
+      </li>
+      <li>
+        <strong>Voice gender:</strong>
+        <%= @presentation.voice_gender %>
+      </li>
+    </ul>
+  </section>
+<% end %>
+
+<section>
+  <h3>Slides</h3>
+  <div class="hover-zoom-cards row">
+    <%= for slide <- @presentation.slides do %>
+      <a class="col-4 p-3" href="<%= presentation_slide_path(@conn, :show, @presentation, slide) %>">
+        <div class="card">
+          <div class="card-image">
+              <%= img_tag(get_slide_image(@presentation, slide), class: "card-img-top img-fluid", alt: "Card image #{slide.name}") %>
+          </div>
+          <div class="card-body w-100 h-100">
+            <div class="d-flex align-content-center w-100 h-100">
+              <h4 class="card-title slide-name mx-auto my-auto">
+                  <%= slide.name %>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </a>
+    <% end %>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "_build": true,
+    ".aws": true,
+    ".nvmrc": true,
+    ".deliver": false,
+    ".mix_tasks": true,
+    ".idea": true,
+    ".vscode": true,
+    "Gemfile*": true,
+    "Capfile": true,
+    "node_modules": true,
+    "data.nonode@nohost": true,
+    "log.nonode@nohost": true,
+    "arctest": true,
+    "deps": true,
+    "rel/workshops_de": true
+  },
+  "search.exclude": {
+    "config/server-setup": true,
+    "priv/static": true,
+    "priv/templates": true,
+    "priv/gettext": true,
+    "priv/repo/dump.sql": true,
+    "priv/repo/structure.sql": true,
+    "node_modules": true,
+    "deps": true,
+    "log": true,
+    "cover": true
+  },
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "files.trimTrailingWhitespace": true,
+  "vsicons.presets.angular": false,
+  "css.validate": false
+}

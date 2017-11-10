@@ -1,0 +1,21 @@
+<h1>
+  <%= @slide.name %>
+  <small>
+      (#<%= @slide.position+1 %> of <%= length(@presentation.slides) %>)
+  </small>
+</h1>
+<h4>
+Last sync at <%= @slide.synced_at %>
+</h4>
+<%= if current_user(@conn) do %>
+  <%= link "Generate Video", to: presentation_slide_path(@conn, :generate_video, @presentation, @slide), method: :post, class: "btn btn-primary" %>
+<% end %>
+
+<section>
+    <div class="embed-responsive embed-responsive-16by9">
+        <video controls>
+          <source src="/content/<%= @presentation.id %>/<%= @slide.id %>.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+    </div>
+  </section>

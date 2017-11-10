@@ -1,0 +1,18 @@
+/* This file is for your main application css. */
+
+$theme-colors: (
+  primary: #5ea1ee,
+  secondary: #868e96,
+  success: #43ac6a,
+  info: #5bc0de,
+  warning: #e88002,
+  danger: #f04124,
+  light: #f8f9fa,
+  dark: #343a40
+);
+
+$font-family-sans-serif:  "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@import "node_modules/bootstrap/scss/bootstrap";
+
+@import "unsorted_crap"

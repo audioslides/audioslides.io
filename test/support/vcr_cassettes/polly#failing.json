@@ -1,0 +1,18 @@
+[
+  {
+    "request": {
+      "body": "{\"VoiceId\":\"Hans\",\"TextType\":\"text\",\"Text\":\"TEST\",\"SampleRate\":\"8000\",\"OutputFormat\":\"mp3\"}",
+      "headers": [],
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "https://polly.us-east-1.amazonaws.com:443/v1/speech/?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAISGI2ES3XMIAV23Q%2F20171019%2Fus-east-1%2Fpolly%2Faws4_request&X-Amz-Date=20171019T115842Z&X-Amz-Expires=86400&X-Amz-Signature=08a220d7f99760a30bb26cd6a71c0f3a391287b6da150833c70b17778c4d040d&X-Amz-SignedHeaders=host"
+    },
+    "response": {
+      "body": "nxdomain",
+      "headers": [],
+      "status_code": null,
+      "type": "error"
+    }
+  }
+]

@@ -1,0 +1,28 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+     - "4000:4000"
+    restart: always
+    environment:
+      - MIX_ENV=prod
+      - DEBUG_ERRORS=true
+      - CRONJOBS_ENABLED=false
+      - PROJECT_ARC_BUCKET=cryptomarker-prod
+      - SECRET_KEY_BASE=jfidasojf9j32jafm34i923uufeaijfdiosajf932u98fjdsajfdsoiaojM0u6S1m6QRfB7QoFROf6g5PT4nZ8uxATtlb6qZLtjHM6Lezb/Iv5j0ei0/3cLx2M
+      - DATABASE_MYSQL_HOSTNAME=db
+      - DATABASE_MYSQL_PORT=3306
+      - DATABASE_MYSQL_USERNAME=root
+      - DATABASE_MYSQL_PASSWORD:""
+      - DATABASE_MYSQL_DATABASE=slides_next_dev
+    depends_on:
+      - db
+    command: bash -c "sleep 7 && mix ecto.create && mix phx.server"
+  db:
+    image: 'mysql:latest'
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=""
+    ports:
+      - "3306:3306"

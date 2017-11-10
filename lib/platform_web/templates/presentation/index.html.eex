@@ -1,0 +1,22 @@
+<div>
+    <h2>Listing Presentations</h2>
+</div>
+
+<div class="hover-zoom-cards row">
+    <%= for presentation <- @presentations do %>
+    <a class="col-4 p-3" href="<%= presentation_path(@conn, :show, presentation) %>">
+      <div class="card">
+        <div class="card-image">
+            <%= img_tag(get_frontimage(presentation), class: "card-img-top img-fluid", alt: "Card image #{presentation.name}") %>
+        </div>
+        <div class="card-body w-100 h-100">
+          <div class="d-flex align-content-center w-100 h-100">
+            <h4 class="card-title mx-auto my-auto">
+              <%= presentation.name %>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </a>
+  <% end %>
+</div>
