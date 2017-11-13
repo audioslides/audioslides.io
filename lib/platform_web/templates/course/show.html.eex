@@ -8,3 +8,23 @@
 
 <span><%= link "Edit", to: course_path(@conn, :edit, @course) %></span>
 <span><%= link "Back", to: course_path(@conn, :index) %></span>
+
+<h3>Lessons in this course</h3>
+<div class="hover-zoom-cards row">
+  <%= for lesson <- @course.lessons do %>
+  <a class="col-4 p-3" href="<%= lesson_path(@conn, :show, lesson) %>">
+    <div class="card">
+      <div class="card-image">
+          <%= img_tag(get_frontimage(lesson), class: "card-img-top img-fluid", alt: "Card image #{lesson.name}") %>
+      </div>
+      <div class="card-body w-100 h-100">
+        <div class="d-flex align-content-center w-100 h-100">
+          <h4 class="card-title mx-auto my-auto">
+            <%= lesson.name %>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </a>
+<% end %>
+</div>
