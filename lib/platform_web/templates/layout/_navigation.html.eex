@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg" style="background: #fff; border-bottom: 1px solid #eee;">
   <div class="container">
-    <%= link to: lesson_path(@conn, :index), class: "navbar-brand" do %>
+    <%= link to: page_path(@conn, :index), class: "navbar-brand" do %>
       audioslides<span class="text-muted">.io</span>
     <% end %>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <%= content_tag :li, class: "nav-item #{if(Enum.at(@conn.path_info, 0) == "lessons", do: " active")}" do %>
-          <%#= link "Lessons", to: lesson_path(@conn, :index), class: "nav-link" %>
+          <%= link "Lessons", to: lesson_path(@conn, :index), class: "nav-link" %>
         <% end %>
       </ul>
 
@@ -35,7 +35,6 @@
               </div>
             </li>
           <% else %>
-
             <li class="nav-item">
               <%= link "New Lesson", to: "#", class: "btn btn-outline-success", data: [toggle: "popover", container: "body", placement: "bottom", trigger: "hover", content: "Please sign up to create a lesson."] %>
             </li>

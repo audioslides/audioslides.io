@@ -17,10 +17,10 @@ defmodule PlatformWeb.Router do
   scope "/", PlatformWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", LessonController, :index
+    get "/", PageController, :index
 
-    post "/:id/sync", LessonController, :sync
-    post "/:id/generate_video", LessonController, :generate_video
+    post "/lessons/:id/sync", LessonController, :sync
+    post "/lessons/:id/generate_video", LessonController, :generate_video
     resources "/lessons", LessonController do
       post "/slides/:id/generate_video", SlideController, :generate_video
       resources "/slides", SlideController, only: [:show]
