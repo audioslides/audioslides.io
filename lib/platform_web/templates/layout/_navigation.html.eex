@@ -25,7 +25,7 @@
             <li class="nav-item">
               <%= link "New Lesson", to: lesson_path(@conn, :new), class: "btn btn-outline-success" %>
             </li>
-            <li class="nav-item dropdown ">
+            <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= if current_user(@conn).image_url do %>
                   <%= img_tag current_user(@conn).image_url, height: 20 %>
