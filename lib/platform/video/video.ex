@@ -8,18 +8,18 @@ defmodule Platform.Video do
   alias Platform.Speech
   alias Platform.Converter
 
-  alias Platform.Core.Schema.Presentation
+  alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
-  alias Platform.Core.PresentationSync
+  alias Platform.Core.LessonSync
 
   @content_dir Application.get_env(:platform, :content_dir)
 
-  def convert_presentation_to_video(%Presentation{} = presentation) do
-    concat_input_filename = "#{@content_dir}#{presentation.id}.txt"
-    final_output_filename = "#{@content_dir}#{presentation.id}.mp4"
+  def convert_lesson_to_video(%Lesson{} = lesson) do
+    concat_input_filename = "#{@content_dir}#{lesson.id}.txt"
+    final_output_filename = "#{@content_dir}#{lesson.id}.mp4"
 
     # start async creation of the videos
-    video_generation_tasks = Enum.map(presentation.slides, fn(slide) -> Task.async(fn -> generate_video_for_slide(presentation, slide) end) end)
+    video_generation_tasks = Enum.map(lesson.slides, fn(slide) -> Task.async(fn -> generate_video_for_slide(lesson, slide) end) end)
 
     # wait 60 seconds for all video generator processes
     tasks_with_results = Task.yield_many(video_generation_tasks, 60_000)
@@ -51,42 +51,42 @@ defmodule Platform.Video do
     File.close(file)
   end
 
-  def generate_video_for_slide(%Presentation{} = presentation, %Slide{} = slide) do
+  def generate_video_for_slide(%Lesson{} = lesson, %Slide{} = slide) do
 
-    google_slide = GoogleSlides.get_slide!(presentation.google_presentation_id, slide.google_object_id)
+    google_slide = GoogleSlides.get_slide!(lesson.google_presentation_id, slide.google_object_id)
 
-    image_filename = create_or_update_image_for_slide(presentation, slide, google_slide)
-    audio_filename = create_or_update_audio_for_slide(presentation, slide, google_slide)
-    video_filename = "#{@content_dir}#{presentation.id}/#{slide.id}.mp4"
+    image_filename = create_or_update_image_for_slide(lesson, slide, google_slide)
+    audio_filename = create_or_update_audio_for_slide(lesson, slide, google_slide)
+    video_filename = "#{@content_dir}#{lesson.id}/#{slide.id}.mp4"
 
     # Only generate video of audio or video changed
     if !File.exists?(video_filename) || any_content_changed?(slide, google_slide) do
       Logger.info "Slide #{slide.id} Hash: updated"
-      PresentationSync.update_hash_for_slide(slide, google_slide)
+      LessonSync.update_hash_for_slide(slide, google_slide)
 
       Logger.info "Slide #{slide.id} Video: generated"
       Converter.merge_audio_image(
         audio_filename: audio_filename,
         image_filename: image_filename,
-        out_filename: "#{@content_dir}#{presentation.id}/#{slide.id}.mp4",
+        out_filename: "#{@content_dir}#{lesson.id}/#{slide.id}.mp4",
       )
     else
       Logger.info "Slide #{slide.id} Video: skipped"
     end
 
     # relative_output_filename
-    "#{presentation.id}/#{slide.id}.mp4"
+    "#{lesson.id}/#{slide.id}.mp4"
   end
 
   def any_content_changed?(slide, google_slide) do
     content_changed_for_speaker_notes?(slide, google_slide) || content_changed_for_page_elements?(slide, google_slide)
   end
 
-  def create_or_update_image_for_slide(presentation, slide, google_slide) do
-    image_filename = "#{@content_dir}#{presentation.id}/#{slide.id}.png"
+  def create_or_update_image_for_slide(lesson, slide, google_slide) do
+    image_filename = "#{@content_dir}#{lesson.id}/#{slide.id}.png"
     if !File.exists?(image_filename) || content_changed_for_page_elements?(slide, google_slide) do
       Logger.info "Slide #{slide.id} Image: generated"
-      GoogleSlides.download_slide_thumb!(presentation.google_presentation_id, slide.google_object_id, image_filename)
+      GoogleSlides.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
     else
       Logger.info "Slide #{slide.id} Image: skipped"
     end
@@ -94,17 +94,17 @@ defmodule Platform.Video do
     image_filename
   end
 
-  def create_or_update_audio_for_slide(presentation, slide, google_slide) do
-    audio_filename = Speech.get_filename(presentation.id, slide.id)
+  def create_or_update_audio_for_slide(lesson, slide, google_slide) do
+    audio_filename = Speech.get_filename(lesson.id, slide.id)
     if !File.exists?(audio_filename) || content_changed_for_speaker_notes?(slide, google_slide) do
       Logger.info "Slide #{slide.id} Audio: generated"
       notes = GoogleSlides.get_speaker_notes(google_slide)
 
       Speech.speak()
-      |> Speech.language(presentation.voice_language)
-      |> Speech.voice_gender(presentation.voice_gender)
+      |> Speech.language(lesson.voice_language)
+      |> Speech.voice_gender(lesson.voice_gender)
       |> Speech.text(notes)
-      |> Speech.for_presentation(presentation.id)
+      |> Speech.for_lesson(lesson.id)
       |> Speech.for_slide(slide.id)
       |> Speech.run()
     else

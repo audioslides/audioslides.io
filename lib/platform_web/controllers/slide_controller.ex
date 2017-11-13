@@ -5,21 +5,21 @@ defmodule PlatformWeb.SlideController do
   alias Platform.Core
   alias Platform.Video
 
-  def show(conn, %{"presentation_id" => presentation_id, "id" => id}) do
-    presentation = Core.get_presentation_with_slides!(presentation_id)
-    slide = Core.get_slide!(presentation, id)
+  def show(conn, %{"lesson_id" => lesson_id, "id" => id}) do
+    lesson = Core.get_lesson_with_slides!(lesson_id)
+    slide = Core.get_slide!(lesson, id)
 
-    render conn, "show.html", presentation: presentation, slide: slide
+    render conn, "show.html", lesson: lesson, slide: slide
   end
 
-  def generate_video(conn, %{"presentation_id" => presentation_id, "id" => id}) do
-    presentation = Core.get_presentation!(presentation_id)
-    slide = Core.get_slide!(presentation, id)
+  def generate_video(conn, %{"lesson_id" => lesson_id, "id" => id}) do
+    lesson = Core.get_lesson!(lesson_id)
+    slide = Core.get_slide!(lesson, id)
 
-    Video.generate_video_for_slide(presentation, slide)
+    Video.generate_video_for_slide(lesson, slide)
 
     conn
     |> put_flash(:info, "Thumb downloaded successfully.")
-    |> redirect(to: presentation_slide_path(conn, :show, presentation, id))
+    |> redirect(to: lesson_slide_path(conn, :show, lesson, id))
   end
 end

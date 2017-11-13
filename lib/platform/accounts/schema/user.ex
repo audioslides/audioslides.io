@@ -14,7 +14,7 @@ defmodule Platform.Accounts.Schema.User do
     field :admin, :boolean, default: false
     timestamps()
 
-    has_many :presentations,  Platform.Core.Schema.Presentation, on_delete: :delete_all
+    has_many :lessons,  Platform.Core.Schema.Lesson, on_delete: :delete_all
   end
 
   @doc false

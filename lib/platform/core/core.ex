@@ -5,64 +5,64 @@ defmodule Platform.Core do
   import Ecto.Query, warn: false
 
   alias Platform.Repo
-  alias Platform.Core.Schema.Presentation
+  alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
-  alias Platform.Core.PresentationSync
+  alias Platform.Core.LessonSync
 
   ### ################################################################### ###
-  ### Presentation                                                        ###
+  ### Lesson                                                        ###
   ### ################################################################### ###
-  def list_presentations do
-    Presentation
+  def list_lessons do
+    Lesson
     |> Repo.all
     |> Repo.preload(slides: Slide |> Ecto.Query.order_by([asc: :position]))
   end
 
-  def get_presentation!(id) do
-    Repo.get!(Presentation, id)
+  def get_lesson!(id) do
+    Repo.get!(Lesson, id)
   end
 
-  def get_presentation_by_google_presentation_id!(id) do
-    Repo.get_by!(Presentation, google_presentation_id: id)
+  def get_lesson_by_google_presentation_id!(id) do
+    Repo.get_by!(Lesson, google_presentation_id: id)
   end
 
-  def get_presentation_with_slides!(id) do
-    Presentation
+  def get_lesson_with_slides!(id) do
+    Lesson
     |> Repo.get!(id)
     |> Repo.preload(slides: Slide |> Ecto.Query.order_by([asc: :position]))
   end
 
-  def create_presentation(attrs \\ %{}) do
-    %Presentation{}
-    |> Presentation.changeset(attrs)
+  def create_lesson(attrs \\ %{}) do
+    %Lesson{}
+    |> Lesson.changeset(attrs)
     |> Repo.insert()
   end
 
-  def update_presentation(%Presentation{} = presentation, attrs) do
-    presentation
-    |> Presentation.changeset(attrs)
+  def update_lesson(%Lesson{} = lesson, attrs) do
+    lesson
+    |> Lesson.changeset(attrs)
     |> Repo.update()
   end
 
-  def delete_presentation(%Presentation{} = presentation) do
-    Repo.delete(presentation)
+  def delete_lesson(%Lesson{} = lesson) do
+    Repo.delete(lesson)
   end
 
-  def change_presentation(%Presentation{} = presentation) do
-    Presentation.changeset(presentation, %{})
+  def change_lesson(%Lesson{} = lesson) do
+    Lesson.changeset(lesson, %{})
   end
 
   ### ################################################################### ###
   ### Slide                                                               ###
   ### ################################################################### ###
-  def get_slide!(%Presentation{} = presentation, id) do
-    presentation
+  def get_slide!(%Lesson{} = lesson, id) do
+    lesson
     |> Ecto.assoc(:slides)
     |> Repo.get!(id)
   end
 
-  def create_slide(%Presentation{} = presentation, attrs \\ %{}) do
-    %Slide{presentation: presentation}
+  def create_slide(%Lesson{} = lesson, attrs \\ %{}) do
+    %Slide{lesson: lesson}
     |> Slide.changeset(attrs)
     |> Repo.insert()
   end
@@ -77,11 +77,11 @@ defmodule Platform.Core do
     Repo.delete(slide)
   end
 
-  def change_slide(%Presentation{} = presentation, %Slide{} = slide) do
-    Slide.changeset(slide, %{presentation: presentation})
+  def change_slide(%Lesson{} = lesson, %Slide{} = slide) do
+    Slide.changeset(slide, %{lesson: lesson})
   end
 
-  def sync_presentation(presentation) do
-    PresentationSync.sync_slides(presentation)
+  def sync_lesson(lesson) do
+    LessonSync.sync_slides(lesson)
   end
 end

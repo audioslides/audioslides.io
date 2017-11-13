@@ -1,14 +1,14 @@
 defmodule Platform.Factory do
 
-  alias Platform.Core.Schema.Presentation
+  alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
   alias Platform.Accounts.Schema.User
 
   # with Ecto
   use ExMachina.Ecto, repo: Platform.Repo
 
-  def presentation_factory do
-    %Presentation{
+  def lesson_factory do
+    %Lesson{
       google_presentation_id: sequence(:google_object_id, &"google_object_id-#{&1}"),
       name: "Jane Smith",
       voice_gender: "female",
@@ -22,7 +22,7 @@ defmodule Platform.Factory do
       name: "Introduction",
       google_object_id: sequence(:google_object_id, &"google_object_id-#{&1}"),
       position: sequence(:position, &"#{&1}"),
-      presentation: build(:presentation)
+      lesson: build(:lesson)
     }
   end
 

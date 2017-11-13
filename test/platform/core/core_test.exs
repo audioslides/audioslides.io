@@ -1,71 +1,71 @@
 defmodule Platform.CoreTest do
   use Platform.DataCase
 
-  alias Platform.Core.Schema.Presentation
+  alias Platform.Core.Schema.Lesson
   alias Platform.Core
 
   doctest Platform.Core
 
-  describe "presentations" do
+  describe "lessons" do
 
     #@valid_attrs %{google_presentation_id: "some google_presentation_id", name: "some name", voice_gender: "female", voice_language: "en-US"}
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
 
-    def presentation_fixture(_attrs \\ %{}) do
-      # {:ok, presentation} =
+    def lesson_fixture(_attrs \\ %{}) do
+      # {:ok, lesson} =
       #   attrs
       #   |> Enum.into(@valid_attrs)
-      #   |> Core.create_presentation()
+      #   |> Core.create_lesson()
 
-      # presentation
-      Factory.insert(:presentation)
+      # lesson
+      Factory.insert(:lesson)
     end
 
-    # test "list_presentations/0 returns all presentations" do
-    #   presentation = presentation_fixture()
-    #   assert Core.list_presentations() == [presentation]
+    # test "list_lessons/0 returns all lessons" do
+    #   lesson = lesson_fixture()
+    #   assert Core.list_lessons() == [lesson]
     # end
 
-    # test "get_presentation!/1 returns the presentation with given id" do
-    #   presentation = presentation_fixture()
-    #   assert Core.get_presentation!(presentation.id) == presentation
+    # test "get_lesson!/1 returns the lesson with given id" do
+    #   lesson = lesson_fixture()
+    #   assert Core.get_lesson!(lesson.id) == lesson
     # end
 
-    # test "create_presentation/1 with valid data creates a presentation" do
-    #   assert {:ok, %Presentation{} = presentation} = Core.create_presentation(@valid_attrs)
-    #   assert presentation.google_presentation_id == "some google_presentation_id"
-    #   assert presentation.name == "some name"
-    #   assert presentation.voice_gender == "female"
-    #   assert presentation.voice_language == "en-US"
+    # test "create_lesson/1 with valid data creates a lesson" do
+    #   assert {:ok, %Lesson{} = lesson} = Core.create_lesson(@valid_attrs)
+    #   assert lesson.google_presentation_id == "some google_presentation_id"
+    #   assert lesson.name == "some name"
+    #   assert lesson.voice_gender == "female"
+    #   assert lesson.voice_language == "en-US"
     # end
 
-    test "create_presentation/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Core.create_presentation(@invalid_attrs)
+    test "create_lesson/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Core.create_lesson(@invalid_attrs)
     end
 
-    test "update_presentation/2 with valid data updates the presentation" do
-      presentation = presentation_fixture()
-      assert {:ok, presentation} = Core.update_presentation(presentation, @update_attrs)
-      assert %Presentation{} = presentation
-      assert presentation.name == "some updated name"
+    test "update_lesson/2 with valid data updates the lesson" do
+      lesson = lesson_fixture()
+      assert {:ok, lesson} = Core.update_lesson(lesson, @update_attrs)
+      assert %Lesson{} = lesson
+      assert lesson.name == "some updated name"
     end
 
-    # test "update_presentation/2 with invalid data returns error changeset" do
-    #   presentation = presentation_fixture()
-    #   assert {:error, %Ecto.Changeset{}} = Core.update_presentation(presentation, @invalid_attrs)
-    #   assert presentation == Core.get_presentation!(presentation.id)
+    # test "update_lesson/2 with invalid data returns error changeset" do
+    #   lesson = lesson_fixture()
+    #   assert {:error, %Ecto.Changeset{}} = Core.update_lesson(lesson, @invalid_attrs)
+    #   assert lesson == Core.get_lesson!(lesson.id)
     # end
 
-    test "delete_presentation/1 deletes the presentation" do
-      presentation = presentation_fixture()
-      assert {:ok, %Presentation{}} = Core.delete_presentation(presentation)
-      assert_raise Ecto.NoResultsError, fn -> Core.get_presentation!(presentation.id) end
+    test "delete_lesson/1 deletes the lesson" do
+      lesson = lesson_fixture()
+      assert {:ok, %Lesson{}} = Core.delete_lesson(lesson)
+      assert_raise Ecto.NoResultsError, fn -> Core.get_lesson!(lesson.id) end
     end
 
-    test "change_presentation/1 returns a presentation changeset" do
-      presentation = presentation_fixture()
-      assert %Ecto.Changeset{} = Core.change_presentation(presentation)
+    test "change_lesson/1 returns a lesson changeset" do
+      lesson = lesson_fixture()
+      assert %Ecto.Changeset{} = Core.change_lesson(lesson)
     end
   end
 end

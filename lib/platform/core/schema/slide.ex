@@ -15,7 +15,7 @@ defmodule Platform.Core.Schema.Slide do
     field :synced_at, :utc_datetime
     timestamps()
 
-    belongs_to :presentation, Platform.Core.Schema.Presentation
+    belongs_to :lesson, Platform.Core.Schema.Lesson
   end
 
   @doc false
@@ -23,6 +23,6 @@ defmodule Platform.Core.Schema.Slide do
     slide
     |> cast(attrs, [:google_object_id, :name, :position, :speaker_notes_hash, :page_elements_hash, :thumb_image_url, :synced_at])
     |> validate_required([:google_object_id, :name, :position])
-    |> unique_constraint(:google_object_id, name: :slides_presentation_id_google_object_id_index)
+    |> unique_constraint(:google_object_id, name: :slides_lesson_id_google_object_id_index)
   end
 end

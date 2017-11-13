@@ -1,11 +1,11 @@
-defmodule Platform.Core.Schema.Presentation do
+defmodule Platform.Core.Schema.Lesson do
   @moduledoc """
-  The presentation schema
+  The lesson schema
   """
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "presentations" do
+  schema "lessons" do
     field :google_presentation_id, :string
     field :name, :string
     field :voice_gender, :string
@@ -18,8 +18,8 @@ defmodule Platform.Core.Schema.Presentation do
   end
 
   @doc false
-  def changeset(%__MODULE__{} = presentation, attrs) do
-    presentation
+  def changeset(%__MODULE__{} = lesson, attrs) do
+    lesson
     |> cast(attrs, [:google_presentation_id, :name, :voice_language, :voice_gender])
     |> validate_required([:google_presentation_id, :name, :voice_language, :voice_gender])
     |> validate_inclusion(:voice_language, ["de-DE", "en-US"])

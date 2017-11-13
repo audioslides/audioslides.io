@@ -6,8 +6,8 @@ defmodule Platform.Speech do
   @speech_api Application.get_env(:platform, :speech_api)
   @content_dir Application.get_env(:platform, :content_dir)
 
-  def run(%{"presentation_id" => presentation_id, "slide_id" => slide_id} = params) do
-    filename = get_filename(presentation_id, slide_id)
+  def run(%{"lesson_id" => lesson_id, "slide_id" => slide_id} = params) do
+    filename = get_filename(lesson_id, slide_id)
 
     speech_binary = @speech_api.get_speech(params)
 
@@ -51,12 +51,12 @@ defmodule Platform.Speech do
 
   @doc """
 
-  iex> %{} |> for_presentation("123")
-  %{"presentation_id" => "123"}
+  iex> %{} |> for_lesson("123")
+  %{"lesson_id" => "123"}
 
   """
-  def for_presentation(params, presentation_id) do
-    Map.put(params, "presentation_id", presentation_id)
+  def for_lesson(params, lesson_id) do
+    Map.put(params, "lesson_id", lesson_id)
   end
 
   @doc """
@@ -100,8 +100,8 @@ defmodule Platform.Speech do
     IO.binwrite(file, data)
   end
 
-  def get_filename(presentation_id, slide_id) do
-    directory = "#{@content_dir}#{presentation_id}"
+  def get_filename(lesson_id, slide_id) do
+    directory = "#{@content_dir}#{lesson_id}"
     File.mkdir_p(directory)
 
     "#{directory}/#{slide_id}.mp3"
