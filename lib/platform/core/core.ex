@@ -86,6 +86,10 @@ defmodule Platform.Core do
     LessonSync.sync_slides(lesson)
   end
 
+  ### ################################################################### ###
+  ### Courses                                                             ###
+  ### ################################################################### ###
+
   alias Platform.Core.Schema.Course
 
   @doc """
