@@ -23,5 +23,6 @@ defmodule Platform.Accounts.Schema.User do
     user
     |> cast(attrs, @fields)
     |> validate_required([:email, :first_name, :last_name, :google_uid])
+    |> unique_constraint(:email)
   end
 end

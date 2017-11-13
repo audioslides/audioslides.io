@@ -1,8 +1,10 @@
 defmodule PlatformWeb.PageControllerTest do
   use PlatformWeb.ConnCase
 
-  # test "GET /", %{conn: conn} do
-  #   conn = get conn, "/"
-  #   assert html_response(conn, 200) =~ "Welcome to Phoenix!"
-  # end
+  describe "#index" do
+    test "shows the homepage", %{conn: conn} do
+      conn = get conn, page_path(conn, :index)
+      assert html_response(conn, 200) =~ ~s(<main role="main">)
+    end
+  end
 end

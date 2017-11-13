@@ -21,6 +21,8 @@ defmodule PlatformWeb.ConnCase do
       use Phoenix.ConnTest
       import PlatformWeb.Router.Helpers
 
+      alias Platform.Factory
+
       # The default endpoint for testing
       @endpoint PlatformWeb.Endpoint
     end
