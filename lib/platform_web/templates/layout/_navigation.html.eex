@@ -8,6 +8,11 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <%= content_tag :li, class: "nav-item #{if(Enum.at(@conn.path_info, 0) == "courses", do: " active")}" do %>
+          <%= link "Courses", to: course_path(@conn, :index), class: "nav-link" %>
+        <% end %>
+      </ul>
       <ul class="navbar-nav mr-auto">
         <%= content_tag :li, class: "nav-item #{if(Enum.at(@conn.path_info, 0) == "lessons", do: " active")}" do %>
           <%= link "Lessons", to: lesson_path(@conn, :index), class: "nav-link" %>
