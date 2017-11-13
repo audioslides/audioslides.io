@@ -28,3 +28,6 @@ npm-debug.log
 /config/*.secret.exs
 
 /test/support/fixtures/slide.mp4
+
+/.mix_tasks
+/cover
