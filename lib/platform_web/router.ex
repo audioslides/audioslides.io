@@ -25,6 +25,7 @@ defmodule PlatformWeb.Router do
       post "/slides/:id/generate_video", SlideController, :generate_video
       resources "/slides", SlideController, only: [:show]
     end
+    resources "/courses", CourseController
   end
 
   scope "/auth", PlatformWeb do

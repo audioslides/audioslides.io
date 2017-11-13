@@ -7,6 +7,7 @@ defmodule Platform.Core do
   alias Platform.Repo
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
+  alias Platform.Core.Schema.Course
   alias Platform.Core.LessonSync
 
   ### ################################################################### ###
@@ -83,5 +84,59 @@ defmodule Platform.Core do
 
   def sync_lesson(lesson) do
     LessonSync.sync_slides(lesson)
+  end
+
+  alias Platform.Core.Schema.Course
+
+  @doc """
+  Returns the list of courses.
+
+  """
+  def list_courses do
+    Repo.all(Course)
+  end
+
+  @doc """
+  Gets a single course.
+
+  Raises `Ecto.NoResultsError` if the Course does not exist.
+
+  """
+  def get_course!(id), do: Repo.get!(Course, id)
+
+  @doc """
+  Creates a course.
+
+  """
+  def create_course(attrs \\ %{}) do
+    %Course{}
+    |> Course.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a course.
+
+  """
+  def update_course(%Course{} = course, attrs) do
+    course
+    |> Course.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Course.
+
+  """
+  def delete_course(%Course{} = course) do
+    Repo.delete(course)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking course changes.
+
+  """
+  def change_course(%Course{} = course) do
+    Course.changeset(course, %{})
   end
 end
