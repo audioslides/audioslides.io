@@ -4,11 +4,13 @@ defmodule Platform.Core.Schema.Course do
   use Ecto.Schema
 
   alias Platform.Core.Schema.Course
-
+  alias Platform.Core.Schema.Lesson
 
   schema "courses" do
     field :name, :string
     timestamps()
+
+    many_to_many :lessons, Lesson, join_through: "courses_lessons"
   end
 
   @doc false

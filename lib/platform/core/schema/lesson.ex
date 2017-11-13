@@ -5,6 +5,10 @@ defmodule Platform.Core.Schema.Lesson do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Platform.Accounts.Schema.User
+  alias Platform.Core.Schema.Slide
+  alias Platform.Core.Schema.Course
+
   schema "lessons" do
     field :google_presentation_id, :string
     field :name, :string
@@ -13,8 +17,9 @@ defmodule Platform.Core.Schema.Lesson do
     field :synced_at, :utc_datetime
     timestamps()
 
-    has_many :slides,  Platform.Core.Schema.Slide, on_delete: :delete_all
-    belongs_to :user, Platform.Accounts.Schema.User
+    many_to_many :courses, Course, join_through: "courses_lessons"
+    has_many :slides,  Slide, on_delete: :delete_all
+    belongs_to :user, User
   end
 
   @doc false
