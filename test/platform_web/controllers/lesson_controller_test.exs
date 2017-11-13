@@ -1,16 +1,9 @@
 defmodule PlatformWeb.LessonControllerTest do
   use PlatformWeb.ConnCase
 
-  alias Platform.Core
-
   @create_attrs %{google_presentation_id: "some google_presentation_id", name: "some name", voice_gender: "male", voice_language: "de-DE"}
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
-
-  def fixture(:lesson) do
-    {:ok, lesson} = Core.create_lesson(@create_attrs)
-    lesson
-  end
 
   describe "index" do
     test "lists all lessons", %{conn: conn} do
@@ -82,7 +75,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   defp create_lesson(_) do
-    lesson = fixture(:lesson)
+    lesson = Factory.insert(:lesson)
     {:ok, lesson: lesson}
   end
 end

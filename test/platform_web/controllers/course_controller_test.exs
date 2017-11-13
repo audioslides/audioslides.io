@@ -1,16 +1,9 @@
 defmodule PlatformWeb.CourseControllerTest do
   use PlatformWeb.ConnCase
 
-  alias Platform.Core
-
   @create_attrs %{name: "A Course"}
   @update_attrs %{name: "A super Course"}
   @invalid_attrs %{}
-
-  def fixture(:course) do
-    {:ok, course} = Core.create_course(@create_attrs)
-    course
-  end
 
   describe "index" do
     test "lists all courses", %{conn: conn} do
@@ -82,7 +75,7 @@ defmodule PlatformWeb.CourseControllerTest do
   end
 
   defp create_course(_) do
-    course = fixture(:course)
+    course = Factory.insert(:course)
     {:ok, course: course}
   end
 end

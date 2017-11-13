@@ -1,11 +1,18 @@
 defmodule Platform.Factory do
 
+  alias Platform.Accounts.Schema.User
+  alias Platform.Core.Schema.Course
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
-  alias Platform.Accounts.Schema.User
 
   # with Ecto
   use ExMachina.Ecto, repo: Platform.Repo
+
+  def course_factory do
+    %Course{
+      name: "Phoenix Beginner"
+    }
+  end
 
   def lesson_factory do
     %Lesson{
