@@ -108,6 +108,9 @@ defmodule Platform.Core do
   """
   def get_course!(id), do: Repo.get!(Course, id)
 
+
+  def get_course_with_lessons!(id), do: Repo.get!(Course, id) |> Repo.preload(:lessons)
+
   @doc """
   Creates a course.
 
