@@ -12,11 +12,15 @@ defmodule PlatformWeb.LessonController do
   end
 
   def new(conn, _params) do
+    Lesson |> authorize_action!(conn)
+
     changeset = Core.change_lesson(%Lesson{})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"lesson" => lesson_params}) do
+    Lesson |> authorize_action!(conn)
+
     case Core.create_lesson(lesson_params) do
       {:ok, lesson} ->
         conn

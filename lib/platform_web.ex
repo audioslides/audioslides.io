@@ -23,6 +23,7 @@ defmodule PlatformWeb do
       import Plug.Conn
       import PlatformWeb.Router.Helpers
       import PlatformWeb.Gettext
+      import PlatformWeb.CanHelper
     end
   end
 
@@ -42,6 +43,7 @@ defmodule PlatformWeb do
       import PlatformWeb.Gettext
       import PlatformWeb.DebugHelper
       import PlatformWeb.CurrentUserPlug.Helpers
+      import PlatformWeb.CanHelper
     end
   end
 
