@@ -26,7 +26,7 @@ defmodule PlatformWeb.CourseController do
   end
 
   def show(conn, %{"id" => id}) do
-    course = Core.get_course!(id)
+    course = Core.get_course_with_lessons!(id)
     render(conn, "show.html", course: course)
   end
 
