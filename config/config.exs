@@ -25,7 +25,7 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :goth, json: System.get_env("AS_GOOGLE_GCP_CREDENTIALS") || ""
+config :goth, json: System.get_env("AS_GOOGLE_GCP_CREDENTIALS")
 
 config :platform, :aws,
   access_key_id: System.get_env("AS_AWS_ACCESS_KEY_ID"),
