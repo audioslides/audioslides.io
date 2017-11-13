@@ -17,6 +17,7 @@ defmodule Platform.Mixfile do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test,
+        "coveralls.semaphore": :test,
         "vcr": :test,
         "vcr.delete": :test,
         "vcr.check": :test,

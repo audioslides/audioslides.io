@@ -1,4 +1,7 @@
 # AudioSlides.IO
+
+[![Coverage Status](https://coveralls.io/repos/github/audioslides/audioslides.io/badge.svg)](https://coveralls.io/github/audioslides/audioslides.io)
+
 ## tl;dr
 
 Generate small videos with spoken text from Google Slides.
