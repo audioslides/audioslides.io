@@ -40,6 +40,7 @@ defmodule Platform.Factory do
       first_name: sequence(:first_name, &"User FirstName #{&1}"),
       last_name: sequence(:last_name, &"User LastName #{&1}"),
       google_uid: sequence(:google_uid, &"848348018043275321#{&1}"),
+      image_url: sequence(:image, &"http://exampke#{&1}.png"),
     }
   end
 
