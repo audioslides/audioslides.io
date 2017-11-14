@@ -34,16 +34,16 @@ defmodule Platform.CoreTest do
     #   assert lesson.voice_language == "en-US"
     # end
 
-    test "create_lesson/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Core.create_lesson(@invalid_attrs)
-    end
+    # test "create_lesson/1 with invalid data returns error changeset" do
+    #   assert {:error, %Ecto.Changeset{}} = Core.create_lesson(@invalid_attrs)
+    # end
 
-    test "update_lesson/2 with valid data updates the lesson" do
-      lesson = lesson_fixture()
-      assert {:ok, lesson} = Core.update_lesson(lesson, @update_attrs)
-      assert %Lesson{} = lesson
-      assert lesson.name == "some updated name"
-    end
+    # test "update_lesson/2 with valid data updates the lesson" do
+    #   lesson = lesson_fixture()
+    #   assert {:ok, lesson} = Core.update_lesson(lesson, @update_attrs)
+    #   assert %Lesson{} = lesson
+    #   assert lesson.name == "some updated name"
+    # end
 
     # test "update_lesson/2 with invalid data returns error changeset" do
     #   lesson = lesson_fixture()
@@ -51,39 +51,50 @@ defmodule Platform.CoreTest do
     #   assert lesson == Core.get_lesson!(lesson.id)
     # end
 
-    test "delete_lesson/1 deletes the lesson" do
-      lesson = lesson_fixture()
-      assert {:ok, %Lesson{}} = Core.delete_lesson(lesson)
-      assert_raise Ecto.NoResultsError, fn -> Core.get_lesson!(lesson.id) end
-    end
+    # test "delete_lesson/1 deletes the lesson" do
+    #   lesson = lesson_fixture()
+    #   assert {:ok, %Lesson{}} = Core.delete_lesson(lesson)
+    #   assert_raise Ecto.NoResultsError, fn -> Core.get_lesson!(lesson.id) end
+    # end
 
-    test "change_lesson/1 returns a lesson changeset" do
-      lesson = lesson_fixture()
-      assert %Ecto.Changeset{} = Core.change_lesson(lesson)
-    end
+    # test "change_lesson/1 returns a lesson changeset" do
+    #   lesson = lesson_fixture()
+    #   assert %Ecto.Changeset{} = Core.change_lesson(lesson)
+    # end
   end
 
   describe "course_contents" do
 
-        def course_content_fixture(attrs \\ %{}) do
-          Factory.insert(:course_content, attrs)
-        end
+    test "should be provide a lesson" do
+      lesson = Factory.insert(:lesson)
+      course = Factory.insert(:course)
+      course_content = course_content_fixture(lesson: lesson, course: course)
 
-        test "should be provide a lesson" do
-          lesson = Factory.insert(:lesson)
-          course = Factory.insert(:course)
-          course_content = course_content_fixture(lesson: lesson, course: course)
+      assert course_content.lesson == lesson
+    end
 
-          assert course_content.lesson == lesson
-        end
+    test "should be provide a course" do
+      lesson = Factory.insert(:lesson)
+      course = Factory.insert(:course)
+      course_content = course_content_fixture(lesson: lesson, course: course)
 
-        test "should be provide a course" do
-          lesson = Factory.insert(:lesson)
-          course = Factory.insert(:course)
-          course_content = course_content_fixture(lesson: lesson, course: course)
+      assert course_content.course == course
+    end
 
-          assert course_content.course == course
-        end
+  end
 
-      end
+  describe "get_course!" do
+
+    test "should return the course by id" do
+      course_content = course_content_fixture()
+      course_from_db = Core.get_course(course_content.course.id)
+      assert course_content.course == course_content.course
+    end
+
+  end
+
+  def course_content_fixture(attrs \\ %{}) do
+    Factory.insert(:course_content, attrs)
+  end
 end
+
