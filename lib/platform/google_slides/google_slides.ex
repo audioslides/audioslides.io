@@ -188,7 +188,15 @@ defmodule Platform.GoogleSlides do
     new_hash != old_hash
   end
 
+  @doc """
 
+  iex> get_title(%Page{pageElements: nil})
+  "NO TITLE"
+
+  iex> get_title(%Page{pageElements: [%{shape: %{placeholder: %{type: "TITLE"}, text: %{textElements: [%{textRun: %{content: "A Title"}}]}}}]})
+  "A Title"
+
+  """
   def get_title(%Page{pageElements: nil}), do: "NO TITLE"
   def get_title(%Page{pageElements: pageElements}) do
     page =
@@ -198,6 +206,18 @@ defmodule Platform.GoogleSlides do
     get_text_from_page(page)
   end
 
+  @doc """
+
+  iex> get_text_from_page(%{shape: %{placeholder: %{type: "TITLE"}, text: %{textElements: [%{textRun: %{content: "A Title"}}]}}})
+  "A Title"
+
+  iex> get_text_from_page(%{shape: %{placeholder: %{type: "TITLE"}, text: %{textElements: [%{textRun: %{content: "Another Title"}}]}}})
+  "Another Title"
+
+  iex> get_text_from_page(%{shape: %{placeholder: %{type: "TITLE"}, text: %{}}})
+  "NO TITLE"
+
+  """
   def get_text_from_page(%{shape: %{text: %{textElements: elements}}}) do
     text_element =
     elements
