@@ -1,6 +1,8 @@
 defmodule PlatformWeb.ViewHelper do
   @moduledoc false
 
+  alias Platform.Filename
+
   @example_image "/images/example-slide.png"
 
   @doc """
