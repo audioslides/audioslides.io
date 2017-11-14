@@ -2,8 +2,8 @@ defmodule PlatformWeb.CourseLessonControllerTest do
   use PlatformWeb.ConnCase
 
   @create_attrs %{position: 1, lesson_id: nil}
-#   @update_attrs %{active: false, lesson_id: "some updated lesson_id", symbol: "some updated symbol"}
-  @invalid_attrs %{lesson_id: nil}
+  @update_attrs %{position: 555}
+  @invalid_attrs %{position: nil}
 
   # setup :login_as_admin
   setup :create_course
@@ -41,22 +41,22 @@ defmodule PlatformWeb.CourseLessonControllerTest do
     end
   end
 
-#   describe "#update" do
-#     setup :create_course_lesson
+  describe "#update" do
+    setup :create_course_lesson
 
-#     test "redirects when data is valid", %{conn: conn, course: course, course_lesson: course_lesson} do
-#       conn = put conn, course_course_lesson_path(conn, :update, course_lesson), course_lesson: @update_attrs
-#       assert redirected_to(conn) == course_course_lesson_path(conn, :show, course_lesson)
+    test "redirects when data is valid", %{conn: conn, course: course, course_lesson: course_lesson} do
+      conn = put conn, course_course_lesson_path(conn, :update, course, course_lesson), course_lesson: @update_attrs
+      assert redirected_to(conn) == course_path(conn, :show, course)
 
-#       conn = get conn, course_course_lesson_path(conn, :show, course_lesson)
-#       assert html_response(conn, 200) =~ "some updated lesson_id"
-#     end
+      conn = get conn, course_path(conn, :show, course)
+      assert html_response(conn, 200) =~ course.name
+    end
 
-#     test "renders errors when data is invalid", %{conn: conn, course_lesson: course_lesson} do
-#       conn = put conn, course_course_lesson_path(conn, :update, course_lesson), course_lesson: @invalid_attrs
-#       assert html_response(conn, 200) =~ "Edit Course lesson"
-#     end
-#   end
+    test "renders errors when data is invalid", %{conn: conn, course: course, course_lesson: course_lesson} do
+      conn = put conn, course_course_lesson_path(conn, :update, course, course_lesson), course_lesson: @invalid_attrs
+      assert html_response(conn, 200) =~ "Edit course lesson"
+    end
+  end
 
   describe "#delete" do
     setup :create_course_lesson

@@ -17,6 +17,6 @@ defmodule Platform.Core.Schema.CourseLesson do
   def changeset(%__MODULE__{} = schema, attrs) do
     schema
     |> cast(attrs, [:lesson_id, :position])
-    |> validate_required([:lesson_id])
+    |> validate_required([:position, :lesson_id])
   end
 end
