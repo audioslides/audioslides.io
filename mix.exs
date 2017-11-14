@@ -64,7 +64,8 @@ defmodule Platform.Mixfile do
       {:httpoison, "~> 0.13"},
       {:ueberauth_google, "~> 0.5"},
       {:ueberauth, "~> 0.4"},
-      {:ex_machina, "~> 2.1", only: :test}
+      {:ex_machina, "~> 2.1", only: :test},
+      {:mox, "~> 0.3.1", only: :test}
     ]
   end
 
