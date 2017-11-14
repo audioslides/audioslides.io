@@ -51,8 +51,8 @@ defmodule Platform.Video do
 
       Logger.info "Slide #{slide.id} Video: generated"
       Converter.generate_video(
-        audio_filename: audio_filename,
         image_filename: image_filename,
+        audio_filename: audio_filename,
         output_filename: video_filename
       )
     else

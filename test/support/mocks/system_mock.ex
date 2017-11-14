@@ -3,7 +3,7 @@ defmodule Platform.Speech.Mock.System do
   The Speech Mock context
   """
 
-  def cmd("ffmpeg", ["-i", "test/support/fixtures/slide.mp3"], stderr_to_stdout: true) do
+  def cmd("ffmpeg", ["-i", "1.mp3"], stderr_to_stdout: true) do
   {"""
   ffmpeg version 3.0.2 Copyright (c) 2000-2016 the FFmpeg developers
   built with Apple LLVM version 7.3.0 (clang-703.0.29)
@@ -28,6 +28,17 @@ At least one output file must be specified
 
   """, 1}
   end
+
+  def cmd("ffmpeg", ["-loop", "1", "-t", "00:09.59", "-i", "1.png", "-i", "1.mp3", "-c:v", "libx264", "-tune", "stillimage", "-c:a", "aac", "-b:a", "192k", "-pix_fmt", "yuv420p", "-shortest", "-y", "out.mp4"]) do
+    {"""
+    ffmpeg version 3.0.2 Copyright (c) 2000-2016 the FFmpeg developers
+    Output #0, mp4, to 'priv/static/content/1/1.mp4':
+    [libx264 @ 0x7ff3c8012000] ref P L0: 76.7% 23.3%
+    [libx264 @ 0x7ff3c8012000] kb/s:33.66
+    [aac @ 0x7ff3c8013200] Qavg: 55622.996
+    """, 1}
+    end
+
   def cmd(_command, _args, _opts), do: ""
   def cmd(command, args), do: cmd(command, args, [])
 
