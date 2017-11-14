@@ -7,8 +7,6 @@ defmodule Platform.Converter do
 
   @behaviour Platform.ConverterBehavior
 
-  @content_dir Application.get_env(:platform, :content_dir)
-
   def generate_video(image_filename: image_filename, audio_filename: audio_filename, output_filename: output_filename) do
     duration = get_audio_duration(audio_filename)
     opts = "-loop 1 -t #{duration} -i #{image_filename} -i #{audio_filename} -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -y #{output_filename}"
