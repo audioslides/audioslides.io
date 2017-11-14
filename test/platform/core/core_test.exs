@@ -68,7 +68,7 @@ defmodule Platform.CoreTest do
     test "should be provide a lesson" do
       lesson = Factory.insert(:lesson)
       course = Factory.insert(:course)
-      course_content = course_content_fixture(lesson: lesson, course: course)
+      course_content = Factory.insert(:course_content, lesson: lesson, course: course)
 
       assert course_content.lesson == lesson
     end
@@ -76,7 +76,7 @@ defmodule Platform.CoreTest do
     test "should be provide a course" do
       lesson = Factory.insert(:lesson)
       course = Factory.insert(:course)
-      course_content = course_content_fixture(lesson: lesson, course: course)
+      course_content = Factory.insert(:course_content, lesson: lesson, course: course)
 
       assert course_content.course == course
     end
@@ -84,17 +84,12 @@ defmodule Platform.CoreTest do
   end
 
   describe "get_course!" do
-
     test "should return the course by id" do
-      course_content = course_content_fixture()
-      course_from_db = Core.get_course(course_content.course.id)
-      assert course_content.course == course_content.course
+      course_content = Factory.insert(:course_content)
+      course_from_db = Core.get_course!(course_content.course.id)
+      assert course_content.course.id == course_from_db.id
     end
-
   end
 
-  def course_content_fixture(attrs \\ %{}) do
-    Factory.insert(:course_content, attrs)
-  end
 end
 
