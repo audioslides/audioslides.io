@@ -29,10 +29,10 @@ At least one output file must be specified
   """, 1}
   end
 
-  def cmd("ffmpeg", ["-loop", "1", "-t", "00:09.59", "-i", "1.png", "-i", "1.mp3", "-c:v", "libx264", "-tune", "stillimage", "-c:a", "aac", "-b:a", "192k", "-pix_fmt", "yuv420p", "-shortest", "-y", "out.mp4"]) do
+  def cmd("ffmpeg", ["-loop", "1", "-t", "00:09.59", "-i", image_filename, "-i", audio_filename, "-c:v", "libx264", "-tune", "stillimage", "-c:a", "aac", "-b:a", "192k", "-pix_fmt", "yuv420p", "-shortest", "-y", output_filename]) do
     {"""
     ffmpeg version 3.0.2 Copyright (c) 2000-2016 the FFmpeg developers
-    Output #0, mp4, to 'priv/static/content/1/1.mp4':
+    Output #0, mp4, to '#{output_filename}':
     [libx264 @ 0x7ff3c8012000] ref P L0: 76.7% 23.3%
     [libx264 @ 0x7ff3c8012000] kb/s:33.66
     [aac @ 0x7ff3c8013200] Qavg: 55622.996

@@ -1,6 +1,9 @@
 defmodule PlatformWeb.SlideControllerTest do
   use PlatformWeb.ConnCase
 
+  import Platform.Speech.Mock.System
+  import Mock
+
   setup :create_lesson
 
   describe "#show" do
@@ -9,6 +12,17 @@ defmodule PlatformWeb.SlideControllerTest do
     test "renders form for editing chosen slide", %{conn: conn, lesson: lesson, slide: slide} do
       conn = get conn, lesson_slide_path(conn, :show, lesson, slide)
       assert html_response(conn, 200) =~ slide.name
+    end
+  end
+
+  describe "#generate_video" do
+    setup :create_slide
+
+    test "renders form for editing chosen slide", %{conn: conn, lesson: lesson, slide: slide} do
+      with_mock System, [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)] do
+        conn = post conn, lesson_slide_path(conn, :generate_video, lesson, slide)
+        assert html_response(conn, 200) =~ slide.name
+      end
     end
   end
 
