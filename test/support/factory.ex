@@ -2,6 +2,7 @@ defmodule Platform.Factory do
 
   alias Platform.Accounts.Schema.User
   alias Platform.Core.Schema.Course
+  alias Platform.Core.Schema.CourseContent
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
 
@@ -41,4 +42,13 @@ defmodule Platform.Factory do
       google_uid: sequence(:google_uid, &"848348018043275321#{&1}"),
     }
   end
+
+  def course_content_factory do
+    %CourseContent{
+      position: "1",
+      course: build(:course),
+      lesson: build(:lesson)
+    }
+  end
+
 end
