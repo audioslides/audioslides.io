@@ -6,7 +6,7 @@ defmodule Platform.Core.Schema.CourseContent do
   alias Platform.Core.Schema.Course
   alias Platform.Core.Schema.Lesson
 
-  schema "course_contents" do
+  schema "course_lessons" do
     field :position, :integer
 
     belongs_to :course, Course
