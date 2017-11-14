@@ -111,8 +111,6 @@ defmodule Platform.Video do
       |> Speech.language(lesson.voice_language)
       |> Speech.voice_gender(lesson.voice_gender)
       |> Speech.text(notes)
-      |> Speech.for_lesson(lesson.id)
-      |> Speech.for_slide(slide.id)
       |> Speech.run()
 
       write_to_file(audio_filename, speech_binary)

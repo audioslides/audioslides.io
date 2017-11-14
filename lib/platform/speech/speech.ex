@@ -6,7 +6,7 @@ defmodule Platform.Speech do
   @speech_api Application.get_env(:platform, :speech_api)
   @content_dir Application.get_env(:platform, :content_dir)
 
-  def run(%{"lesson_id" => lesson_id, "slide_id" => slide_id} = params) do
+  def run(params) do
     speech_binary = @speech_api.get_speech(params)
   end
 
@@ -41,26 +41,6 @@ defmodule Platform.Speech do
   """
   def language(params, language_key) do
     Map.put(params, "language_key", language_key)
-  end
-
-  @doc """
-
-  iex> %{} |> for_lesson("123")
-  %{"lesson_id" => "123"}
-
-  """
-  def for_lesson(params, lesson_id) do
-    Map.put(params, "lesson_id", lesson_id)
-  end
-
-  @doc """
-
-  iex> %{} |> for_slide("321")
-  %{"slide_id" => "321"}
-
-  """
-  def for_slide(params, slide_id) do
-    Map.put(params, "slide_id", slide_id)
   end
 
   @doc """
