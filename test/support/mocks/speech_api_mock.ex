@@ -1,4 +1,4 @@
-defmodule Platform.Speech.SpeechApiMock do
+defmodule Platform.Speech.Mock.SpeechApi do
   @moduledoc """
   The Speech Mock context
   """

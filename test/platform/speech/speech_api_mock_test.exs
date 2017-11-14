@@ -1,6 +1,6 @@
-defmodule Platform.Speech.SpeechApiMockTest do
+defmodule Platform.Speech.Mock.SpeechApiTest do
   use ExUnit.Case
-  import Platform.Speech.SpeechApiMock
+  import Platform.Speech.Mock.SpeechApi
 
-  doctest Platform.Speech.SpeechApiMock
+  doctest Platform.Speech.Mock.SpeechApi
 end
