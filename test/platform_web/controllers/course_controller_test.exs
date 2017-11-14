@@ -3,7 +3,7 @@ defmodule PlatformWeb.CourseControllerTest do
 
   @create_attrs %{name: "A Course"}
   @update_attrs %{name: "A super Course"}
-  @invalid_attrs %{}
+  #@invalid_attrs %{}
 
   describe "index" do
     test "lists all courses", %{conn: conn} do
