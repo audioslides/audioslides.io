@@ -16,6 +16,9 @@ defmodule PlatformWeb.ErrorHelpers do
 
   @doc """
   Translates an error message using gettext.
+
+  iex> translate_error({"more than %{count} characters", [count: 2]})
+  ~s(more than 2 characters)
   """
   def translate_error({msg, opts}) do
     # Because error messages were defined within Ecto, we must
