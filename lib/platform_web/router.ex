@@ -10,10 +10,6 @@ defmodule PlatformWeb.Router do
     plug PlatformWeb.CurrentUserPlug
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   scope "/", PlatformWeb do
     pipe_through :browser # Use the default browser stack
 
