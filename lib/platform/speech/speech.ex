@@ -4,10 +4,17 @@ defmodule Platform.Speech do
   """
 
   @speech_api Application.get_env(:platform, :speech_api)
-  @content_dir Application.get_env(:platform, :content_dir)
 
+  @doc """
+  Run the API call with gathered params
+  In this test-case via SpeechApiMock
+
+  iex> %{} |> run()
+  <<73, 68, 51, 4, 0, 0, 0, 0, 0>>
+
+  """
   def run(params) do
-    speech_binary = @speech_api.get_speech(params)
+    @speech_api.get_speech(params)
   end
 
   @doc """
