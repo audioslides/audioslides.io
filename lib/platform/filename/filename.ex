@@ -40,7 +40,7 @@ defmodule Platform.Filename do
   iex> get_filename_for_slide_image(%Lesson{id: 1}, %Slide{id: 2})
   "priv/static/content/1/2.png"
   """
-  def get_filename_for_slide_image(%Lesson{} = lesson, %Slide{} = slide) do
+  def get_filename_for_slide_image(%{} = lesson, %{} = slide) do
     "#{@content_dir}#{lesson.id}/#{slide.id}.png"
   end
 
