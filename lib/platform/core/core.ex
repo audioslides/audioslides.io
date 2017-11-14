@@ -59,9 +59,8 @@ defmodule Platform.Core do
   ### ################################################################### ###
   ### Slide                                                               ###
   ### ################################################################### ###
-  def get_slide!(%Lesson{} = lesson, id) do
-    lesson
-    |> Ecto.assoc(:slides)
+  def get_slide!(id) do
+    Slide
     |> Repo.get!(id)
   end
 

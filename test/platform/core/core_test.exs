@@ -3,6 +3,7 @@ defmodule Platform.CoreTest do
 
   alias Platform.Core
   alias Platform.Core.Schema.Lesson
+  alias Platform.Core.Schema.Slide
 
   doctest Platform.Core
 
@@ -12,19 +13,15 @@ defmodule Platform.CoreTest do
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
 
-    def lesson_fixture(_attrs \\ %{}) do
-      Factory.insert(:lesson)
-    end
-
     test "list_lessons/0 returns all lessons" do
-      lesson = lesson_fixture()
+      lesson = Factory.insert(:lesson)
       lessons = Core.list_lessons()
       assert length(lessons) == 1
       assert List.first(lessons).id == lesson.id
     end
 
     test "get_lesson!/1 returns the lesson with given id" do
-      lesson = lesson_fixture()
+      lesson = Factory.insert(:lesson)
       assert Core.get_lesson!(lesson.id).id == lesson.id
     end
 
@@ -41,29 +38,87 @@ defmodule Platform.CoreTest do
     end
 
     test "update_lesson/2 with valid data updates the lesson" do
-      lesson = lesson_fixture()
+      lesson = Factory.insert(:lesson)
       assert {:ok, lesson} = Core.update_lesson(lesson, @update_attrs)
       assert %Lesson{} = lesson
       assert lesson.name == "some updated name"
     end
 
     test "update_lesson/2 with invalid data returns error changeset" do
-      lesson = lesson_fixture()
+      lesson = Factory.insert(:lesson)
       assert {:error, %Ecto.Changeset{}} = Core.update_lesson(lesson, @invalid_attrs)
       assert lesson.id == Core.get_lesson!(lesson.id).id
     end
 
     test "delete_lesson/1 deletes the lesson" do
-      lesson = lesson_fixture()
+      lesson = Factory.insert(:lesson)
       assert {:ok, %Lesson{}} = Core.delete_lesson(lesson)
       assert_raise Ecto.NoResultsError, fn -> Core.get_lesson!(lesson.id) end
     end
 
     test "change_lesson/1 returns a lesson changeset" do
-      lesson = lesson_fixture()
+      lesson = Factory.insert(:lesson)
       assert %Ecto.Changeset{} = Core.change_lesson(lesson)
     end
   end
+
+
+
+  describe "slides" do
+
+        @valid_attrs %{google_object_id: "some google_object_id", name: "some name", position: "1"}
+        @update_attrs %{name: "some updated name"}
+        @invalid_attrs %{google_presentation_id: nil, name: nil, position: nil}
+
+        # test "list_slides/0 returns all slides" do
+        #   slide = Factory.insert(:slide)
+        #   slides = Core.list_slides()
+        #   assert length(slides) == 1
+        #   assert List.first(slides).id == slide.id
+        # end
+
+        # test "get_slide!/1 returns the slide with given id" do
+        #   slide = Factory.insert(:slide)
+        #   assert Core.get_slide!(slide.id).id == slide.id
+        # end
+
+        test "create_slide/1 with valid data creates a slide" do
+          lesson = Factory.insert(:lesson)
+          assert {:ok, %Slide{} = slide} = Core.create_slide(lesson, @valid_attrs)
+          assert slide.google_object_id == "some google_object_id"
+          assert slide.name == "some name"
+        end
+
+        test "create_slide/1 with invalid data returns error changeset" do
+          lesson = Factory.insert(:lesson)
+          assert {:error, %Ecto.Changeset{}} = Core.create_slide(lesson, @invalid_attrs)
+        end
+
+        test "update_slide/2 with valid data updates the slide" do
+          slide = Factory.insert(:slide)
+          assert {:ok, slide} = Core.update_slide(slide, @update_attrs)
+          assert %Slide{} = slide
+          assert slide.name == "some updated name"
+        end
+
+        test "update_slide/2 with invalid data returns error changeset" do
+          slide = Factory.insert(:slide)
+          assert {:error, %Ecto.Changeset{}} = Core.update_slide(slide, @invalid_attrs)
+          assert slide.id == Core.get_slide!(slide.id).id
+        end
+
+        test "delete_slide/1 deletes the slide" do
+          slide = Factory.insert(:slide)
+          assert {:ok, %Slide{}} = Core.delete_slide(slide)
+          assert_raise Ecto.NoResultsError, fn -> Core.get_slide!(slide.id) end
+        end
+
+        test "change_slide/1 returns a slide changeset" do
+          lesson = Factory.insert(:lesson)
+          slide = Factory.insert(:slide)
+          assert %Ecto.Changeset{} = Core.change_slide(lesson, slide)
+        end
+      end
 
   describe "course_lessons" do
 
