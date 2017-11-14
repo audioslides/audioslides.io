@@ -1,7 +1,6 @@
 defmodule PlatformWeb.SlideController do
   use PlatformWeb, :controller
 
-  alias Platform.GoogleSlides
   alias Platform.Core
   alias Platform.Video
 
