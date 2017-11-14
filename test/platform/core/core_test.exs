@@ -25,6 +25,11 @@ defmodule Platform.CoreTest do
       assert Core.get_lesson!(lesson.id).id == lesson.id
     end
 
+    test "get_lesson_by_google_presentation_id!/1 returns the lesson with given id" do
+      lesson = Factory.insert(:lesson)
+      assert Core.get_lesson_by_google_presentation_id!(lesson.google_presentation_id).id == lesson.id
+    end
+
     test "create_lesson/1 with valid data creates a lesson" do
       assert {:ok, %Lesson{} = lesson} = Core.create_lesson(@valid_attrs)
       assert lesson.google_presentation_id == "some google_presentation_id"
