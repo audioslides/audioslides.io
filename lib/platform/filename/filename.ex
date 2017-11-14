@@ -27,7 +27,7 @@ defmodule Platform.Filename do
     "#{@content_dir}#{lesson.id}"
   end
 
-  def get_filename_for_ffmpeg_concat(%Lesson{} = lesson) do
+  def get_filename_for_ffmpeg_concat() do
     "#{@content_dir}/ffmpeg_concat_temporary.txt"
   end
 
