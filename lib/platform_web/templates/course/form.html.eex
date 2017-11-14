@@ -13,7 +13,7 @@
 
   <div class="form-group">
     <%= multiple_select f, :lessons, Enum.map(@collections.lessons, &{&1.name, &1.id}),
-    selected: Enum.map(@changeset.data.lessons, &(&1.id)), class: "form-control c-select" %>
+    selected: Enum.map(@changeset.data.course_contents.lessons, &(&1.id)), class: "form-control c-select" %>
   </div>
 
   <div class="form-group">
