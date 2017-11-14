@@ -15,7 +15,6 @@ defmodule Platform.Video do
   @content_dir Application.get_env(:platform, :content_dir)
 
   def convert_lesson_to_video(%Lesson{} = lesson) do
-    concat_input_filename = "#{@content_dir}#{lesson.id}.txt"
     final_output_filename = "#{@content_dir}#{lesson.id}.mp4"
 
     # start async creation of the videos
@@ -34,21 +33,7 @@ defmodule Platform.Video do
       end
     end)
 
-    save_video_filenames(generated_video_filenames, concat_input_filename)
-
-    Converter.merge_videos(input_txt: concat_input_filename, output_filename: final_output_filename)
-  end
-
-  defp save_video_filenames(filenames, output_file) do
-    File.rm(output_file)
-    {:ok, file} = File.open(output_file, [:append])
-
-    Enum.each(filenames,
-      fn(filename) ->
-        IO.binwrite(file, "file '#{filename}'\n")
-      end)
-
-    File.close(file)
+    Converter.merge_videos(video_filename_list: generated_video_filenames, output_filename: final_output_filename)
   end
 
   def generate_video_for_slide(%Lesson{} = lesson, %Slide{} = slide) do
@@ -57,6 +42,7 @@ defmodule Platform.Video do
 
     image_filename = create_or_update_image_for_slide(lesson, slide, google_slide)
     audio_filename = create_or_update_audio_for_slide(lesson, slide, google_slide)
+
     video_filename = "#{@content_dir}#{lesson.id}/#{slide.id}.mp4"
 
     # Only generate video of audio or video changed
@@ -65,16 +51,20 @@ defmodule Platform.Video do
       LessonSync.update_hash_for_slide(slide, google_slide)
 
       Logger.info "Slide #{slide.id} Video: generated"
-      Converter.merge_audio_image(
+      Converter.generate_video(
         audio_filename: audio_filename,
         image_filename: image_filename,
-        out_filename: "#{@content_dir}#{lesson.id}/#{slide.id}.mp4",
+        output_filename: video_filename
       )
     else
       Logger.info "Slide #{slide.id} Video: skipped"
     end
 
     # relative_output_filename
+    "#{lesson.id}/#{slide.id}.mp4"
+  end
+
+  def get_video_filename(%Lesson{} = lesson, %Slide{} = slide) do
     "#{lesson.id}/#{slide.id}.mp4"
   end
 

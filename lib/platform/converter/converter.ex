@@ -3,14 +3,20 @@ defmodule Platform.Converter do
   Context for the ffmpeg converter
   """
 
-  def merge_audio_image([audio_filename: audio_filename, image_filename: image_filename, out_filename: out_filename]) do
+  @behaviour Platform.ConverterBehavior
+
+  @content_dir Application.get_env(:platform, :content_dir)
+
+  def generate_video(image_filename: image_filename, audio_filename: audio_filename, output_filename: output_filename) do
     duration = get_audio_duration(audio_filename)
-    opts = "-loop 1 -t #{duration} -i #{image_filename} -i #{audio_filename} -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -y #{out_filename}"
+    opts = "-loop 1 -t #{duration} -i #{image_filename} -i #{audio_filename} -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -y #{output_filename}"
     System.cmd("ffmpeg", String.split(opts, " "))
   end
 
-  def merge_videos([input_txt: input_txt, output_filename: output_filename]) do
-    opts = "-f concat -safe 0 -i #{input_txt} -c copy -y #{output_filename}"
+  def merge_videos([video_filename_list: video_filename_list, output_filename: output_filename]) do
+    concat_input_filename = "#{@content_dir}/temporary.txt"
+    save_video_filenames(video_filename_list, concat_input_filename)
+    opts = "-f concat -safe 0 -i #{concat_input_filename} -c copy -y #{output_filename}"
     System.cmd("ffmpeg", String.split(opts, " "))
   end
 
@@ -42,5 +48,22 @@ defmodule Platform.Converter do
     [_, duration] = Regex.run(duration_regex, ffmpeg_response)
     duration
 
+  end
+
+
+  @doc """
+  create a input file in ffmpeg concat format
+
+  """
+  defp save_video_filenames(filenames, output_file) do
+    File.rm(output_file)
+    {:ok, file} = File.open(output_file, [:append])
+
+    Enum.each(filenames,
+      fn(filename) ->
+        IO.binwrite(file, "file '#{filename}'\n")
+      end)
+
+    File.close(file)
   end
 end
