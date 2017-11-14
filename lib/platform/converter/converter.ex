@@ -20,13 +20,6 @@ defmodule Platform.Converter do
     System.cmd("ffmpeg", String.split(opts, " "))
   end
 
-  @doc """
-  use audio_filename to get the duration of this file
-
-  # iex> get_audio_duration("test/support/fixtures/slide.mp3")
-  # "00:08.59"
-
-  """
   def get_audio_duration(audio_filename) do
     opts = "-i #{audio_filename}"
     result = System.cmd("ffmpeg", String.split(opts, " "), stderr_to_stdout: true)
@@ -54,7 +47,7 @@ defmodule Platform.Converter do
   create a input file in ffmpeg concat format
 
   """
-  defp save_video_filenames(filenames, output_file) do
+  def save_video_filenames(filenames, output_file) do
     File.rm(output_file)
     {:ok, file} = File.open(output_file, [:append])
 
