@@ -1,4 +1,8 @@
 defmodule Platform.Core.Schema.Course do
+  @moduledoc """
+  The schema for a course
+  """
+
   import Ecto.Changeset
   use Ecto.Schema
 

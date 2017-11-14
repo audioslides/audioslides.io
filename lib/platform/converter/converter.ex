@@ -52,7 +52,6 @@ defmodule Platform.Converter do
 
   end
 
-
   @doc """
   create a input file in ffmpeg concat format
 
