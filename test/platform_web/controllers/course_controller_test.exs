@@ -3,7 +3,7 @@ defmodule PlatformWeb.CourseControllerTest do
 
   @create_attrs %{name: "A course"}
   @update_attrs %{name: "A super course"}
-  #@invalid_attrs %{}
+  @invalid_attrs %{name: nil}
 
   describe "index" do
     test "lists all courses", %{conn: conn} do
@@ -30,10 +30,10 @@ defmodule PlatformWeb.CourseControllerTest do
       assert html_response(conn, 200) =~ "Show Course"
     end
 
-    # test "renders errors when data is invalid", %{conn: conn} do
-    #   conn = post conn, course_path(conn, :create), course: @invalid_attrs
-    #   assert html_response(conn, 200) =~ "New Course"
-    # end
+    test "renders errors when data is invalid", %{conn: conn} do
+      conn = post conn, course_path(conn, :create), course: @invalid_attrs
+      assert html_response(conn, 200) =~ "New Course"
+    end
   end
 
   describe "edit course" do
@@ -56,10 +56,10 @@ defmodule PlatformWeb.CourseControllerTest do
       assert html_response(conn, 200)
     end
 
-    # test "renders errors when data is invalid", %{conn: conn, course: course} do
-    #   conn = put conn, course_path(conn, :update, course), course: @invalid_attrs
-    #   assert html_response(conn, 200) =~ "Edit Course"
-    # end
+    test "renders errors when data is invalid", %{conn: conn, course: course} do
+      conn = put conn, course_path(conn, :update, course), course: @invalid_attrs
+      assert html_response(conn, 200) =~ "Edit Course"
+    end
   end
 
   describe "delete course" do
