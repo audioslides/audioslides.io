@@ -13,12 +13,6 @@ defmodule Platform.CoreTest do
     @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
 
     def lesson_fixture(_attrs \\ %{}) do
-      # {:ok, lesson} =
-      #   attrs
-      #   |> Enum.into(@valid_attrs)
-      #   |> Core.create_lesson()
-
-      # lesson
       Factory.insert(:lesson)
     end
 
