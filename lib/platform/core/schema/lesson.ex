@@ -18,15 +18,13 @@ defmodule Platform.Core.Schema.Lesson do
     timestamps()
 
     has_many :course_contents, CourseContent
-    has_many :courses, through: [:course_contents, :course]
-
     has_many :slides,  Slide, on_delete: :delete_all
     belongs_to :user, User
   end
 
   @doc false
-  def changeset(%__MODULE__{} = lesson, attrs) do
-    lesson
+  def changeset(%__MODULE__{} = struct, attrs) do
+    struct
     |> cast(attrs, [:google_presentation_id, :name, :voice_language, :voice_gender])
     |> validate_required([:google_presentation_id, :name, :voice_language, :voice_gender])
     |> validate_inclusion(:voice_language, ["de-DE", "en-US"])

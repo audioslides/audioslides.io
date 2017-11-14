@@ -19,8 +19,8 @@ defmodule Platform.Core.Schema.Slide do
   end
 
   @doc false
-  def changeset(%__MODULE__{} = slide, attrs) do
-    slide
+  def changeset(%__MODULE__{} = struct, attrs) do
+    struct
     |> cast(attrs, [:google_object_id, :name, :position, :speaker_notes_hash, :page_elements_hash, :thumb_image_url, :synced_at])
     |> validate_required([:google_object_id, :name, :position])
     |> unique_constraint(:google_object_id, name: :slides_lesson_id_google_object_id_index)

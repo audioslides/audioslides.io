@@ -106,10 +106,16 @@ defmodule Platform.Core do
   Raises `Ecto.NoResultsError` if the Course does not exist.
 
   """
-  def get_course!(id), do: Repo.get!(Course, id)
+  def get_course!(id) do
+    Course
+    |> Repo.get!(id)
+  end
 
-
-  def get_course_with_lessons!(id), do: Repo.get!(Course, id) |> Repo.preload(:lessons)
+  def get_course_with_lessons!(id) do
+    Course
+    |> Repo.get!(id)
+    |> Repo.preload([course_contents: :lesson])
+  end
 
   @doc """
   Creates a course.

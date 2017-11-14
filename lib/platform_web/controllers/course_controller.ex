@@ -11,7 +11,7 @@ defmodule PlatformWeb.CourseController do
   end
 
   def new(conn, _params) do
-    changeset = Core.change_course(%Course{lessons: []})
+    changeset = Core.change_course(%Course{})
     render(conn, "new.html", changeset: changeset, collections: collections())
   end
 
