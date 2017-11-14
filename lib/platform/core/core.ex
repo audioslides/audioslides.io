@@ -165,14 +165,14 @@ defmodule Platform.Core do
   end
 
   def create_course_lesson(%Course{} = course, attrs \\ %{}) do
-    %CourseLesson    {course: course}
-    |> CourseLesson    .changeset(attrs)
+    %CourseLesson{course: course}
+    |> CourseLesson.changeset(attrs)
     |> Repo.insert()
   end
 
   def update_course_lesson(%Course{} = _course, %CourseLesson{} = course_lesson, attrs) do
     course_lesson
-    |> CourseLesson    .changeset(attrs)
+    |> CourseLesson.changeset(attrs)
     |> Repo.update()
   end
 

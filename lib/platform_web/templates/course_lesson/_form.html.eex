@@ -5,6 +5,8 @@
     </div>
   <% end %>
 
+  <%= debug @changeset %>
+
   <div class="form-group">
     <%= label f, :position, class: "control-label" %>
     <%= text_input f, :position, class: "checkbox" %>

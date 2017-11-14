@@ -9,7 +9,10 @@
 <span><%= link "Edit", to: course_path(@conn, :edit, @course) %></span>
 <span><%= link "Back", to: course_path(@conn, :index) %></span>
 
+<br>
+
 <h3>Lessons in this course</h3>
+
 <div class="hover-zoom-cards row">
   <%= for course_lesson <- @course.course_lessons do %>
   <a class="col-4 p-3" href="<%= lesson_path(@conn, :show, course_lesson.lesson) %>">
@@ -28,3 +31,5 @@
   </a>
 <% end %>
 </div>
+
+<%= link "Add lesson", to: course_course_lesson_path(@conn, :new, @course), class: "btn btn-primary" %>
