@@ -1,7 +1,7 @@
 defmodule PlatformWeb.CourseLessonControllerTest do
   use PlatformWeb.ConnCase
 
-#   @create_attrs %{active: true, lesson_id: "some lesson_id", symbol: "some symbol"}
+  @create_attrs %{position: 1, lesson_id: nil}
 #   @update_attrs %{active: false, lesson_id: "some updated lesson_id", symbol: "some updated symbol"}
   @invalid_attrs %{lesson_id: nil}
 
@@ -16,15 +16,15 @@ defmodule PlatformWeb.CourseLessonControllerTest do
   end
 
   describe "#create" do
-#     test "redirects to show when data is valid", %{conn: conn, course: course} do
-#       conn = post conn, course_course_lesson_path(conn, :create), course_lesson: @create_attrs
+    test "redirects to show when data is valid", %{conn: conn, course: course} do
+      lesson = Factory.insert(:lesson)
+      conn = post conn, course_course_lesson_path(conn, :create, course), course_lesson: Map.put(@create_attrs, :lesson_id, lesson.id)
 
-#       assert %{id: id} = redirected_params(conn)
-#       assert redirected_to(conn) == course_course_lesson_path(conn, :show, id)
+      assert redirected_to(conn) == course_path(conn, :show, course)
 
-#       conn = get conn, course_course_lesson_path(conn, :show, id)
-#       assert html_response(conn, 200) =~ "Show Course lesson"
-#     end
+      conn = get conn, course_path(conn, :show, course)
+      assert html_response(conn, 200) =~ course.name
+    end
 
     test "renders errors when data is invalid", %{conn: conn, course: course} do
       conn = post conn, course_course_lesson_path(conn, :create, course), course_lesson: @invalid_attrs
