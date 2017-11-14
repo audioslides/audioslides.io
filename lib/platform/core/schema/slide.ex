@@ -5,6 +5,7 @@ defmodule Platform.Core.Schema.Slide do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @timestamps_opts [type: :utc_datetime, usec: false]
   schema "slides" do
     field :name, :string
     field :google_object_id, :string
@@ -19,9 +20,10 @@ defmodule Platform.Core.Schema.Slide do
   end
 
   @doc false
+  @fields [:google_object_id, :name, :position, :speaker_notes_hash, :page_elements_hash, :thumb_image_url, :synced_at]
   def changeset(%__MODULE__{} = struct, attrs) do
     struct
-    |> cast(attrs, [:google_object_id, :name, :position, :speaker_notes_hash, :page_elements_hash, :thumb_image_url, :synced_at])
+    |> cast(attrs, @fields)
     |> validate_required([:google_object_id, :name, :position])
     |> unique_constraint(:google_object_id, name: :slides_lesson_id_google_object_id_index)
   end

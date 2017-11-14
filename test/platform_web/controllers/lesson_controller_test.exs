@@ -5,21 +5,21 @@ defmodule PlatformWeb.LessonControllerTest do
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
 
-  describe "index" do
+  describe "#index" do
     test "lists all lessons", %{conn: conn} do
       conn = get conn, lesson_path(conn, :index)
       assert html_response(conn, 200) =~ ~s(<main role="main">)
     end
   end
 
-  describe "new lesson" do
+  describe "#new" do
     test "renders form", %{conn: conn} do
       conn = get conn, lesson_path(conn, :new)
       assert html_response(conn, 200) =~ "New Lesson"
     end
   end
 
-  describe "create lesson" do
+  describe "#create" do
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post conn, lesson_path(conn, :create), lesson: @create_attrs
 
@@ -36,7 +36,7 @@ defmodule PlatformWeb.LessonControllerTest do
     end
   end
 
-  describe "edit lesson" do
+  describe "#edit" do
     setup [:create_lesson]
 
     test "renders form for editing chosen lesson", %{conn: conn, lesson: lesson} do
@@ -45,7 +45,7 @@ defmodule PlatformWeb.LessonControllerTest do
     end
   end
 
-  describe "update lesson" do
+  describe "#update" do
     setup [:create_lesson]
 
     test "redirects when data is valid", %{conn: conn, lesson: lesson} do
@@ -62,7 +62,7 @@ defmodule PlatformWeb.LessonControllerTest do
     end
   end
 
-  describe "delete lesson" do
+  describe "#delete" do
     setup [:create_lesson]
 
     test "deletes chosen lesson", %{conn: conn, lesson: lesson} do

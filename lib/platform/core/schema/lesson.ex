@@ -9,6 +9,7 @@ defmodule Platform.Core.Schema.Lesson do
   alias Platform.Core.Schema.Slide
   alias Platform.Core.Schema.CourseLesson
 
+  @timestamps_opts [type: :utc_datetime, usec: false]
   schema "lessons" do
     field :google_presentation_id, :string
     field :name, :string
@@ -23,9 +24,10 @@ defmodule Platform.Core.Schema.Lesson do
   end
 
   @doc false
+  @fields [:google_presentation_id, :name, :voice_language, :voice_gender]
   def changeset(%__MODULE__{} = struct, attrs) do
     struct
-    |> cast(attrs, [:google_presentation_id, :name, :voice_language, :voice_gender])
+    |> cast(attrs, @fields)
     |> validate_required([:google_presentation_id, :name, :voice_language, :voice_gender])
     |> validate_inclusion(:voice_language, ["de-DE", "en-US"])
     |> validate_inclusion(:voice_gender, ["female", "male"])

@@ -2,24 +2,24 @@ defmodule PlatformWeb.CourseControllerTest do
   use PlatformWeb.ConnCase
 
   @create_attrs %{name: "A course"}
-  @update_attrs %{name: "A super course"}
+  @update_attrs %{name: "An awesome course"}
   @invalid_attrs %{name: nil}
 
-  describe "index" do
+  describe "#index" do
     test "lists all courses", %{conn: conn} do
       conn = get conn, course_path(conn, :index)
       assert html_response(conn, 200) =~ "Listing Courses"
     end
   end
 
-  describe "new course" do
+  describe "#new" do
     test "renders form", %{conn: conn} do
       conn = get conn, course_path(conn, :new)
       assert html_response(conn, 200) =~ "New Course"
     end
   end
 
-  describe "create course" do
+  describe "#create" do
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post conn, course_path(conn, :create), course: @create_attrs
 
@@ -36,7 +36,7 @@ defmodule PlatformWeb.CourseControllerTest do
     end
   end
 
-  describe "edit course" do
+  describe "#edit" do
     setup [:create_course]
 
     test "renders form for editing chosen course", %{conn: conn, course: course} do
@@ -45,7 +45,7 @@ defmodule PlatformWeb.CourseControllerTest do
     end
   end
 
-  describe "update course" do
+  describe "#update" do
     setup [:create_course]
 
     test "redirects when data is valid", %{conn: conn, course: course} do
@@ -62,7 +62,7 @@ defmodule PlatformWeb.CourseControllerTest do
     end
   end
 
-  describe "delete course" do
+  describe "#delete" do
     setup [:create_course]
 
     test "deletes chosen course", %{conn: conn, course: course} do

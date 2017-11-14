@@ -4,6 +4,7 @@ defmodule Platform.Core.Schema.Course do
 
   alias Platform.Core.Schema.CourseLesson
 
+  @timestamps_opts [type: :utc_datetime, usec: false]
   schema "courses" do
     field :name, :string
     timestamps()
@@ -12,9 +13,10 @@ defmodule Platform.Core.Schema.Course do
   end
 
   @doc false
+  @fields [:name]
   def changeset(%__MODULE__{} = struct, attrs) do
     struct
-    |> cast(attrs, [:name])
+    |> cast(attrs, @fields)
     |> validate_required([:name])
   end
 end

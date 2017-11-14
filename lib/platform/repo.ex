@@ -13,11 +13,11 @@ defmodule Platform.Repo do
   Sets a field to the current time in utc.
   Default field is :inserted_at
   """
-  def touch_utc(%{__struct__: _} = data, field) when is_atom(field) do
-    update_map = Map.put(%{}, field, DateTime.utc_now())
+  def touch_utc!(%{__struct__: _} = data, field, now \\ DateTime.utc_now()) when is_atom(field) do
+    update_map = Map.put(%{}, field, now)
 
     data
     |> Ecto.Changeset.change(update_map)
-    |> update()
+    |> update!()
   end
 end
