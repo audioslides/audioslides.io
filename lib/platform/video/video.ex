@@ -94,19 +94,28 @@ defmodule Platform.Video do
     image_filename
   end
 
+  def get_audio_filename(lesson_id, slide_id) do
+    directory = "#{@content_dir}#{lesson_id}"
+    File.mkdir_p(directory)
+
+    "#{directory}/#{slide_id}.mp3"
+  end
+
   def create_or_update_audio_for_slide(lesson, slide, google_slide) do
-    audio_filename = Speech.get_filename(lesson.id, slide.id)
+    audio_filename = get_audio_filename(lesson.id, slide.id)
     if !File.exists?(audio_filename) || content_changed_for_speaker_notes?(slide, google_slide) do
       Logger.info "Slide #{slide.id} Audio: generated"
       notes = GoogleSlides.get_speaker_notes(google_slide)
 
-      Speech.speak()
+      speech_binary = Speech.speak()
       |> Speech.language(lesson.voice_language)
       |> Speech.voice_gender(lesson.voice_gender)
       |> Speech.text(notes)
       |> Speech.for_lesson(lesson.id)
       |> Speech.for_slide(slide.id)
       |> Speech.run()
+
+      write_to_file(audio_filename, speech_binary)
     else
       Logger.info "Slide #{slide.id} Audio: skipped"
     end
@@ -126,4 +135,8 @@ defmodule Platform.Video do
     new_hash != old_hash
   end
 
+  defp write_to_file(filename, data) do
+    {:ok, file} = File.open filename, [:write]
+    IO.binwrite(file, data)
+  end
 end

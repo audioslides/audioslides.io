@@ -7,13 +7,7 @@ defmodule Platform.Speech do
   @content_dir Application.get_env(:platform, :content_dir)
 
   def run(%{"lesson_id" => lesson_id, "slide_id" => slide_id} = params) do
-    filename = get_filename(lesson_id, slide_id)
-
     speech_binary = @speech_api.get_speech(params)
-
-    write_to_file(filename, speech_binary)
-
-    filename
   end
 
   @doc """
@@ -93,18 +87,6 @@ defmodule Platform.Speech do
   """
   def text(params, text) do
     Map.put(params, "text", text)
-  end
-
-  defp write_to_file(filename, data) do
-    {:ok, file} = File.open filename, [:write]
-    IO.binwrite(file, data)
-  end
-
-  def get_filename(lesson_id, slide_id) do
-    directory = "#{@content_dir}#{lesson_id}"
-    File.mkdir_p(directory)
-
-    "#{directory}/#{slide_id}.mp3"
   end
 
 end
