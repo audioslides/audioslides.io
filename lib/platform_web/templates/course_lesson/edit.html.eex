@@ -1,0 +1,7 @@
+<h1>Edit course lesson</h1>
+
+<%= render "_form.html", Map.put(assigns, :action, course_course_lesson_path(@conn, :update, @course, @course_lesson)) %>
+
+<%= if can?(@conn, :show, Course) do %>
+  <span><%= link "Back", to: course_path(@conn, :show, @course) %></span>
+<% end %>

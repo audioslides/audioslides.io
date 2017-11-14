@@ -8,6 +8,7 @@ defmodule Platform.Core do
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
   alias Platform.Core.Schema.Course
+  alias Platform.Core.Schema.CourseLesson
   alias Platform.Core.LessonSync
 
   ### ################################################################### ###
@@ -151,5 +152,35 @@ defmodule Platform.Core do
   """
   def change_course(%Course{} = course) do
     Course.changeset(course, %{})
+  end
+
+  ### ################################################################### ###
+  ### CourseLesson                                                        ###
+  ### ################################################################### ###
+  def get_course_lesson!(%Course{} = course, id) do
+    course
+    |> Ecto.assoc(:course_lessons)
+    |> Repo.get!(id)
+    |> Repo.preload(:lesson)
+  end
+
+  def create_course_lesson(%Course{} = course, attrs \\ %{}) do
+    %CourseLesson    {course: course}
+    |> CourseLesson    .changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_course_lesson(%Course{} = _course, %CourseLesson{} = course_lesson, attrs) do
+    course_lesson
+    |> CourseLesson    .changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_course_lesson(%Course{} = _course, %CourseLesson{} = course_lesson) do
+    Repo.delete(course_lesson)
+  end
+
+  def change_course_lesson(%Course{} = course, %CourseLesson{} = course_lesson) do
+    CourseLesson    .changeset(course_lesson, %{course: course})
   end
 end
