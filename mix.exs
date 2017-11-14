@@ -74,6 +74,7 @@ defmodule Platform.Mixfile do
       "ecto.setup": ["ecto.create", "ecto.migrate"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "phx.server": ["ecto.migrate", "phx.server"],
+      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
       "s": ["phx.server"],
       "t": ["test.watch"]
     ]
