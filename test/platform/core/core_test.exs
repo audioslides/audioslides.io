@@ -91,5 +91,13 @@ defmodule Platform.CoreTest do
     end
   end
 
+  describe "get_course_with_lessons!" do
+    test "should return the course by id" do
+      course_content = Factory.insert(:course_content)
+      course_from_db = Core.get_course_with_lessons!(course_content.course.id)
+      assert course_content.course.id == course_from_db.id
+    end
+  end
+
 end
 
