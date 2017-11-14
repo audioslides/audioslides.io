@@ -34,5 +34,18 @@ defmodule Platform.Speech.AWS.PollyTest do
         end
       end
     end
+
+    test "should raise error when service return a 404" do
+      use_cassette "polly#failing404" do
+        params = %{
+          "language_key" => "de-DE",
+          "voice_gender" => "male",
+          "text" => "TEST"
+        }
+        assert_raise RuntimeError, ~r/^404 - Not found$/, fn ->
+          get_speech(params)
+        end
+      end
+    end
   end
 end
