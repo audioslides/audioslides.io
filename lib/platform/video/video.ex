@@ -4,6 +4,7 @@ defmodule Platform.Video do
   """
   require Logger
 
+  alias Platform.Filename
   alias Platform.GoogleSlides
   alias Platform.Speech
   alias Platform.Converter
@@ -12,10 +13,8 @@ defmodule Platform.Video do
   alias Platform.Core.Schema.Slide
   alias Platform.Core.LessonSync
 
-  @content_dir Application.get_env(:platform, :content_dir)
-
   def convert_lesson_to_video(%Lesson{} = lesson) do
-    final_output_filename = "#{@content_dir}#{lesson.id}.mp4"
+    final_output_filename = Filename.get_filename_for_lesson_video(lesson)
 
     # start async creation of the videos
     video_generation_tasks = Enum.map(lesson.slides, fn(slide) -> Task.async(fn -> generate_video_for_slide(lesson, slide) end) end)
@@ -43,7 +42,7 @@ defmodule Platform.Video do
     image_filename = create_or_update_image_for_slide(lesson, slide, google_slide)
     audio_filename = create_or_update_audio_for_slide(lesson, slide, google_slide)
 
-    video_filename = "#{@content_dir}#{lesson.id}/#{slide.id}.mp4"
+    video_filename = Filename.get_filename_for_slide_video(lesson, slide)
 
     # Only generate video of audio or video changed
     if !File.exists?(video_filename) || any_content_changed?(slide, google_slide) do
@@ -61,11 +60,8 @@ defmodule Platform.Video do
     end
 
     # relative_output_filename
-    "#{lesson.id}/#{slide.id}.mp4"
-  end
-
-  def get_video_filename(%Lesson{} = lesson, %Slide{} = slide) do
-    "#{lesson.id}/#{slide.id}.mp4"
+    # "#{lesson.id}/#{slide.id}.mp4"
+    Filename.get_filename_for_slide_video(lesson, slide)
   end
 
   def any_content_changed?(slide, google_slide) do
@@ -73,7 +69,7 @@ defmodule Platform.Video do
   end
 
   def create_or_update_image_for_slide(lesson, slide, google_slide) do
-    image_filename = "#{@content_dir}#{lesson.id}/#{slide.id}.png"
+    image_filename = Filename.get_filename_for_slide_image(lesson, slide)
     if !File.exists?(image_filename) || content_changed_for_page_elements?(slide, google_slide) do
       Logger.info "Slide #{slide.id} Image: generated"
       GoogleSlides.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
@@ -84,15 +80,8 @@ defmodule Platform.Video do
     image_filename
   end
 
-  def get_audio_filename(lesson_id, slide_id) do
-    directory = "#{@content_dir}#{lesson_id}"
-    File.mkdir_p(directory)
-
-    "#{directory}/#{slide_id}.mp3"
-  end
-
   def create_or_update_audio_for_slide(lesson, slide, google_slide) do
-    audio_filename = get_audio_filename(lesson.id, slide.id)
+    audio_filename = Filename.get_filename_for_slide_audio(lesson, slide)
     if !File.exists?(audio_filename) || content_changed_for_speaker_notes?(slide, google_slide) do
       Logger.info "Slide #{slide.id} Audio: generated"
       notes = GoogleSlides.get_speaker_notes(google_slide)
@@ -124,6 +113,8 @@ defmodule Platform.Video do
   end
 
   defp write_to_file(filename, data) do
+    [_, directory, filename] = Regex.run(~r/^(.*\/)([^\/]*)$/, filename)
+    File.mkdir_p(directory)
     {:ok, file} = File.open filename, [:write]
     IO.binwrite(file, data)
   end

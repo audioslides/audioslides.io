@@ -1,7 +1,7 @@
 defmodule PlatformWeb.ViewHelper do
   @moduledoc false
 
-  @content_dir Application.get_env(:platform, :content_dir)
+  @example_image "/images/example-slide.png"
 
   @doc """
   iex> lang_icon("de-DE")
@@ -32,21 +32,17 @@ defmodule PlatformWeb.ViewHelper do
   def voice_gender_icon(_), do: "Not supported"
 
   def get_course_front_slide_image(%{slides: slides} = lesson) when length(slides) > 0 do
-    slide_id = List.first(lesson.slides).id
-
-    if File.exists?("#{@content_dir}#{lesson.id}/#{slide_id}.png") do
-      "/content/#{lesson.id}/#{slide_id}.png"
-    else
-      "/images/example-slide.png"
-    end
+    slide = List.first(lesson.slides)
+    get_slide_image(lesson, slide)
   end
-  def get_course_front_slide_image(_), do: "/images/example-slide.png"
+  def get_course_front_slide_image(_), do: @example_image
 
   def get_slide_image(lesson, slide) do
-    if File.exists?("#{@content_dir}#{lesson.id}/#{slide.id}.png") do
+    image = Filename.get_filename_for_slide_image(lesson, slide)
+    if File.exists?(image) do
       "/content/#{lesson.id}/#{slide.id}.png"
     else
-      "/images/example-slide.png"
+      @example_image
     end
   end
 

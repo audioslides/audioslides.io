@@ -3,6 +3,8 @@ defmodule Platform.Converter do
   Context for the ffmpeg converter
   """
 
+  alias Platform.Filename
+
   @behaviour Platform.ConverterBehavior
 
   @content_dir Application.get_env(:platform, :content_dir)
@@ -14,7 +16,7 @@ defmodule Platform.Converter do
   end
 
   def merge_videos([video_filename_list: video_filename_list, output_filename: output_filename]) do
-    concat_input_filename = "#{@content_dir}/temporary.txt"
+    concat_input_filename = Filename.get_filename_for_ffmpeg_concat()
     save_video_filenames(video_filename_list, concat_input_filename)
     opts = "-f concat -safe 0 -i #{concat_input_filename} -c copy -y #{output_filename}"
     System.cmd("ffmpeg", String.split(opts, " "))
