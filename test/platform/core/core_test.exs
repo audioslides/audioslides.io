@@ -62,4 +62,28 @@ defmodule Platform.CoreTest do
       assert %Ecto.Changeset{} = Core.change_lesson(lesson)
     end
   end
+
+  describe "course_contents" do
+
+        def course_content_fixture(attrs \\ %{}) do
+          Factory.insert(:course_content, attrs)
+        end
+
+        test "should be provide a lesson" do
+          lesson = Factory.insert(:lesson)
+          course = Factory.insert(:course)
+          course_content = course_content_fixture(lesson: lesson, course: course)
+
+          assert course_content.lesson == lesson
+        end
+
+        test "should be provide a course" do
+          lesson = Factory.insert(:lesson)
+          course = Factory.insert(:course)
+          course_content = course_content_fixture(lesson: lesson, course: course)
+
+          assert course_content.course == course
+        end
+
+      end
 end
