@@ -7,6 +7,8 @@ defmodule Platform.GoogleSlides do
   alias GoogleApi.Slides.V1.Api.Presentations
   alias GoogleApi.Slides.V1.Model.Page
 
+  alias Platform.Core.Schema.Slide
+
   def get_presentation!(presentation_id) when is_binary(presentation_id) do
     connection = get_google_slides_connection!()
 
@@ -139,6 +141,53 @@ defmodule Platform.GoogleSlides do
       ""
     end
   end
+
+  @doc """
+
+  iex> any_content_changed?(%{speaker_notes_hash: "0D7FDBE1B2533EC8A3E2911E625CDEFF803669076F992D88B3E3BA094F859B90", page_elements_hash: "0C8D2536C31320F54769B3D9AF7429E5E8157B79D6C4C1EEB193812D981643FD"}, %Page{slideProperties: %{notesPage: %{"text": "ABC123"}}, pageElements: [%PageElement{description: "B"}]})
+  false
+
+  iex> any_content_changed?(%{speaker_notes_hash: "0D7FDBE1B2533EC8A3E2911E625CDEFF803669076F992D88B3E3BA094F859B90", page_elements_hash: "0C8D2536C31320F54769B3D9AF7429E5E8157B79D6C4C1EEB193812D981643FD"}, %Page{slideProperties: %{notesPage: %{"text": "ABC1234"}}, pageElements: [%PageElement{description: "B"}]})
+  true
+
+  iex> any_content_changed?(%{speaker_notes_hash: "0D7FDBE1B2533EC8A3E2911E625CDEFF803669076F992D88B3E3BA094F859B90", page_elements_hash: "0C8D2536C31320F54769B3D9AF7429E5E8157B79D6C4C1EEB193812D981643FD"}, %Page{slideProperties: %{notesPage: %{"text": "ABC123"}}, pageElements: [%PageElement{description: "C"}]})
+  true
+
+  """
+  def any_content_changed?(slide, google_slide) do
+    content_changed_for_speaker_notes?(slide, google_slide) || content_changed_for_page_elements?(slide, google_slide)
+  end
+
+  @doc """
+
+  iex> content_changed_for_speaker_notes?(%{speaker_notes_hash: "0D7FDBE1B2533EC8A3E2911E625CDEFF803669076F992D88B3E3BA094F859B90"}, %Page{slideProperties: %{notesPage: %{"text": "ABC123"}}})
+  false
+
+  iex> content_changed_for_speaker_notes?(%{speaker_notes_hash: "0D7FDBE1B2533EC8A3E2911E625CDEFF803669076F992D88B3E3BA094F859B90"}, %Page{slideProperties: %{notesPage: %{"text": "ABC123!!"}}})
+  true
+
+  """
+  def content_changed_for_speaker_notes?(%{speaker_notes_hash: old_hash}, %Page{} = google_slide) do
+    new_hash = generate_hash_for_speakernotes(google_slide)
+
+    new_hash != old_hash
+  end
+
+  @doc """
+
+  iex> content_changed_for_page_elements?(%{page_elements_hash: "0C8D2536C31320F54769B3D9AF7429E5E8157B79D6C4C1EEB193812D981643FD"}, %Page{pageElements: [%PageElement{description: "B"}] })
+  false
+
+  iex> content_changed_for_page_elements?(%{page_elements_hash: "0C8D2536C31320F54769B3D9AF7429E5E8157B79D6C4C1EEB193812D981643FD"}, %Page{pageElements: [%PageElement{description: "C"}] })
+  true
+
+  """
+  def content_changed_for_page_elements?(%{page_elements_hash: old_hash}, %Page{} = google_slide) do
+    new_hash = generate_hash_for_page_elements(google_slide)
+
+    new_hash != old_hash
+  end
+
 
   def get_title(%Page{pageElements: nil}), do: "NO TITLE"
   def get_title(%Page{pageElements: pageElements}) do

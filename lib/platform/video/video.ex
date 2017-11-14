@@ -45,7 +45,7 @@ defmodule Platform.Video do
     video_filename = Filename.get_filename_for_slide_video(lesson, slide)
 
     # Only generate video of audio or video changed
-    if !File.exists?(video_filename) || any_content_changed?(slide, google_slide) do
+    if !File.exists?(video_filename) || GoogleSlides.any_content_changed?(slide, google_slide) do
       Logger.info "Slide #{slide.id} Hash: updated"
       LessonSync.update_hash_for_slide(slide, google_slide)
 
@@ -64,13 +64,9 @@ defmodule Platform.Video do
     Filename.get_filename_for_slide_video(lesson, slide)
   end
 
-  def any_content_changed?(slide, google_slide) do
-    content_changed_for_speaker_notes?(slide, google_slide) || content_changed_for_page_elements?(slide, google_slide)
-  end
-
   def create_or_update_image_for_slide(lesson, slide, google_slide) do
     image_filename = Filename.get_filename_for_slide_image(lesson, slide)
-    if !File.exists?(image_filename) || content_changed_for_page_elements?(slide, google_slide) do
+    if !File.exists?(image_filename) || GoogleSlides.content_changed_for_page_elements?(slide, google_slide) do
       Logger.info "Slide #{slide.id} Image: generated"
       GoogleSlides.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
     else
@@ -82,7 +78,7 @@ defmodule Platform.Video do
 
   def create_or_update_audio_for_slide(lesson, slide, google_slide) do
     audio_filename = Filename.get_filename_for_slide_audio(lesson, slide)
-    if !File.exists?(audio_filename) || content_changed_for_speaker_notes?(slide, google_slide) do
+    if !File.exists?(audio_filename) || GoogleSlides.content_changed_for_speaker_notes?(slide, google_slide) do
       Logger.info "Slide #{slide.id} Audio: generated"
       notes = GoogleSlides.get_speaker_notes(google_slide)
 
@@ -98,18 +94,6 @@ defmodule Platform.Video do
     end
 
     audio_filename
-  end
-
-  def content_changed_for_speaker_notes?(%{speaker_notes_hash: old_hash}, google_slide) do
-    new_hash = GoogleSlides.generate_hash_for_speakernotes(google_slide)
-
-    new_hash != old_hash
-  end
-
-  def content_changed_for_page_elements?(%{page_elements_hash: old_hash}, google_slide) do
-    new_hash = GoogleSlides.generate_hash_for_page_elements(google_slide)
-
-    new_hash != old_hash
   end
 
   defp write_to_file(filename, data) do
