@@ -3,7 +3,6 @@ defmodule PlatformWeb.CourseController do
 
   alias Platform.Core
   alias Platform.Core.Schema.Course
-  alias Platform.Core.Schema.Lesson
 
   def index(conn, _params) do
     courses = Core.list_courses()
