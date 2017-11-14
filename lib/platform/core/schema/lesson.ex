@@ -7,7 +7,7 @@ defmodule Platform.Core.Schema.Lesson do
 
   alias Platform.Accounts.Schema.User
   alias Platform.Core.Schema.Slide
-  alias Platform.Core.Schema.CourseContent
+  alias Platform.Core.Schema.CourseLesson
 
   schema "lessons" do
     field :google_presentation_id, :string
@@ -17,7 +17,7 @@ defmodule Platform.Core.Schema.Lesson do
     field :synced_at, :utc_datetime
     timestamps()
 
-    has_many :course_contents, CourseContent
+    has_many :course_lessons, CourseLesson
     has_many :slides,  Slide, on_delete: :delete_all
     belongs_to :user, User
   end

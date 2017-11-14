@@ -1,7 +1,6 @@
 defmodule Platform.CoreTest do
   use Platform.DataCase
 
-  alias Platform.Core.Schema.Lesson
   alias Platform.Core
 
   doctest Platform.Core
@@ -9,8 +8,8 @@ defmodule Platform.CoreTest do
   describe "lessons" do
 
     #@valid_attrs %{google_presentation_id: "some google_presentation_id", name: "some name", voice_gender: "female", voice_language: "en-US"}
-    @update_attrs %{name: "some updated name"}
-    @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
+    # @update_attrs %{name: "some updated name"}
+    # @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
 
     def lesson_fixture(_attrs \\ %{}) do
       Factory.insert(:lesson)
@@ -63,39 +62,39 @@ defmodule Platform.CoreTest do
     # end
   end
 
-  describe "course_contents" do
+  describe "course_lessons" do
 
     test "should be provide a lesson" do
       lesson = Factory.insert(:lesson)
       course = Factory.insert(:course)
-      course_content = Factory.insert(:course_content, lesson: lesson, course: course)
+      course_lesson = Factory.insert(:course_lesson, lesson: lesson, course: course)
 
-      assert course_content.lesson == lesson
+      assert course_lesson.lesson == lesson
     end
 
     test "should be provide a course" do
       lesson = Factory.insert(:lesson)
       course = Factory.insert(:course)
-      course_content = Factory.insert(:course_content, lesson: lesson, course: course)
+      course_lesson = Factory.insert(:course_lesson, lesson: lesson, course: course)
 
-      assert course_content.course == course
+      assert course_lesson.course == course
     end
 
   end
 
   describe "get_course!" do
     test "should return the course by id" do
-      course_content = Factory.insert(:course_content)
-      course_from_db = Core.get_course!(course_content.course.id)
-      assert course_content.course.id == course_from_db.id
+      course_lesson = Factory.insert(:course_lesson)
+      course_from_db = Core.get_course!(course_lesson.course.id)
+      assert course_lesson.course.id == course_from_db.id
     end
   end
 
   describe "get_course_with_lessons!" do
     test "should return the course by id" do
-      course_content = Factory.insert(:course_content)
-      course_from_db = Core.get_course_with_lessons!(course_content.course.id)
-      assert course_content.course.id == course_from_db.id
+      course_lesson = Factory.insert(:course_lesson)
+      course_from_db = Core.get_course_with_lessons!(course_lesson.course.id)
+      assert course_lesson.course.id == course_from_db.id
     end
   end
 

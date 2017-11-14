@@ -114,7 +114,7 @@ defmodule Platform.Core do
   def get_course_with_lessons!(id) do
     Course
     |> Repo.get!(id)
-    |> Repo.preload([course_contents: :lesson])
+    |> Repo.preload([course_lessons: :lesson])
   end
 
   @doc """

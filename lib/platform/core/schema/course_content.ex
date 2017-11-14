@@ -1,4 +1,4 @@
-defmodule Platform.Core.Schema.CourseContent do
+defmodule Platform.Core.Schema.CourseLesson do
   import Ecto.Changeset
 
   use Ecto.Schema

@@ -2,14 +2,13 @@ defmodule Platform.Core.Schema.Course do
   import Ecto.Changeset
   use Ecto.Schema
 
-  alias Platform.Core.Schema.CourseContent
+  alias Platform.Core.Schema.CourseLesson
 
   schema "courses" do
     field :name, :string
     timestamps()
 
-    has_many :course_contents, CourseContent
-    # has_many :lessons, through: [:course_contents, :lesson]
+    has_many :course_lessons, CourseLesson
   end
 
   @doc false
