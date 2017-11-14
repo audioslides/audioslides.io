@@ -21,11 +21,13 @@ defmodule Platform.Core do
   end
 
   def get_lesson!(id) do
-    Repo.get!(Lesson, id)
+    Lesson
+    |> Repo.get!(id)
   end
 
   def get_lesson_by_google_presentation_id!(id) do
-    Repo.get_by!(Lesson, google_presentation_id: id)
+    Lesson
+    |> Repo.get_by!(google_presentation_id: id)
   end
 
   def get_lesson_with_slides!(id) do
