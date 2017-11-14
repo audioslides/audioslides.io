@@ -3,10 +3,10 @@ defmodule PlatformWeb.DebugHelper do
   use Phoenix.HTML
 
   @doc """
-  iex> DebugHelper.debug(%{test: "yes"}) |> safe_to_string()
+  iex> debug(%{test: "yes"}) |> safe_to_string()
   ~s(<pre><code>%{test: &quot;yes&quot;}</code></pre>)
 
-  iex> DebugHelper.debug(nil) |> safe_to_string()
+  iex> debug(nil) |> safe_to_string()
   ~s(<pre><code>nil</code></pre>)
   """
   def debug(input, opts \\ []) do

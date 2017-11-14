@@ -1,6 +1,6 @@
 defmodule PlatformWeb.DebugHelperTest do
-  alias PlatformWeb.DebugHelper
   use ExUnit.Case
+  import PlatformWeb.DebugHelper
   import Phoenix.HTML
 
   doctest PlatformWeb.DebugHelper

@@ -18,7 +18,7 @@
   <a class="col-4 p-3" href="<%= lesson_path(@conn, :show, course_lesson.lesson) %>">
     <div class="card">
       <div class="card-image">
-          <%= img_tag(get_frontimage(course_lesson.lesson), class: "card-img-top img-fluid", alt: "Card image #{course_lesson.lesson.name}") %>
+          <%= img_tag(get_course_front_slide_image(course_lesson.lesson), class: "card-img-top img-fluid", alt: "Card image #{course_lesson.lesson.name}") %>
       </div>
       <div class="card-body w-100 h-100">
         <div class="d-flex align-content-center w-100 h-100">
