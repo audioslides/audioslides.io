@@ -5,12 +5,19 @@ defmodule Platform.VideoConverter.FFMpegAdapterTest do
 
   import Platform.Speech.Mock.System
 
-  doctest Platform.VideoConverter.FFMpegAdapter
+  @moduletag integration: true
 
   test "generate_video" do
     with_mock System, [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)] do
       result = generate_video(image_filename: "1.png", audio_filename: "1.mp3", output_filename: "out.mp4")
       assert elem(result,0) =~ "Output #0, mp4, to 'out.mp4"
+    end
+  end
+
+  test "merge_videos" do
+    with_mock System, [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)] do
+      result = merge_videos(video_filename_list: ["1.mp4", "2.mp4"], output_filename: "out.mp4")
+      assert elem(result,0) =~ "merged"
     end
   end
 

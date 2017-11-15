@@ -28,8 +28,11 @@ At least one output file must be specified
 
   """, 1}
   end
-  def cmd(_command, _args, _opts), do: ""
+  def cmd(command, _args, _opts), do: "Mock for command '#{command}' not implemented"
 
+  def cmd("ffmpeg", ["-f", "concat", "-safe", "0", "-i", _concat_input_filename, "-c", "copy", "-y", _output_filename]) do
+    {"merged", 1}
+  end
   def cmd("ffmpeg", ["-loop", "1", "-t", "00:09.59", "-i", _image_filename, "-i", _audio_filename, "-c:v", "libx264", "-tune", "stillimage", "-c:a", "aac", "-b:a", "192k", "-pix_fmt", "yuv420p", "-shortest", "-y", output_filename]) do
     {"""
     ffmpeg version 3.0.2 Copyright (c) 2000-2016 the FFmpeg developers
