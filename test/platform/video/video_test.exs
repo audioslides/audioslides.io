@@ -1,6 +1,6 @@
 defmodule Platform.VideoTest do
   use ExUnit.Case
-  import Platform.Video
+  #import Platform.Video
 
   doctest Platform.Video
 end

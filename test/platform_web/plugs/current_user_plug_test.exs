@@ -11,7 +11,7 @@ defmodule PlatformWeb.CurrentUserPlugTest do
   end
 
   describe "#call" do
-    test "assigns user and token", %{conn: conn} do
+    test "assigns user and token", %{conn: _conn} do
       # user = Factory.build(:user)
       # conn = %{conn | assigns: %{current_user: user}}
 
