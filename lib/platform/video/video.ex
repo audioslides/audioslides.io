@@ -40,7 +40,7 @@ defmodule Platform.Video do
 
     google_slide = GoogleSlides.get_slide!(lesson.google_presentation_id, slide.google_object_id)
 
-    image_filename = create_or_update_image_for_slide(lesson, slide, google_slide)
+    image_filename = create_or_update_image_for_slide(lesson, slide)
     audio_filename = create_or_update_audio_for_slide(lesson, slide)
 
     video_filename = Filename.get_filename_for_slide_video(lesson, slide)
@@ -65,11 +65,14 @@ defmodule Platform.Video do
     Filename.get_filename_for_slide_video(lesson, slide)
   end
 
-  def create_or_update_image_for_slide(lesson, slide, google_slide) do
+  def create_or_update_image_for_slide(lesson, slide) do
     image_filename = Filename.get_filename_for_slide_image(lesson, slide)
-    if !File.exists?(image_filename) || GoogleSlides.content_changed_for_page_elements?(slide, google_slide) do
-      Logger.info "Slide #{slide.id} Image: generated"
+    if slide.page_elements_hash != slide.image_hash do
+
       GoogleSlides.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
+      Core.update_slide_image_hash(slide, slide.page_elements_hash)
+
+      Logger.info "Slide #{slide.id} Image: generated"
     else
       Logger.info "Slide #{slide.id} Image: skipped"
     end

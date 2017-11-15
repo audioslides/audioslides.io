@@ -94,6 +94,12 @@ defmodule Platform.Core do
     |> Repo.update()
   end
 
+  def update_slide_image_hash(%Slide{} = slide, hash) do
+    slide
+    |> Slide.changeset(%{image_hash: hash})
+    |> Repo.update()
+  end
+
   ### ################################################################### ###
   ### Courses                                                             ###
   ### ################################################################### ###
