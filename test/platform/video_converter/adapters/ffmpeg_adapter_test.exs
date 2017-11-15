@@ -1,12 +1,11 @@
-defmodule Platform.ConverterTest do
+defmodule Platform.VideoConverter.FFMpegAdapterTest do
   use ExUnit.Case
-  import Platform.Converter
+  import Platform.VideoConverter.FFMpegAdapter
   import Mock
 
   import Platform.Speech.Mock.System
 
-
-  doctest Platform.Converter
+  doctest Platform.VideoConverter.FFMpegAdapter
 
   test "generate_video" do
     with_mock System, [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)] do

@@ -1,11 +1,11 @@
-defmodule Platform.Converter do
+defmodule Platform.VideoConverter.FFMpegAdapter do
   @moduledoc """
   Context for the ffmpeg converter
   """
 
   alias Platform.Filename
 
-  @behaviour Platform.ConverterBehavior
+  @behaviour Platform.VideoConverter
 
   def generate_video(image_filename: image_filename, audio_filename: audio_filename, output_filename: output_filename) do
     duration = get_audio_duration(audio_filename)

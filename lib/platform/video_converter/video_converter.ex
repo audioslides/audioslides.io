@@ -1,4 +1,4 @@
-defmodule Platform.ConverterBehavior do
+defmodule Platform.VideoConverter do
   @moduledoc """
   Behavior for a video converter
   """

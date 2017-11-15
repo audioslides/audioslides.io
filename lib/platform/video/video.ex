@@ -7,7 +7,7 @@ defmodule Platform.Video do
   alias Platform.Filename
   alias Platform.GoogleSlides
   alias Platform.Speech
-  alias Platform.Converter
+  alias Platform.VideoConverter
 
   alias Platform.Core
   alias Platform.Core.Schema.Lesson
@@ -33,7 +33,7 @@ defmodule Platform.Video do
       end
     end)
 
-    Converter.merge_videos(video_filename_list: generated_video_filenames, output_filename: final_output_filename)
+    VideoConverter.merge_videos(video_filename_list: generated_video_filenames, output_filename: final_output_filename)
   end
 
   def generate_video_for_slide(%Lesson{} = lesson, %Slide{} = slide) do
@@ -46,7 +46,7 @@ defmodule Platform.Video do
     if generate_video_hash(slide) != slide.video_hash do
       Logger.info "Slide #{slide.id} Video: generated"
 
-      Converter.generate_video(
+      VideoConverter.generate_video(
         image_filename: image_filename,
         audio_filename: audio_filename,
         output_filename: video_filename
