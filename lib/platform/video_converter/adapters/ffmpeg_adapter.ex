@@ -5,7 +5,7 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
 
   alias Platform.Filename
 
-  @behaviour Platform.VideoConverter.Adapter
+  @behaviour Platform.VideoConverter
 
   def generate_video(image_filename: image_filename, audio_filename: audio_filename, output_filename: output_filename) do
     duration = get_audio_duration(audio_filename)

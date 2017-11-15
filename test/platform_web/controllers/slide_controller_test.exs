@@ -1,9 +1,6 @@
 defmodule PlatformWeb.SlideControllerTest do
   use PlatformWeb.ConnCase
 
-  import Platform.Speech.Mock.System
-  import Mock
-
   setup :create_lesson
 
   describe "#show" do
