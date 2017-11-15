@@ -1,8 +1,6 @@
 defmodule PlatformWeb.ViewHelper do
   @moduledoc false
 
-  alias Platform.Filename
-
   @example_image "/images/example-slide.png"
 
   @doc """
@@ -40,12 +38,10 @@ defmodule PlatformWeb.ViewHelper do
   def get_course_front_slide_image(_), do: @example_image
 
   def get_slide_image(lesson, slide) do
-    image = Filename.get_filename_for_slide_image(lesson, slide)
-    if File.exists?(image) do
+    if slide.image_hash do
       "/content/#{lesson.id}/#{slide.id}.png"
     else
       @example_image
     end
   end
-
 end
