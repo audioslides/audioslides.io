@@ -5,7 +5,7 @@ defmodule Platform.VideoConverter.TestAdapter do
 
   @behaviour Platform.VideoConverter
 
-  def generate_video([image_filename: image_filename, audio_filename: audio_filename, output_filename: output_filename] = opts) do
+  def generate_video([image_filename: _image_filename, audio_filename: _audio_filename, output_filename: _output_filename] = opts) do
     Agent.update(__MODULE__, fn {generate_video_list, merge_videos_list} -> {[opts | generate_video_list], merge_videos_list} end)
   end
 
