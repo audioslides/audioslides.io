@@ -87,7 +87,9 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   defp create_lesson(_) do
-    lesson = Factory.insert(:lesson)
+    slide_1 = Factory.insert(:slide)
+    slide_2 = Factory.insert(:slide)
+    lesson = Factory.insert(:lesson, slides: [slide_1, slide_2])
     {:ok, lesson: lesson}
   end
 end
