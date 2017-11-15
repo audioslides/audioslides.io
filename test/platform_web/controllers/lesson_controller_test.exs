@@ -74,6 +74,18 @@ defmodule PlatformWeb.LessonControllerTest do
     end
   end
 
+  describe "#generate_video" do
+    setup :create_lesson
+
+    alias Platform.VideoConverter.TestAdapter
+
+    test "renders form for editing chosen lesson", %{conn: conn, lesson: lesson} do
+      conn = post conn, lesson_path(conn, :generate_video, lesson)
+      assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+      assert length(TestAdapter.merge_videos_list) == 1
+    end
+  end
+
   defp create_lesson(_) do
     lesson = Factory.insert(:lesson)
     {:ok, lesson: lesson}
