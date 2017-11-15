@@ -123,6 +123,24 @@ defmodule Platform.CoreTest do
           slide = Factory.insert(:slide)
           assert %Ecto.Changeset{} = Core.change_slide(lesson, slide)
         end
+
+        test "update_slide_audio_hash/2 with valid data updates the slide" do
+          slide = Factory.insert(:slide)
+          assert {:ok, slide} = Core.update_slide_audio_hash(slide, "NEW_HASH")
+          assert slide.audio_hash == "NEW_HASH"
+        end
+
+        test "update_slide_image_hash/2 with valid data updates the slide" do
+          slide = Factory.insert(:slide)
+          assert {:ok, slide} = Core.update_slide_image_hash(slide, "NEW_HASH")
+          assert slide.image_hash == "NEW_HASH"
+        end
+
+        test "update_slide_video_hash/2 with valid data updates the slide" do
+          slide = Factory.insert(:slide)
+          assert {:ok, slide} = Core.update_slide_video_hash(slide, "NEW_HASH")
+          assert slide.video_hash == "NEW_HASH"
+        end
       end
 
   describe "course_lessons" do
