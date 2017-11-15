@@ -11,16 +11,22 @@ defmodule Platform.Core.Schema.Slide do
     field :google_object_id, :string
     field :speaker_notes_hash, :string
     field :page_elements_hash, :string
-    field :thumb_image_url, :string
     field :position, :integer
     field :synced_at, :utc_datetime
+    field :speaker_notes, :string
+    field :audio_hash, :string
+    field :audio_sync_pid, :string
+    field :image_hash, :string
+    field :image_sync_pid, :string
+    field :video_hash, :string
+    field :video_sync_pid, :string
     timestamps()
 
     belongs_to :lesson, Platform.Core.Schema.Lesson
   end
 
   @doc false
-  @fields [:google_object_id, :name, :position, :speaker_notes_hash, :page_elements_hash, :thumb_image_url, :synced_at]
+  @fields ~w(google_object_id name position speaker_notes_hash page_elements_hash synced_at speaker_notes audio_hash audio_sync_pid image_hash image_sync_pid video_hash video_sync_pid)a
   def changeset(%__MODULE__{} = struct, attrs) do
     struct
     |> cast(attrs, @fields)
