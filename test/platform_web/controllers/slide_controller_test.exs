@@ -18,12 +18,12 @@ defmodule PlatformWeb.SlideControllerTest do
   describe "#generate_video" do
     setup :create_slide
 
-    test "renders form for editing chosen slide", %{conn: conn, lesson: lesson, slide: slide} do
-      with_mock System, [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)] do
-        conn = post conn, lesson_slide_path(conn, :generate_video, lesson, slide)
-        assert html_response(conn, 200) =~ slide.name
-      end
-    end
+    # test "renders form for editing chosen slide", %{conn: conn, lesson: lesson, slide: slide} do
+    #   with_mock System, [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)] do
+    #     conn = post conn, lesson_slide_path(conn, :generate_video, lesson, slide)
+    #     assert html_response(conn, 200) =~ slide.name
+    #   end
+    # end
   end
 
   # Private functions
