@@ -9,6 +9,7 @@ defmodule Platform.Video do
   alias Platform.Speech
   alias Platform.Converter
 
+  alias Platform.Core
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
   alias Platform.Core.LessonSync
@@ -40,7 +41,7 @@ defmodule Platform.Video do
     google_slide = GoogleSlides.get_slide!(lesson.google_presentation_id, slide.google_object_id)
 
     image_filename = create_or_update_image_for_slide(lesson, slide, google_slide)
-    audio_filename = create_or_update_audio_for_slide(lesson, slide, google_slide)
+    audio_filename = create_or_update_audio_for_slide(lesson, slide)
 
     video_filename = Filename.get_filename_for_slide_video(lesson, slide)
 
@@ -76,19 +77,19 @@ defmodule Platform.Video do
     image_filename
   end
 
-  def create_or_update_audio_for_slide(lesson, slide, google_slide) do
+  def create_or_update_audio_for_slide(lesson, slide) do
     audio_filename = Filename.get_filename_for_slide_audio(lesson, slide)
-    if !File.exists?(audio_filename) || GoogleSlides.content_changed_for_speaker_notes?(slide, google_slide) do
+    if slide.speaker_notes_hash != slide.audio_hash do
       Logger.info "Slide #{slide.id} Audio: generated"
-      notes = GoogleSlides.get_speaker_notes(google_slide)
 
       speech_binary = Speech.speak()
       |> Speech.language(lesson.voice_language)
       |> Speech.voice_gender(lesson.voice_gender)
-      |> Speech.text(notes)
+      |> Speech.text(slide.speaker_notes)
       |> Speech.run()
 
       write_to_file(audio_filename, speech_binary)
+      Core.update_slide_audio_hash(slide, slide.speaker_notes_hash)
     else
       Logger.info "Slide #{slide.id} Audio: skipped"
     end
