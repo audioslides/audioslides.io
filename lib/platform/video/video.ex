@@ -13,7 +13,6 @@ defmodule Platform.Video do
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
 
-
   def convert_lesson_to_video(%Lesson{} = lesson) do
     final_output_filename = Filename.get_filename_for_lesson_video(lesson)
 
