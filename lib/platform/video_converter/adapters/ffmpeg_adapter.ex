@@ -5,7 +5,7 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
 
   alias Platform.Filename
 
-  @behaviour Platform.VideoConverter
+  @behaviour Platform.VideoConverter.Adapter
 
   def generate_video(image_filename: image_filename, audio_filename: audio_filename, output_filename: output_filename) do
     duration = get_audio_duration(audio_filename)
@@ -13,7 +13,7 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
     System.cmd("ffmpeg", String.split(opts, " "))
   end
 
-  def merge_videos([video_filename_list: video_filename_list, output_filename: output_filename]) do
+  def merge_videos(video_filename_list: video_filename_list, output_filename: output_filename) do
     concat_input_filename = Filename.get_filename_for_ffmpeg_concat()
     save_video_filenames(video_filename_list, concat_input_filename)
     opts = "-f concat -safe 0 -i #{concat_input_filename} -c copy -y #{output_filename}"

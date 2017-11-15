@@ -25,6 +25,9 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :platform, Platform.VideoConverter,
+  adapter: Platform.VideoConverter.FFMpegAdapter
+
 config :goth, json: System.get_env("AS_GOOGLE_GCP_CREDENTIALS")
 
 config :platform, :aws,
