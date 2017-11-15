@@ -88,6 +88,12 @@ defmodule Platform.Core do
     LessonSync.sync_slides(lesson)
   end
 
+  def update_slide_audio_hash(%Slide{} = slide, hash) do
+    slide
+    |> Slide.changeset(%{audio_hash: hash})
+    |> Repo.update()
+  end
+
   ### ################################################################### ###
   ### Courses                                                             ###
   ### ################################################################### ###
