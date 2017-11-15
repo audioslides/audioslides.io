@@ -7,8 +7,6 @@ defmodule Platform.GoogleSlides do
   alias GoogleApi.Slides.V1.Api.Presentations
   alias GoogleApi.Slides.V1.Model.Page
 
-  alias Platform.Core.Schema.Slide
-
   def get_presentation!(presentation_id) when is_binary(presentation_id) do
     connection = get_google_slides_connection!()
 
