@@ -12,7 +12,7 @@ defmodule Platform.Video do
   alias Platform.Core
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
-  alias Platform.Core.LessonSync
+
 
   def convert_lesson_to_video(%Lesson{} = lesson) do
     final_output_filename = Filename.get_filename_for_lesson_video(lesson)
@@ -37,25 +37,22 @@ defmodule Platform.Video do
   end
 
   def generate_video_for_slide(%Lesson{} = lesson, %Slide{} = slide) do
-
-    google_slide = GoogleSlides.get_slide!(lesson.google_presentation_id, slide.google_object_id)
-
     image_filename = create_or_update_image_for_slide(lesson, slide)
     audio_filename = create_or_update_audio_for_slide(lesson, slide)
 
     video_filename = Filename.get_filename_for_slide_video(lesson, slide)
 
     # Only generate video of audio or video changed
-    if !File.exists?(video_filename) || GoogleSlides.any_content_changed?(slide, google_slide) do
-      Logger.info "Slide #{slide.id} Hash: updated"
-      LessonSync.update_hash_for_slide(slide, google_slide)
-
+    if generate_video_hash(slide) != slide.video_hash do
       Logger.info "Slide #{slide.id} Video: generated"
+
       Converter.generate_video(
         image_filename: image_filename,
         audio_filename: audio_filename,
         output_filename: video_filename
       )
+
+      Core.update_slide_video_hash(slide, generate_video_hash(slide))
     else
       Logger.info "Slide #{slide.id} Video: skipped"
     end
@@ -64,6 +61,15 @@ defmodule Platform.Video do
     # "#{lesson.id}/#{slide.id}.mp4"
     Filename.get_filename_for_slide_video(lesson, slide)
   end
+
+  def sha256(data), do: :crypto.hash(:sha256, data)
+
+  def generate_video_hash(%Slide{audio_hash: audio_hash, image_hash: image_hash}) when is_binary(audio_hash) and is_binary(image_hash) do
+    "#{audio_hash}#{image_hash}"
+    |> sha256()
+    |> Base.encode16()
+  end
+  def generate_video_hash(_), do: nil
 
   def create_or_update_image_for_slide(lesson, slide) do
     image_filename = Filename.get_filename_for_slide_image(lesson, slide)
