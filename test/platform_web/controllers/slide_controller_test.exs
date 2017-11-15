@@ -20,7 +20,7 @@ defmodule PlatformWeb.SlideControllerTest do
     test "renders form for editing chosen slide", %{conn: conn, lesson: lesson, slide: slide} do
       conn = post conn, lesson_slide_path(conn, :generate_video, lesson, slide)
       assert redirected_to(conn) == lesson_slide_path(conn, :show, lesson, slide)
-      assert length(TestAdapter.generate_video_list) == 2
+      assert length(TestAdapter.generate_video_list) == 1
     end
   end
 
