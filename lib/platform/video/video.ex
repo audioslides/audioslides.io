@@ -61,8 +61,28 @@ defmodule Platform.Video do
     Filename.get_filename_for_slide_video(lesson, slide)
   end
 
+  @doc """
+  iex> sha256("TEST")
+  <<148, 238, 5, 147, 53, 229, 135, 229, 1, 204, 75, 249, 6, 19, 224, 129, 79, 0, 167, 176, 139, 199, 198, 72, 253, 134, 90, 42, 246, 162, 44, 194>>
+
+  iex> sha256("")
+  <<227, 176, 196, 66, 152, 252, 28, 20, 154, 251, 244, 200, 153, 111, 185, 36, 39, 174, 65, 228, 100, 155, 147, 76, 164, 149, 153, 27, 120, 82, 184, 85>>
+
+  """
   def sha256(data), do: :crypto.hash(:sha256, data)
 
+  @doc """
+
+  iex> generate_video_hash(nil)
+  nil
+
+  iex> generate_video_hash(%Slide{audio_hash: "A", image_hash: "B"})
+  "38164FBD17603D73F696B8B4D72664D735BB6A7C88577687FD2AE33FD6964153"
+
+  iex> generate_video_hash(%Slide{audio_hash: "A", image_hash: "A"})
+  "58BB119C35513A451D24DC20EF0E9031EC85B35BFC919D263E7E5D9868909CB5"
+
+  """
   def generate_video_hash(%Slide{audio_hash: audio_hash, image_hash: image_hash}) when is_binary(audio_hash) and is_binary(image_hash) do
     "#{audio_hash}#{image_hash}"
     |> sha256()
