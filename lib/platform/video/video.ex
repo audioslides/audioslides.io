@@ -5,6 +5,7 @@ defmodule Platform.Video do
   require Logger
 
   alias Platform.Filename
+  alias Platform.FileHelper
   alias Platform.GoogleSlides
   alias Platform.Speech
   alias Platform.VideoConverter
@@ -116,20 +117,12 @@ defmodule Platform.Video do
         "text" => slide.speaker_notes
       })
 
-      write_to_file(audio_filename, speech_binary)
+      FileHelper.write_to_file(audio_filename, speech_binary)
       Core.update_slide_audio_hash(slide, slide.speaker_notes_hash)
     else
       Logger.info "Slide #{slide.id} Audio: skipped"
     end
 
     audio_filename
-  end
-
-  defp write_to_file(filename, data) do
-    [_, directory, filename] = Regex.run(~r/^(.*\/)([^\/]*)$/, filename)
-    File.mkdir_p(directory)
-    {:ok, file} = File.open filename, [:write]
-    IO.binwrite(file, data)
-    File.close(file)
   end
 end
