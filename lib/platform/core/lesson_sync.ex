@@ -48,19 +48,6 @@ defmodule Platform.Core.LessonSync do
     end
   end
 
-  def update_hash_for_slide(%Slide{} = slide, google_slide) do
-    changes = %{
-      speaker_notes: GoogleSlides.get_speaker_notes(google_slide),
-      speaker_notes_hash: GoogleSlides.generate_hash_for_speakernotes(google_slide),
-      page_elements_hash: GoogleSlides.generate_hash_for_page_elements(google_slide),
-      synced_at: DateTime.utc_now
-    }
-
-    slide
-    |> Slide.changeset(changes)
-    |> Repo.update!
-  end
-
   def delete_removed_slides(%Lesson{} = lesson, google_slides) when is_list(google_slides) do
     slide_ids = Enum.map(google_slides, fn(google_slide) -> google_slide.objectId end)
 
