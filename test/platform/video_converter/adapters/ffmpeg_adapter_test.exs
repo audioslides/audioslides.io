@@ -7,28 +7,33 @@ defmodule Platform.VideoConverter.FFMpegAdapterTest do
   import Platform.VideoConverter.FFMpegAdapter
   import Mock
 
-  import Platform.Speech.Mock.System
-
   doctest Platform.VideoConverter.FFMpegAdapter
 
   test "generate_video" do
-    with_mocks [{System, [], [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)]}] do
-      result = generate_video(image_filename: "1.png", audio_filename: "1.mp3", output_filename: "out.mp4")
-      assert elem(result,0) =~ "Output #0, mp4, to 'out.mp4"
+    with_mocks [{System, [], [
+      cmd: fn _, _, stderr_to_stdout: true -> {"Duration: 00:00:09.59, start: 0.000000, bitrate: 48 kb/s", 1} end,
+      cmd: fn _, _ -> {"FFMPEG OUTPUT", 1} end,
+    ]}
+      ] do
+      generate_video(image_filename: "1.png", audio_filename: "1.mp3", output_filename: "out.mp4")
+      assert called System.cmd("ffmpeg", ["-loop", "1", "-t", "00:09.59", "-i", "1.png", "-i", "1.mp3", "-c:v", "libx264", "-tune", "stillimage", "-c:a", "aac", "-b:a", "192k", "-pix_fmt", "yuv420p", "-shortest", "-y", "out.mp4"])
     end
   end
 
   test "merge_videos" do
     with_mocks [
-      {System, [], [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)]},
+      {System, [], [
+        cmd: fn _, _, _ -> :ok end,
+        cmd: fn _, _ -> :ok end,
+        ]},
       {File, [], [
         rm: fn _ -> true end,
         close: fn _ -> true end,
         open: fn _out -> {:ok, nil} end
         ]}
       ] do
-      result = merge_videos(video_filename_list: ["1.mp4", "2.mp4"], output_filename: "out.mp4")
-      assert elem(result,0) =~ "merged"
+      merge_videos(video_filename_list: ["1.mp4", "2.mp4"], output_filename: "out.mp4")
+      assert called System.cmd("ffmpeg", ["-f", "concat", "-safe", "0", "-i", :_, "-c", "copy", "-y", "out.mp4"])
     end
   end
 
@@ -63,7 +68,9 @@ defmodule Platform.VideoConverter.FFMpegAdapterTest do
   end
 
   test "get_audio_duration" do
-    with_mock System, [cmd: &cmd(&1, &2, &3)] do
+    with_mock System, [
+      cmd: fn _, _, stderr_to_stdout: true -> {"Duration: 00:00:09.59, start: 0.000000, bitrate: 48 kb/s", 1} end,
+      ] do
       result = get_audio_duration("1.mp3")
       assert result == "00:09.59"
     end

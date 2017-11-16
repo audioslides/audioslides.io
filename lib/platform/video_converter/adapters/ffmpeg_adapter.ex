@@ -22,8 +22,8 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
 
   def get_audio_duration(audio_filename) do
     opts = "-i #{audio_filename}"
-    result = System.cmd("ffmpeg", String.split(opts, " "), stderr_to_stdout: true)
-    get_audiofile_duration_from_ffmpeg_response(elem(result, 0))
+    {result, _} = System.cmd("ffmpeg", String.split(opts, " "), stderr_to_stdout: true)
+    get_audiofile_duration_from_ffmpeg_response(result)
   end
 
   def get_audiofile_duration_from_ffmpeg_response(ffmpeg_response) do
