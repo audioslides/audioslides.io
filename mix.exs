@@ -13,6 +13,7 @@ defmodule Platform.Mixfile do
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
+        "test.integration": :test,
         "coveralls": :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
@@ -77,7 +78,8 @@ defmodule Platform.Mixfile do
       "phx.server": ["ecto.migrate", "phx.server"],
       "test": ["ecto.create --quiet", "ecto.migrate", "test"],
       "s": ["phx.server"],
-      "t": ["test.watch"]
+      "t": ["test.watch"],
+      "test.integration": ["test --include integration:true"]
     ]
   end
 end

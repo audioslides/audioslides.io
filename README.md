@@ -61,3 +61,11 @@ To start your Phoenix server:
   * Start Phoenix endpoint with `mix s`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
+## How to test
+
+Run all tests
+    mix t
+
+Run all test with integration test(ffmpeg, write files)
+    mix test.integration
