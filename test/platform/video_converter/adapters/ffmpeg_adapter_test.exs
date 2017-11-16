@@ -1,23 +1,60 @@
 defmodule Platform.VideoConverter.FFMpegAdapterTest do
+  @moduledoc """
+  This test mocks all System.cmd and File Write calls.
+  There is also an integration test for this calls.
+  """
   use ExUnit.Case
   import Platform.VideoConverter.FFMpegAdapter
   import Mock
 
   import Platform.Speech.Mock.System
 
-  @moduletag integration: true
+  doctest Platform.VideoConverter.FFMpegAdapter
 
   test "generate_video" do
-    with_mock System, [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)] do
+    with_mocks [{System, [], [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)]}] do
       result = generate_video(image_filename: "1.png", audio_filename: "1.mp3", output_filename: "out.mp4")
       assert elem(result,0) =~ "Output #0, mp4, to 'out.mp4"
     end
   end
 
   test "merge_videos" do
-    with_mock System, [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)] do
+    with_mocks [
+      {System, [], [cmd: &cmd(&1, &2, &3), cmd: &cmd(&1, &2)]},
+      {File, [], [
+        rm: fn _ -> true end,
+        close: fn _ -> true end,
+        open: fn _ -> {:ok, nil} end
+        ]}
+      ] do
       result = merge_videos(video_filename_list: ["1.mp4", "2.mp4"], output_filename: "out.mp4")
       assert elem(result,0) =~ "merged"
+    end
+  end
+
+  @doc """
+  No actual test. everything is mocked here.
+  Real test done via integration test.
+  This is just for the code coverage at our CI.
+  """
+  test "write_video_filenames" do
+    with_mocks [
+      {File, [:passthrough], [
+        open: fn _filename -> {:ok, nil} end
+      ]},
+      {IO, [:passthrough], []}
+      ] do
+      output_filename = "temp.txt"
+      filenames = ["1.mp4", "2.mp4"]
+      expected_ffmpeg_format = "file '1.mp4'\nfile '2.mp4'\n"
+
+      write_video_filenames(filenames, output_filename)
+
+      assert called File.rm(output_filename)
+      assert called File.open(output_filename)
+      assert called IO.binwrite(:_, expected_ffmpeg_format)
+      assert called File.close(:_)
+
     end
   end
 

@@ -15,7 +15,7 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
 
   def merge_videos(video_filename_list: video_filename_list, output_filename: output_filename) do
     concat_input_filename = Filename.get_filename_for_ffmpeg_concat()
-    save_video_filenames(video_filename_list, concat_input_filename)
+    write_video_filenames(video_filename_list, concat_input_filename)
     opts = "-f concat -safe 0 -i #{concat_input_filename} -c copy -y #{output_filename}"
     System.cmd("ffmpeg", String.split(opts, " "))
   end
@@ -37,15 +37,29 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
   @doc """
   create a input file in ffmpeg concat format
 
-  """
-  def save_video_filenames(filenames, output_file) do
-    File.rm(output_file)
-    {:ok, file} = File.open(output_file, [:append])
+  iex> generate_video_filenames_in_ffmpeg_format(["1", "2"])
+  "file '1'
+  file '2'
+  "
 
-    Enum.each(filenames,
+  iex> generate_video_filenames_in_ffmpeg_format(nil)
+  ""
+
+  """
+  def generate_video_filenames_in_ffmpeg_format(filenames) when is_list(filenames) do
+    Enum.map_join(filenames,
       fn(filename) ->
-        IO.binwrite(file, "file '#{filename}'\n")
+        "file '#{filename}'\n"
       end)
+  end
+  def generate_video_filenames_in_ffmpeg_format(_), do: ""
+
+  def write_video_filenames(filenames, output_file) do
+    File.rm(output_file)
+    {:ok, file} = File.open(output_file)
+
+    filecontent = generate_video_filenames_in_ffmpeg_format(filenames)
+    IO.binwrite(file, filecontent)
 
     File.close(file)
   end
