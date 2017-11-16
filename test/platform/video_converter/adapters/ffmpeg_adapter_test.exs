@@ -24,7 +24,7 @@ defmodule Platform.VideoConverter.FFMpegAdapterTest do
       {File, [], [
         rm: fn _ -> true end,
         close: fn _ -> true end,
-        open: fn _ -> {:ok, nil} end
+        open: fn _out -> {:ok, nil} end
         ]}
       ] do
       result = merge_videos(video_filename_list: ["1.mp4", "2.mp4"], output_filename: "out.mp4")
@@ -39,10 +39,14 @@ defmodule Platform.VideoConverter.FFMpegAdapterTest do
   """
   test "write_video_filenames" do
     with_mocks [
-      {File, [:passthrough], [
-        open: fn _filename -> {:ok, nil} end
-      ]},
-      {IO, [:passthrough], []}
+      {File, [], [
+        rm: fn _ -> true end,
+        close: fn _ -> true end,
+        open: fn _out -> {:ok, nil} end
+        ]},
+      {IO, [], [
+        binwrite: fn _file, _content -> true end,
+      ]}
       ] do
       output_filename = "temp.txt"
       filenames = ["1.mp4", "2.mp4"]
