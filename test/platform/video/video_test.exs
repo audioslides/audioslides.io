@@ -7,12 +7,15 @@ defmodule Platform.VideoTest do
   alias Platform.GoogleSlides
   alias Platform.Core
   alias Platform.Speech
+  alias Platform.FileHelper
 
   doctest Platform.Video
 
   setup_with_mocks([
     {GoogleSlides, [], [download_slide_thumb!: fn _, _, _ -> "" end]},
-    {Speech, [], [run: fn _ -> "" end, ]}])
+    {Speech, [], [run: fn _ -> <<1, 2, 3>> end]},
+    {FileHelper, [], [write_to_file: fn _, _ -> "" end]}
+    ])
     do
     lesson = Factory.insert(:lesson, google_presentation_id: "1tGbdANGoW8BGI-S-_DcP0XsXhoaTO_KConY7-RVFnkM")
     slide_with_old_hash = Factory.insert(:slide, google_object_id: "id.g299abd206d_0_525" , page_elements_hash: "new", image_hash: "old", speaker_notes_hash: "new", audio_hash: "old" )
@@ -39,7 +42,6 @@ defmodule Platform.VideoTest do
     end
   end
 
-
   describe "the create_or_update_audio_for_slide function" do
     test "should call the Speech.run function when audio_hash is different", %{lesson: lesson, slide: slide} do
       create_or_update_audio_for_slide(lesson, slide)
@@ -62,6 +64,16 @@ defmodule Platform.VideoTest do
     test "should update the audio_hash after downloading the new thumb", %{lesson: lesson, slide: slide} do
       create_or_update_audio_for_slide(lesson, slide)
       assert Core.get_slide!(slide.id).audio_hash == "new"
+    end
+    test "should not write the mp3 to the filesystem if already up to date", %{lesson: lesson, slide_up_to_date: slide} do
+      create_or_update_audio_for_slide(lesson, slide)
+
+      assert not called FileHelper.write_to_file(:_, <<1, 2, 3>>)
+    end
+    test "should write the mp3 to the filesystem", %{lesson: lesson, slide: slide} do
+      create_or_update_audio_for_slide(lesson, slide)
+
+      assert called FileHelper.write_to_file(:_, <<1, 2, 3>>)
     end
   end
 end
