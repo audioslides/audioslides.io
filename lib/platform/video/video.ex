@@ -110,11 +110,11 @@ defmodule Platform.Video do
     if slide.speaker_notes_hash != slide.audio_hash do
       Logger.info "Slide #{slide.id} Audio: generated"
 
-      speech_binary = Speech.speak()
-      |> Speech.language(lesson.voice_language)
-      |> Speech.voice_gender(lesson.voice_gender)
-      |> Speech.text(slide.speaker_notes)
-      |> Speech.run()
+      speech_binary = Speech.run(%{
+        "language_key" => lesson.voice_language,
+        "voice_gender" => lesson.voice_gender,
+        "text" => slide.speaker_notes
+      })
 
       write_to_file(audio_filename, speech_binary)
       Core.update_slide_audio_hash(slide, slide.speaker_notes_hash)
@@ -130,5 +130,6 @@ defmodule Platform.Video do
     File.mkdir_p(directory)
     {:ok, file} = File.open filename, [:write]
     IO.binwrite(file, data)
+    File.close(file)
   end
 end
