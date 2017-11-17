@@ -30,7 +30,7 @@ defmodule Platform.Core.LessonSync do
 
       changes = %{
         position: index,
-        name: Platform.GoogleSlides.get_title(google_slide),
+        name: GoogleSlides.get_title(google_slide),
         speaker_notes: GoogleSlides.get_speaker_notes(google_slide),
         speaker_notes_hash: GoogleSlides.generate_hash_for_speakernotes(google_slide),
         page_elements_hash: GoogleSlides.generate_hash_for_page_elements(google_slide),
