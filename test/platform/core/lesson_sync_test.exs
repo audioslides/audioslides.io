@@ -79,5 +79,27 @@ defmodule Platform.LessonSyncTest do
       end
     end
 
+    test "should not double-insert a slide if already exists", %{lesson: lesson, google_presentation: google_presentation} do
+      with_mock GoogleSlides, [:passthrough], [get_presentation!: fn _ -> google_presentation end] do
+        LessonSync.sync_slides(lesson)
+
+        lesson =
+          lesson
+          |> Repo.preload(:slides)
+
+        assert length(lesson.slides) == 2
+        assert Enum.map(lesson.slides, fn(slide) -> slide.google_object_id end) == ["objID_1", "objID_2"]
+
+        LessonSync.sync_slides(lesson)
+
+        lesson =
+        lesson
+        |> Repo.preload(:slides)
+
+        assert length(lesson.slides) == 2
+        assert Enum.map(lesson.slides, fn(slide) -> slide.google_object_id end) == ["objID_1", "objID_2"]
+      end
+    end
+
   end
 end
