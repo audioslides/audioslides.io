@@ -76,4 +76,28 @@ defmodule Platform.VideoTest do
       assert called FileHelper.write_to_file(:_, <<1, 2, 3>>)
     end
   end
+
+  describe "get_results_or_kill_tasks" do
+    test "should kill tasks that not ready jet" do
+      kill_me_task = Task.async(fn -> "foo" end)
+      kill_me_ref  = Process.monitor(kill_me_task.pid)
+
+      ready_task = Task.async(fn -> "foo" end)
+      ready_ref  = Process.monitor(ready_task.pid)
+
+      tasks_with_results = [
+        {kill_me_task, nil},
+        {ready_task, {:ok, "example result"}}
+      ]
+
+      results = get_results_or_kill_tasks(tasks_with_results)
+
+      ## results are collected
+      assert results == [nil, "example result"]
+
+      # task should down
+      assert_receive {:DOWN, ^kill_me_ref, :process, _, :killed}, 500
+      assert_receive {:DOWN, ^ready_ref, :process, _, :normal}, 500
+    end
+  end
 end
