@@ -16,14 +16,7 @@ defmodule PlatformWeb.CanHelper do
         _       -> conn.private.phoenix_action
       end
 
-    if can?(conn, action, model) do
-      model
-    else
-      conn
-      |> Phoenix.Controller.put_flash(:error, "You can't access that page!")
-      |> Phoenix.Controller.redirect(to: "/")
-      |> Plug.Conn.halt()
-    end
+    authorize!(model, conn, action)
   end
 
   def authorize!(model, conn, action) do
