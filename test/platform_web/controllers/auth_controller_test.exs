@@ -1,7 +1,6 @@
 defmodule PlatformWeb.AuthControllerTest do
   use PlatformWeb.ConnCase
 
-  alias Platform.UserFromAuth
   alias Ueberauth.Auth
 
   import Mock
