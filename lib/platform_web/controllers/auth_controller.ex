@@ -6,14 +6,7 @@ defmodule PlatformWeb.AuthController do
   use PlatformWeb, :controller
   plug Ueberauth # handles request action
 
-  def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
-    conn
-    |> put_flash(:error, "Failed to authenticate.")
-    |> redirect(to: "/")
-  end
-
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    # raise inspect(auth)
     case UserFromAuth.find_or_create(auth) do
       {:ok, user} ->
         conn
@@ -26,6 +19,12 @@ defmodule PlatformWeb.AuthController do
         |> put_flash(:error, reason)
         |> redirect(to: "/")
     end
+  end
+
+  def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
+    conn
+    |> put_flash(:error, "Failed to authenticate.")
+    |> redirect(to: "/")
   end
 
   def delete(conn, _params) do
