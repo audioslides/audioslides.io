@@ -18,12 +18,24 @@ defmodule Platform.Video do
     final_output_filename = Filename.get_filename_for_lesson_video(lesson)
 
     # start async creation of the videos
-    video_generation_tasks = Enum.map(lesson.slides, fn(slide) -> Task.async(fn -> generate_video_for_slide(lesson, slide) end) end)
+    video_generation_tasks = create_async_video_tasks(lesson)
 
     # wait 60 seconds for all video generator processes
     tasks_with_results = Task.yield_many(video_generation_tasks, 60_000)
 
-    generated_video_filenames = Enum.map(tasks_with_results, fn {task, res} ->
+    generated_video_filenames = get_results_or_kill_tasks(tasks_with_results)
+
+    VideoConverter.merge_videos(video_filename_list: generated_video_filenames, output_filename: final_output_filename)
+  end
+
+  def create_async_video_tasks(lesson) do
+    Enum.map(lesson.slides, fn(slide) ->
+      Task.async(fn -> generate_video_for_slide(lesson, slide) end)
+    end)
+  end
+
+  def get_results_or_kill_tasks(tasks_with_results) do
+    Enum.map(tasks_with_results, fn {task, res} ->
       # Shutdown the tasks that did not reply nor exit
       case res do
         {:ok, value} ->
@@ -32,8 +44,6 @@ defmodule Platform.Video do
           Task.shutdown(task, :brutal_kill)
       end
     end)
-
-    VideoConverter.merge_videos(video_filename_list: generated_video_filenames, output_filename: final_output_filename)
   end
 
   def generate_video_for_slide(%Lesson{} = lesson, %Slide{} = slide) do
