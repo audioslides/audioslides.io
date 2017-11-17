@@ -6,6 +6,7 @@ defmodule Platform.GoogleSlides do
   alias Goth.Token
   alias GoogleApi.Slides.V1.Api.Presentations
   alias GoogleApi.Slides.V1.Model.Page
+  alias Platform.FileHelper
 
   def get_presentation!(presentation_id) when is_binary(presentation_id) do
     connection = get_google_slides_connection!()
@@ -32,13 +33,9 @@ defmodule Platform.GoogleSlides do
     slide_page_thumb = get_slide_thumb!(presentation_id, slide_id)
     url = slide_page_thumb.contentUrl
 
-    # get directory out of the filename
-    [_, directory] = Regex.run(~r/([\s\S]*\/)[\s\S]*?/, filename)
-    File.mkdir_p(directory)
-
     %HTTPoison.Response{body: body} = HTTPoison.get!(url)
-    File.write!(filename, body)
 
+    FileHelper.write_to_file(filename, body)
     filename
   end
 
