@@ -4,6 +4,7 @@ defmodule Platform.CoreTest do
   alias Platform.Core
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
+  alias Platform.GoogleSlidesFactory
 
   doctest Platform.Core
 
@@ -64,6 +65,27 @@ defmodule Platform.CoreTest do
     test "change_lesson/1 returns a lesson changeset" do
       lesson = Factory.insert(:lesson)
       assert %Ecto.Changeset{} = Core.change_lesson(lesson)
+    end
+
+    test "sync_lesson/1 sync lessons" do
+      lesson = Factory.insert(:lesson)
+
+      google_slide1 = GoogleSlidesFactory.get_base_slide(object_id: "objID_1", content: "Example Content 1", speaker_notes: "Speaker Notes 1")
+      google_slide2 = GoogleSlidesFactory.get_base_slide(object_id: "objID_2", content: "Example Content 2", speaker_notes: "Speaker Notes 2")
+
+      google_lesson = %GoogleApi.Slides.V1.Model.Presentation{
+        presentationId: lesson.google_presentation_id,
+        slides: [google_slide1, google_slide2]
+      }
+
+      Core.sync_lesson(google_lesson)
+
+      lesson =
+        lesson
+        |> Repo.preload(:slides)
+
+      assert length(lesson.slides) == 2
+      assert Enum.map(lesson.slides, fn(slide) -> slide.google_object_id end) == ["objID_1", "objID_2"]
     end
   end
 
