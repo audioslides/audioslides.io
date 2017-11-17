@@ -1,6 +1,8 @@
 defmodule PlatformWeb.LessonControllerTest do
   use PlatformWeb.ConnCase
 
+  import Mock
+
   @create_attrs %{google_presentation_id: "some google_presentation_id", name: "some name", voice_gender: "male", voice_language: "de-DE"}
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
@@ -86,10 +88,23 @@ defmodule PlatformWeb.LessonControllerTest do
     end
   end
 
+  describe "#sync" do
+    setup :create_lesson
+
+    test "should call Core.sync_lesson with correct lesson", %{conn: conn, lesson: lesson} do
+      with_mock Platform.Core, [:passthrough], [sync_lesson: fn _ -> "" end] do
+        conn = post conn, lesson_path(conn, :sync, lesson)
+        assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+
+        assert called Platform.Core.sync_lesson(%{id: lesson.id})
+      end
+    end
+  end
+
   defp create_lesson(_) do
     slide_1 = Factory.insert(:slide)
     slide_2 = Factory.insert(:slide)
-    lesson = Factory.insert(:lesson, slides: [slide_1, slide_2])
+    lesson = Factory.insert(:lesson, google_presentation_id: "1", slides: [slide_1, slide_2])
     {:ok, lesson: lesson}
   end
 end
