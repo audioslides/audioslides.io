@@ -43,10 +43,7 @@ defmodule Platform.GoogleSlides do
 
   defp get_google_slides_connection! do
     scopes = [
-      "https://www.googleapis.com/auth/drive",
-      "https://www.googleapis.com/auth/drive.readonly",
-      "https://www.googleapis.com/auth/presentations",
-      "https://www.googleapis.com/auth/presentations.readonly"
+      "https://www.googleapis.com/auth/presentations"
     ]
 
     {:ok, goth_token} = Token.for_scope(Enum.join(scopes, " "))
