@@ -11,7 +11,7 @@ defmodule Platform.Core.LessonSync do
   require Ecto.Query
 
   def sync_slides(%Lesson{} = lesson) do
-    case GoogleSlides.get_presentation!(lesson.google_presentation_id) do
+    case GoogleSlides.get_presentation(lesson.google_presentation_id) do
       %Presentation{} = google_presentation ->
         sync_slides(google_presentation)
       _ = response ->

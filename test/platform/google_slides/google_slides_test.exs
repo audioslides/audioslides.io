@@ -34,9 +34,9 @@ defmodule Platform.GoogleSlidesTest do
     {:ok, nothing: "yes"}
   end
 
-  describe "get_presentation!" do
+  describe "get_presentation" do
     test "should get a presentation via GoogleAPI" do
-      get_presentation!("1")
+      get_presentation("1")
 
       assert called Presentations.slides_presentations_get(:_, "1", :_)
     end

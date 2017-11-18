@@ -8,11 +8,9 @@ defmodule Platform.GoogleSlides do
   alias GoogleApi.Slides.V1.Model.Page
   alias Platform.FileHelper
 
-  def get_presentation!(presentation_id) when is_binary(presentation_id) do
+  def get_presentation(presentation_id) when is_binary(presentation_id) do
     connection = get_google_slides_connection!()
-
-    {:ok, presentation} = Presentations.slides_presentations_get(connection, presentation_id, fields: "presentationId,title,slides")
-    presentation
+    Presentations.slides_presentations_get(connection, presentation_id, fields: "presentationId,title,slides")
   end
 
   def get_slide!(presentation_id, slide_id) do
