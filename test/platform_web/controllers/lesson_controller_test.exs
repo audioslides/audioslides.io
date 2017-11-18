@@ -99,6 +99,16 @@ defmodule PlatformWeb.LessonControllerTest do
         assert called Platform.Core.sync_lesson(%{id: lesson.id})
       end
     end
+
+    test "should handle error from Core.sync_lesson", %{conn: conn, lesson: lesson} do
+      with_mock Platform.Core, [:passthrough], [sync_lesson: fn _ -> {:error, %{message: "message", status: "status"}} end] do
+        conn = post conn, lesson_path(conn, :sync, lesson)
+
+        assert called Platform.Core.sync_lesson(%{id: lesson.id})
+        assert get_flash(conn, :error) == "status : message"
+        assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+      end
+    end
   end
 
   defp create_lesson(_) do

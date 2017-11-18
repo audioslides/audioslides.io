@@ -68,11 +68,16 @@ defmodule PlatformWeb.LessonController do
   def sync(conn, %{"id" => id}) do
     lesson = Core.get_lesson_with_slides!(id)
 
-    Core.sync_lesson(lesson)
-
-    conn
-    |> put_flash(:info, "Lesson synced...")
-    |> redirect(to: lesson_path(conn, :show, lesson))
+    case Core.sync_lesson(lesson) do
+      {:error, error} ->
+        conn
+        |> put_flash(:error, "#{error.status} : #{error.message}")
+        |> redirect(to: lesson_path(conn, :show, lesson))
+      _ ->
+        conn
+        |> put_flash(:info, "Lesson synced...")
+        |> redirect(to: lesson_path(conn, :show, lesson))
+    end
   end
 
   def generate_video(conn, %{"id" => id}) do

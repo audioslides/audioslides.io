@@ -66,6 +66,14 @@ defmodule Platform.LessonSyncTest do
       end
     end
 
+    test "should return an error when google api fails", %{lesson: lesson} do
+      with_mock GoogleSlides, [:passthrough], [get_presentation!: fn _ -> {:error, %{body: "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"A message\",\n    \"status\": \"A status\"\n  }\n}\n"}} end] do
+        result = LessonSync.sync_slides(lesson)
+
+        assert result == {:error, %{message: "A message", status: "A status"}}
+      end
+    end
+
     test "should insert slides if they don't exist with a lesson as input", %{lesson: lesson, google_presentation: google_presentation} do
       with_mock GoogleSlides, [:passthrough], [get_presentation!: fn _ -> google_presentation end] do
         LessonSync.sync_slides(lesson)
@@ -101,5 +109,17 @@ defmodule Platform.LessonSyncTest do
       end
     end
 
+  end
+
+  describe "get_error_from_response" do
+    test "should return the reason of a error" do
+      example_response = {:error, %{body: "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Request had insufficient authentication scopes.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n"}}
+
+      error = LessonSync.get_error_from_response(example_response)
+
+      assert error.message == "Request had insufficient authentication scopes."
+      assert error.status == "PERMISSION_DENIED"
+
+    end
   end
 end
