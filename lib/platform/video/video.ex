@@ -61,7 +61,7 @@ defmodule Platform.Video do
 
     # Only generate video of audio or video changed
     if generate_video_hash(slide) != slide.video_hash do
-      Logger.info "Slide #{slide.id} Video: generated"
+      Logger.info "Slide #{slide.id} Video: need update"
 
       VideoConverter.generate_video(
         image_filename: image_filename,
@@ -70,6 +70,7 @@ defmodule Platform.Video do
       )
 
       Core.update_slide_video_hash(slide, generate_video_hash(slide))
+      Logger.info "Slide #{slide.id} Video: generated"
     else
       Logger.info "Slide #{slide.id} Video: skipped"
     end
@@ -111,6 +112,7 @@ defmodule Platform.Video do
   def create_or_update_image_for_slide(lesson, slide) do
     image_filename = Filename.get_filename_for_slide_image(lesson, slide)
     if slide.page_elements_hash != slide.image_hash do
+      Logger.info "Slide #{slide.id} Image: need update"
 
       GoogleSlides.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
       Core.update_slide_image_hash(slide, slide.page_elements_hash)
@@ -126,7 +128,7 @@ defmodule Platform.Video do
   def create_or_update_audio_for_slide(lesson, slide) do
     audio_filename = Filename.get_filename_for_slide_audio(lesson, slide)
     if slide.speaker_notes_hash != slide.audio_hash do
-      Logger.info "Slide #{slide.id} Audio: generated"
+      Logger.info "Slide #{slide.id} Audio: need update"
 
       speech_binary = Speech.run(%{
         "language_key" => lesson.voice_language,
@@ -136,6 +138,8 @@ defmodule Platform.Video do
 
       FileHelper.write_to_file(audio_filename, speech_binary)
       Core.update_slide_audio_hash(slide, slide.speaker_notes_hash)
+
+      Logger.info "Slide #{slide.id} Audio: generated"
     else
       Logger.info "Slide #{slide.id} Audio: skipped"
     end
