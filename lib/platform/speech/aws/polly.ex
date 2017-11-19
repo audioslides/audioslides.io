@@ -7,9 +7,6 @@ defmodule Platform.Speech.AWS.Polly do
 
   alias Platform.Speech.AWS.Voice
 
-  @access_key Application.get_env(:platform, :aws)[:access_key_id]
-  @secret_key Application.get_env(:platform, :aws)[:secret]
-
   @regex_ssml ~r/(<speak>[\s\S]*?<\/speak>)/
 
   def get_speech(%{"language_key" => language_key, "voice_gender" => voice_gender, "text" => text}) do
@@ -119,8 +116,8 @@ defmodule Platform.Speech.AWS.Polly do
   """
   def get_signed_url(params) do
     AWSAuth.QueryParameters.sign(
-      @access_key,
-      @secret_key,
+      Application.get_env(:platform, :aws)[:access_key_id],
+      Application.get_env(:platform, :aws)[:secret],
       "POST",
       "https://polly.us-east-1.amazonaws.com:443/v1/speech/",
       "us-east-1",
