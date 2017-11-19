@@ -72,6 +72,11 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
   client_id: System.get_env("GOOGLE_CLIENT_ID"),
   client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
 
+config :goth, json: System.get_env("GOOGLE_GCP_CREDENTIALS")
+
+config :platform, :aws,
+  access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
+  secret: System.get_env("AWS_SECRET")
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 # import_config "prod.secret.exs"
