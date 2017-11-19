@@ -1,14 +1,14 @@
 defmodule Platform.FileHelper do
   @moduledoc """
-  Simple
+  Context for the general converter
   """
+  @adapter Application.get_env(:platform, __MODULE__, [])[:adapter]
 
-  def write_to_file(filename, data) do
-    [_, directory, _] = Regex.run(~r/^(.*\/)([^\/]*)$/, filename)
-    File.mkdir_p(directory)
-    {:ok, file} = File.open filename, [:write]
-    IO.binwrite(file, data)
-    File.close(file)
-  end
+  @doc """
+  Write a file via the File Module
+
+  """
+  @callback write_to_file(filename: String.t, data: String.t) :: {:ok, String.t} | {:error, String.t}
+  defdelegate write_to_file(filename, data), to: @adapter
 
 end

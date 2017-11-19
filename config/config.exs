@@ -28,6 +28,9 @@ config :logger, :console,
 config :platform, Platform.VideoConverter,
   adapter: Platform.VideoConverter.FFMpegAdapter
 
+config :platform,   Platform.FileHelper,
+  adapter: Platform.FileHelper.FileSystemAdapter
+
 config :goth, json: System.get_env("AS_GOOGLE_GCP_CREDENTIALS")
 
 config :platform, :aws,
