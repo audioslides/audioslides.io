@@ -8,7 +8,7 @@ defmodule Platform.FileHelper do
   Write a file via the File Module
 
   """
-  @callback write_to_file(filename: String.t, data: String.t) :: {:ok, String.t} | {:error, String.t}
+  @callback write_to_file(String.t, String.t) :: {:ok, String.t} | {:error, String.t}
   defdelegate write_to_file(filename, data), to: @adapter
 
 end
