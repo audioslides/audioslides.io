@@ -34,6 +34,18 @@ defmodule Platform.Filename do
 
   @doc """
 
+  iex> get_relative_filename_for_slide_video(%Lesson{id: 1}, %Slide{id: 2})
+  "1/2.mp4"
+
+  iex> get_relative_filename_for_slide_video(%Lesson{id: 3}, %Slide{id: 9})
+  "3/9.mp4"
+  """
+  def get_relative_filename_for_slide_video(%Lesson{} = lesson, %Slide{} = slide) do
+    "#{lesson.id}/#{slide.id}.mp4"
+  end
+
+  @doc """
+
   iex> get_filename_for_slide_image(%Lesson{id: 3}, %Slide{id: 9})
   "priv/static/content/3/9.png"
 

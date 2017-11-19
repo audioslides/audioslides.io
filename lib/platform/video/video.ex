@@ -67,9 +67,9 @@ defmodule Platform.Video do
       Logger.info "Slide #{slide.id} Video: skipped"
     end
 
-    # relative_output_filename
+    # relative_output_filename, important for ffmmpeg concat method
     # "#{lesson.id}/#{slide.id}.mp4"
-    Filename.get_filename_for_slide_video(lesson, slide)
+    Filename.get_relative_filename_for_slide_video(lesson, slide)
   end
 
   @doc """
