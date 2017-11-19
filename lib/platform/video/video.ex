@@ -17,13 +17,20 @@ defmodule Platform.Video do
   def convert_lesson_to_video(%Lesson{} = lesson) do
     final_output_filename = Filename.get_filename_for_lesson_video(lesson)
 
+    #### ASync Version Start
     # start async creation of the videos
-    video_generation_tasks = create_async_video_tasks(lesson)
+    #video_generation_tasks = create_async_video_tasks(lesson)
 
     # wait 60 seconds for all video generator processes
-    tasks_with_results = Task.yield_many(video_generation_tasks, 60_000)
+    #tasks_with_results = Task.yield_many(video_generation_tasks, 60_000)
 
-    generated_video_filenames = get_results_or_kill_tasks(tasks_with_results)
+    #generated_video_filenames = get_results_or_kill_tasks(tasks_with_results)
+    #### ASync Version END
+
+
+    #### Sync Version Start
+    generated_video_filenames = Enum.map(lesson.slides, fn(slide) -> generate_video_for_slide(lesson, slide) end)
+    #### Sync Version End
 
     VideoConverter.merge_videos(video_filename_list: generated_video_filenames, output_filename: final_output_filename)
   end
