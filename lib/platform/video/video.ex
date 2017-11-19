@@ -27,7 +27,6 @@ defmodule Platform.Video do
     #generated_video_filenames = get_results_or_kill_tasks(tasks_with_results)
     #### ASync Version END
 
-
     #### Sync Version Start
     generated_video_filenames = Enum.map(lesson.slides, fn(slide) -> generate_video_for_slide(lesson, slide) end)
     #### Sync Version End
@@ -35,11 +34,11 @@ defmodule Platform.Video do
     VideoConverter.merge_videos(video_filename_list: generated_video_filenames, output_filename: final_output_filename)
   end
 
-  def create_async_video_tasks(lesson) do
-    Enum.map(lesson.slides, fn(slide) ->
-      Task.async(fn -> generate_video_for_slide(lesson, slide) end)
-    end)
-  end
+  # def create_async_video_tasks(lesson) do
+  #   Enum.map(lesson.slides, fn(slide) ->
+  #     Task.async(fn -> generate_video_for_slide(lesson, slide) end)
+  #   end)
+  # end
 
   def get_results_or_kill_tasks(tasks_with_results) do
     Enum.map(tasks_with_results, fn {task, res} ->
