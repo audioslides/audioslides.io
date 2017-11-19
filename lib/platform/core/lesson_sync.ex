@@ -11,17 +11,26 @@ defmodule Platform.Core.LessonSync do
   require Ecto.Query
 
   def sync_slides(%Lesson{} = lesson) do
-    case GoogleSlides.get_presentation(lesson.google_presentation_id) do
-      %Presentation{} = google_presentation ->
-        sync_slides(google_presentation)
-      _ = response ->
-        {:error, get_error_from_response(response)}
-    end
+    GoogleSlides.get_presentation(lesson.google_presentation_id)
+    |> handle_response
   end
   def sync_slides(%Presentation{} = google_presentation) do
     lesson = get_lesson_by_google_presentation_id!(google_presentation.presentationId)
     delete_removed_slides(lesson, google_presentation.slides)
     create_or_update_slides(lesson, google_presentation.slides)
+  end
+
+  def handle_response({:ok, %Presentation{} = google_presentation}) do
+    sync_slides(google_presentation)
+  end
+  def handle_response({:error, %{body: json_body}}) do
+    error = Poison.decode!(json_body)["error"]
+   {:error,
+      %{
+        message: error["message"],
+        status: error["status"],
+      }
+    }
   end
 
   # def dowload_lesson(%Lesson{} = lesson) do
@@ -31,15 +40,6 @@ defmodule Platform.Core.LessonSync do
   #       _ -> ""
   #   end
   # end
-
-  def get_error_from_response({:error, %{body: json_body}}) do
-    error = Poison.decode!(json_body)["error"]
-
-    %{
-      message: error["message"],
-      status: error["status"],
-    }
-  end
 
   def create_or_update_slides(%Lesson{} = lesson, google_slides) when is_list(google_slides) do
     index_google_slides = Enum.with_index google_slides
