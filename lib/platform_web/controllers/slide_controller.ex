@@ -12,6 +12,8 @@ defmodule PlatformWeb.SlideController do
   end
 
   def generate_video(conn, %{"lesson_id" => lesson_id, "id" => id}) do
+    Lesson |> authorize_action!(conn)
+
     lesson = Core.get_lesson!(lesson_id)
     slide = Core.get_slide!(id)
 

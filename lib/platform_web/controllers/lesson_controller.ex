@@ -32,11 +32,15 @@ defmodule PlatformWeb.LessonController do
   end
 
   def show(conn, %{"id" => id}) do
+    Lesson |> authorize_action!(conn)
+
     lesson = Core.get_lesson_with_slides!(id)
     render(conn, "show.html", lesson: lesson)
   end
 
   def edit(conn, %{"id" => id}) do
+    Lesson |> authorize_action!(conn)
+
     lesson = Core.get_lesson!(id)
     #Video.convert_lesson(lesson.google_presentation_id)
     changeset = Core.change_lesson(lesson)
@@ -44,6 +48,8 @@ defmodule PlatformWeb.LessonController do
   end
 
   def update(conn, %{"id" => id, "lesson" => lesson_params}) do
+    Lesson |> authorize_action!(conn)
+
     lesson = Core.get_lesson!(id)
 
     case Core.update_lesson(lesson, lesson_params) do
@@ -57,6 +63,8 @@ defmodule PlatformWeb.LessonController do
   end
 
   def delete(conn, %{"id" => id}) do
+    Lesson |> authorize_action!(conn)
+
     lesson = Core.get_lesson!(id)
     {:ok, _lesson} = Core.delete_lesson(lesson)
 
@@ -66,6 +74,8 @@ defmodule PlatformWeb.LessonController do
   end
 
   def sync(conn, %{"id" => id}) do
+    Lesson |> authorize_action!(conn)
+
     lesson = Core.get_lesson_with_slides!(id)
 
     case Core.sync_lesson(lesson) do
@@ -81,6 +91,8 @@ defmodule PlatformWeb.LessonController do
   end
 
   def generate_video(conn, %{"id" => id}) do
+    Lesson |> authorize_action!(conn)
+
     lesson = Core.get_lesson_with_slides!(id)
 
     Video.convert_lesson_to_video(lesson)
