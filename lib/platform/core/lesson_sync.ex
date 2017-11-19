@@ -10,8 +10,9 @@ defmodule Platform.Core.LessonSync do
 
   require Ecto.Query
 
-  def sync_slides(%Lesson{} = lesson) do
-    GoogleSlides.get_presentation(lesson.google_presentation_id)
+  def sync_slides(%Lesson{google_presentation_id: google_presentation_id}) do
+    google_presentation_id
+    |> GoogleSlides.get_presentation
     |> handle_response
   end
   def sync_slides(%Presentation{} = google_presentation) do
