@@ -29,41 +29,12 @@ defmodule Platform.VideoConverter.FFMpegAdapterTest do
       {File, [], [
         rm: fn _ -> true end,
         close: fn _ -> true end,
-        open: fn _out -> {:ok, nil} end
+        mkdir_p: fn _ -> true end,
+        open: fn _out, _opts -> {:ok, nil} end
         ]}
       ] do
-      merge_videos(video_filename_list: ["1.mp4", "2.mp4"], output_filename: "out.mp4")
-      assert called System.cmd("ffmpeg", ["-f", "concat", "-safe", "0", "-i", :_, "-c", "copy", "-y", "out.mp4"])
-    end
-  end
-
-  @doc """
-  No actual test. everything is mocked here.
-  Real test done via integration test.
-  This is just for the code coverage at our CI.
-  """
-  test "write_video_filenames" do
-    with_mocks [
-      {File, [], [
-        rm: fn _ -> true end,
-        close: fn _ -> true end,
-        open: fn _out -> {:ok, nil} end
-        ]},
-      {IO, [], [
-        binwrite: fn _file, _content -> true end,
-      ]}
-      ] do
-      output_filename = "temp.txt"
-      filenames = ["1.mp4", "2.mp4"]
-      expected_ffmpeg_format = "file '1.mp4'\nfile '2.mp4'\n"
-
-      write_video_filenames(filenames, output_filename)
-
-      assert called File.rm(output_filename)
-      assert called File.open(output_filename)
-      assert called IO.binwrite(:_, expected_ffmpeg_format)
-      assert called File.close(:_)
-
+      merge_videos(video_filename_list: ["priv/static/1.mp4", "priv/static/2.mp4"], output_filename: "priv/static/out.mp4")
+      assert called System.cmd("ffmpeg", ["-f", "concat", "-safe", "0", "-i", :_, "-c", "copy", "-y", "priv/static/out.mp4"])
     end
   end
 

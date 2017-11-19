@@ -4,6 +4,7 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
   """
 
   alias Platform.Filename
+  alias Platform.FileHelper
 
   @behaviour Platform.VideoConverter
 
@@ -15,7 +16,10 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
 
   def merge_videos(video_filename_list: video_filename_list, output_filename: output_filename) do
     concat_input_filename = Filename.get_filename_for_ffmpeg_concat()
-    write_video_filenames(video_filename_list, concat_input_filename)
+    filecontent = generate_video_filenames_in_ffmpeg_format(video_filename_list)
+
+    FileHelper.write_to_file(concat_input_filename, filecontent)
+
     opts = "-f concat -safe 0 -i #{concat_input_filename} -c copy -y #{output_filename}"
     System.cmd("ffmpeg", String.split(opts, " "))
   end
@@ -53,14 +57,4 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
       end)
   end
   def generate_video_filenames_in_ffmpeg_format(_), do: ""
-
-  def write_video_filenames(filenames, output_file) do
-    File.rm(output_file)
-    {:ok, file} = File.open(output_file)
-
-    filecontent = generate_video_filenames_in_ffmpeg_format(filenames)
-    IO.binwrite(file, filecontent)
-
-    File.close(file)
-  end
 end

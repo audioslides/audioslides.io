@@ -25,7 +25,7 @@ defmodule Platform.FileHelperTest do
     test "should write the content to the file", %{filename: filename, data: data} do
       write_to_file(filename, data)
 
-      assert called File.open("filename.ext", [:write])
+      assert called File.open(filename, [:write])
       assert called IO.binwrite(:_, data)
       assert called File.close(:_)
     end
