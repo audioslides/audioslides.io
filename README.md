@@ -62,6 +62,21 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+## Use with docker
+
+### Build the container
+
+    docker build -t audioslides .
+
+### Run via docker compose
+Init the database
+
+    docker-compose run web mix ecto.setup
+
+Run database + project
+
+    docker compose up
+
 ## How to test
 
 Run all tests
