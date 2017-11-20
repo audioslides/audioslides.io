@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# The following part carries out specific functions depending on arguments.
+# This script is used in kubernetes postStart hook to connect to the GCS Fuse Bucket
 case "$1" in
   start)
     echo "Starting gcsfuse"
