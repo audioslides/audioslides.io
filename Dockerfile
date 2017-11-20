@@ -23,6 +23,12 @@ RUN apt-get update && apt-get -y install \
         apt-get -y install nodejs && \
         rm -rf /var/lib/apt/lists/*
 
+# Install FFMpeg
+RUN sed -i "s/jessie main/jessie main contrib non-free/" /etc/apt/sources.list
+RUN echo "deb http://http.debian.net/debian jessie-backports main contrib non-free" >> /etc/apt/sources.list
+RUN apt-get update && \
+    apt-get install -y ffmpeg
+
 RUN echo "deb http://packages.cloud.google.com/apt jessie main" > /etc/apt/sources.list.d/gcsfuse.list \
         apt-get -y --allow-unauthenticated install gcefuse && \
         rm -rf /var/lib/apt/lists/*
