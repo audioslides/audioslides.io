@@ -9,7 +9,7 @@ services:
       - MIX_ENV=prod
       - DEBUG_ERRORS=true
       - CRONJOBS_ENABLED=false
-      - PROJECT_ARC_BUCKET=cryptomarker-prod
+      - PROJECT_ARC_BUCKET=audioslides-prod
       - SECRET_KEY_BASE=jfidasojf9j32jafm34i923uufeaijfdiosajf932u98fjdsajfdsoiaojM0u6S1m6QRfB7QoFROf6g5PT4nZ8uxATtlb6qZLtjHM6Lezb/Iv5j0ei0/3cLx2M
       - DATABASE_MYSQL_HOSTNAME=db
       - DATABASE_MYSQL_PORT=3306
