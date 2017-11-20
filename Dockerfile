@@ -30,6 +30,7 @@ RUN apt-get update && \
     apt-get install -y ffmpeg
 
 # Install gcsfuse (Google Cloud Storage)
+# Info: Kubernetes need to start this container as privileged https://kubernetes.io/docs/concepts/workloads/pods/pod/#privileged-mode-for-pod-containers
 RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-jessie main" | tee /etc/apt/sources.list.d/gcsfuse.list;
 RUN apt-get update && \
     apt-get -y --allow-unauthenticated install gcsfuse
