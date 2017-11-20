@@ -35,7 +35,6 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
     duration_regex = ~r/Duration: \d\d:(\d\d:\d\d\.\d\d)/
     [_, duration] = Regex.run(duration_regex, ffmpeg_response)
     duration
-
   end
 
   @doc """
