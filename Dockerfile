@@ -29,9 +29,10 @@ RUN echo "deb http://http.debian.net/debian jessie-backports main contrib non-fr
 RUN apt-get update && \
     apt-get install -y ffmpeg
 
-RUN echo "deb http://packages.cloud.google.com/apt jessie main" > /etc/apt/sources.list.d/gcsfuse.list \
-        apt-get -y --allow-unauthenticated install gcsfuse && \
-        rm -rf /var/lib/apt/lists/*
+# Install gcsfuse (Google Cloud Storage)
+RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-jessie main" | tee /etc/apt/sources.list.d/gcsfuse.list;
+RUN apt-get update && \
+    apt-get -y --allow-unauthenticated install gcsfuse
 
 # Set the locale
 RUN locale-gen en_US.UTF-8 && \
@@ -58,7 +59,7 @@ WORKDIR /opt/app
 
 # Set exposed ports
 EXPOSE 4000
-ENV PORT=4000 MIX_ENV=prod
+ENV PORT=4000 MIX_ENV=dev
 
 # Cache elixir deps
 COPY --from=dependency-cache $HOME/deps $HOME/deps
