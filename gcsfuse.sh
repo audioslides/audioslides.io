@@ -4,9 +4,9 @@
 case "$1" in
   start)
     echo "Starting gcsfuse"
-    mkdir priv/static/fuse
+    mkdir priv/static/content
     echo $GOOGLE_GCP_CREDENTIALS >> key.json
-    gcsfuse --key-file=/opt/app/key.json audioslides-io-prod priv/static/fuse
+    gcsfuse --key-file=/opt/app/key.json audioslides-io-prod priv/static/content
     rm key.json
     ;;
   stop)
