@@ -30,7 +30,7 @@ RUN apt-get update && \
     apt-get install -y ffmpeg
 
 RUN echo "deb http://packages.cloud.google.com/apt jessie main" > /etc/apt/sources.list.d/gcsfuse.list \
-        apt-get -y --allow-unauthenticated install gcefuse && \
+        apt-get -y --allow-unauthenticated install gcsfuse && \
         rm -rf /var/lib/apt/lists/*
 
 # Set the locale
