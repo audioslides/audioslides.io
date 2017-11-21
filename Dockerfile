@@ -1,4 +1,4 @@
-FROM elixir:1.5.2-slim as dependency-cache
+FROM elixir:1.5.2-slim
 
 ENV HOME=/opt/app
 
