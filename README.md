@@ -1,6 +1,7 @@
 # AudioSlides.IO
 
 [![Coverage Status](https://coveralls.io/repos/github/audioslides/audioslides.io/badge.svg)](https://coveralls.io/github/audioslides/audioslides.io)
+[![Build Status](https://semaphoreci.com/api/v1/workshops/audioslides-io/branches/master/badge.svg)](https://semaphoreci.com/workshops/audioslides-io)
 
 ## tl;dr
 
