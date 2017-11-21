@@ -10,3 +10,4 @@ test
 priv/static/content
 Dockerfile
 docker-compose.yml
+.semaphore-cache
