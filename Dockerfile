@@ -44,4 +44,4 @@ RUN cd assets && brunch build --production && cd .. && \
 
 # USER default
 
-CMD ["./startup.sh", "start"]
+CMD ["./startup.sh"]
