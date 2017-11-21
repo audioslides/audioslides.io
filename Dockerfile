@@ -78,4 +78,4 @@ RUN cd assets && brunch build --production && cd .. && \
 
 # USER default
 
-CMD ["mix", "phx.server"]
+CMD ["./startup.sh", "start"]
