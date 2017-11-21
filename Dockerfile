@@ -60,7 +60,7 @@ WORKDIR /opt/app
 
 # Set exposed ports
 EXPOSE 4000
-ENV PORT=4000 MIX_ENV=dev
+ENV PORT=4000 MIX_ENV=prod
 
 # Cache elixir deps
 COPY --from=dependency-cache $HOME/deps $HOME/deps
