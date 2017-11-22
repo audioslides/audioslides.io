@@ -13,13 +13,21 @@ ENV HOME=/opt/app \
 RUN sed -i "s/jessie main/jessie main contrib non-free/" /etc/apt/sources.list
 RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-jessie main" | tee /etc/apt/sources.list.d/gcsfuse.list;
 RUN echo "deb http://http.debian.net/debian jessie-backports main contrib non-free" >> /etc/apt/sources.list
-RUN apt-get update && apt-get --allow-unauthenticated -y install \
-        git make g++ wget curl build-essential locales \
+RUN apt-get update && \
+        apt get install -y apt-transport-https && \
+        apt-get --allow-unauthenticated -y install \
+        make \
+        git \
+        g++ \
+        wget \
+        curl \
+        build-essential \
+        locales \
         mysql-client \
         imagemagick \
         gcsfuse \
         ffmpeg \
-        libav-tools  && \
+        libav-tools && \
         curl -sL https://deb.nodesource.com/setup_8.x | bash && \
         apt-get -y install nodejs && \
         rm -rf /var/lib/apt/lists/*
