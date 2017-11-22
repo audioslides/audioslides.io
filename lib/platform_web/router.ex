@@ -24,6 +24,9 @@ defmodule PlatformWeb.Router do
     resources "/courses", CourseController do
       resources "/lessons", CourseLessonController
     end
+
+    get "/imprint", StaticPageController, :imprint
+    get "/privacy", StaticPageController, :privacy
   end
 
   scope "/auth", PlatformWeb do

@@ -47,8 +47,11 @@
       </small>
       </div>
       <div class="col-12 col-md-6 text-right">
-        <small class="footer-copyright">
+        <small>
             <a href="/imprint/">Legal Notice</a>
+        </small>
+        <small>
+            <a href="/privacy/">Privacy</a>
         </small>
       </div>
     </div>
