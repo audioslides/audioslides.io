@@ -13,8 +13,8 @@ config :platform, Platform.Repo,
   adapter: Ecto.Adapters.MySQL,
   username: System.get_env("DATABASE_MYSQL_USERNAME") || "root",
   password: System.get_env("DATABASE_MYSQL_PASSWORD") || "",
-  database: "audioslides_io_test",
-  hostname: "127.0.0.1",
+  database: System.get_env("DATABASE_MYSQL_DATABASE") || "audioslides_io_test",
+  hostname: System.get_env("DATABASE_MYSQL_HOSTNAME") || "127.0.0.1",
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :exvcr, [
