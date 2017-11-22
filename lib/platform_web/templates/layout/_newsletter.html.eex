@@ -1,6 +1,6 @@
 <div class="newsletter-section hidden-print">
   <div class="container">
-    <p class="lead text-center">Get notified about upcoming courses and news</p>
+    <p class="lead text-center">Get notified about new courses and news</p>
     <form action="//angularjs.us5.list-manage.com/subscribe/post?u=465db430c1cb88ec6dea2ca40&amp;id=26cd95bac4&amp;VIA=footer&amp;VIA_CAT=footer" method="post" target="_blank">
       <div class="row justify-content-md-center">
         <div class="col-12 col-md-5 mb-2">
