@@ -32,7 +32,6 @@ defmodule PlatformWeb.LessonController do
   end
 
   def show(conn, %{"id" => id}) do
-    Lesson |> authorize_action!(conn)
 
     lesson = Core.get_lesson_with_slides!(id)
     render(conn, "show.html", lesson: lesson)
