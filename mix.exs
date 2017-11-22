@@ -46,16 +46,11 @@ defmodule Platform.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
       {:ecto, "~> 2.2.2"},
-      {:excoveralls, "~> 0.7", only: :test},
-      {:exvcr, "~> 0.9", only: :test},
-      {:mix_test_watch, "~> 0.3", only: :dev},
       {:google_api_slides, "~> 0.0.1"},
       {:phoenix, "~> 1.3.0"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_html, "~> 2.10"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_ecto, "~> 3.3.0"},
       {:mariaex, "~> 0.8.1"},
       {:gettext, "~> 0.11"},
@@ -65,8 +60,13 @@ defmodule Platform.Mixfile do
       {:httpoison, "~> 0.13"},
       {:ueberauth_google, "~> 0.5"},
       {:ueberauth, "~> 0.4"},
+      {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
+      {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:ex_machina, "~> 2.1", only: :test},
-      {:mock, "~> 0.3.1", only: :test}
+      {:mock, "~> 0.3.1", only: :test},
+      {:excoveralls, "~> 0.7", only: :test},
+      {:exvcr, "~> 0.9", only: :test},
+      {:mix_test_watch, "~> 0.3", only: :dev}
     ]
   end
 
