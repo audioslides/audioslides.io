@@ -1,0 +1,42 @@
+footer {
+  color: #888;
+  padding: $spacer*3 0 $spacer*4;
+  background: $gray-200 url('/images/footer/footer-bg.png') top left no-repeat;
+
+
+  li a { font-size: 13px; }
+
+  .fa-inverse { color: $gray-200; }
+
+  a {
+    color: #888;
+
+    &:hover,
+    &:focus {
+      color: #bbb;
+      text-decoration: none;
+    }
+  }
+
+  .fa-stack-0-85x {
+    //@extend .fa-stack-1x;
+    line-height: inherit;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 85%;
+  }
+
+  .footer-divider {
+    border-top: 2px solid $gray-100;
+  }
+
+  .footer-copyright {
+    color: $text-muted;
+
+    a {
+      color: $text-muted;
+    }
+  }
+}
