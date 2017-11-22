@@ -1,0 +1,15 @@
+<div class="newsletter-section hidden-print">
+  <div class="container">
+    <p class="lead text-center">Get notified about upcoming courses and news</p>
+    <form action="//angularjs.us5.list-manage.com/subscribe/post?u=465db430c1cb88ec6dea2ca40&amp;id=26cd95bac4&amp;VIA=footer&amp;VIA_CAT=footer" method="post" target="_blank">
+      <div class="row justify-content-md-center">
+        <div class="col-12 col-md-5 mb-2">
+          <input type="email" value="" name="EMAIL" class="form-control form-control-lg" placeholder="Your email address..." required="">
+        </div>
+        <div class="col-12 col-md-3 mb-2">
+          <input type="submit" value="Notify me" class="btn btn-block btn-lg btn-primary">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
