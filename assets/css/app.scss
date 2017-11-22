@@ -13,7 +13,10 @@ $theme-colors: (
 
 $font-family-sans-serif:  "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-@import "node_modules/bootstrap/scss/bootstrap";
+$fa-font-path: "../fonts";
+@import "font-awesome";
+@import "bootstrap";
 
 @import "newsletter";
+@import "footer";
 @import "unsorted_crap";
