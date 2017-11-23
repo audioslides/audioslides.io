@@ -29,3 +29,6 @@ config :platform, :speech_api, Platform.Speech.Mock.SpeechApi
 
 config :platform, Platform.VideoConverter,
   adapter: Platform.VideoConverter.TestAdapter
+
+config :platform,   Platform.FileHelper,
+  adapter: Platform.FileHelper.FileSystemTestAdapter
