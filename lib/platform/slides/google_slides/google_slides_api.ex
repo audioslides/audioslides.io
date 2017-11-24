@@ -1,4 +1,4 @@
-defmodule Platform.GoogleSlides do
+defmodule Platform.GoogleSlidesAPI do
   @moduledoc """
   The google slides context
   """

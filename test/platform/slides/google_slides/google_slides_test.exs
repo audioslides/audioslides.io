@@ -1,4 +1,4 @@
-defmodule Platform.GoogleSlidesTest do
+defmodule Platform.GoogleSlidesAPITest do
   @moduledoc """
   Test GoogleSlide functions and mock external API
   """
@@ -11,7 +11,7 @@ defmodule Platform.GoogleSlidesTest do
   alias GoogleApi.Slides.V1.Connection
   alias Platform.FileHelper
 
-  import Platform.GoogleSlides
+  import Platform.GoogleSlidesAPI
 
   setup_with_mocks([
       {Presentations, [], [

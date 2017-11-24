@@ -6,7 +6,7 @@ defmodule Platform.Video do
 
   alias Platform.Filename
   alias Platform.FileHelper
-  alias Platform.GoogleSlides
+  alias Platform.GoogleSlidesAPI
   alias Platform.Speech
   alias Platform.VideoConverter
 
@@ -113,7 +113,7 @@ defmodule Platform.Video do
     if slide.page_elements_hash != slide.image_hash do
       Logger.info "Slide #{slide.id} Image: need update"
 
-      GoogleSlides.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
+      GoogleSlidesAPI.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
       Core.update_slide_image_hash(slide, slide.page_elements_hash)
 
       Logger.info "Slide #{slide.id} Image: generated"

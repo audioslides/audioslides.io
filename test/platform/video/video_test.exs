@@ -4,7 +4,7 @@ defmodule Platform.VideoTest do
   import Platform.Video
 
   alias Platform.Core.Schema.Slide
-  alias Platform.GoogleSlides
+  alias Platform.GoogleSlidesAPI
   alias Platform.Core
   alias Platform.Speech
   alias Platform.FileHelper
@@ -12,7 +12,7 @@ defmodule Platform.VideoTest do
   doctest Platform.Video
 
   setup_with_mocks([
-    {GoogleSlides, [], [download_slide_thumb!: fn _, _, _ -> "" end]},
+    {GoogleSlidesAPI, [], [download_slide_thumb!: fn _, _, _ -> "" end]},
     {Speech, [], [run: fn _ -> <<1, 2, 3>> end]},
     {FileHelper, [], [write_to_file: fn _, _ -> "" end]}
     ])
@@ -27,17 +27,17 @@ defmodule Platform.VideoTest do
     test "should call the GoogleSlide.download_slide_thumb! function when image_hash is different", %{lesson: lesson, slide: slide} do
       create_or_update_image_for_slide(lesson, slide)
 
-      assert called GoogleSlides.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, :_ )
+      assert called GoogleSlidesAPI.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, :_ )
     end
     test "should not call the GoogleSlide.download_slide_thumb! function when image_hash is the same", %{lesson: lesson, slide_up_to_date: slide} do
       create_or_update_image_for_slide(lesson, slide)
 
-      assert not called GoogleSlides.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, :_ )
+      assert not called GoogleSlidesAPI.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, :_ )
     end
     test "should update the image_hash after downloading the new thumb", %{lesson: lesson, slide: slide} do
       create_or_update_image_for_slide(lesson, slide)
 
-      assert called GoogleSlides.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, :_ )
+      assert called GoogleSlidesAPI.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, :_ )
       assert Core.get_slide!(slide.id).image_hash != slide.image_hash
     end
   end

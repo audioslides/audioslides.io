@@ -3,7 +3,7 @@ defmodule Platform.Core.LessonSync do
   Keeps database and online lesson in sync
   """
   alias Platform.Repo
-  alias Platform.GoogleSlides
+  alias Platform.GoogleSlidesAPI
   alias Platform.GoogleSlidesHelper
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
@@ -13,7 +13,7 @@ defmodule Platform.Core.LessonSync do
 
   def sync_slides(%Lesson{google_presentation_id: google_presentation_id}) do
     google_presentation_id
-    |> GoogleSlides.get_presentation
+    |> GoogleSlidesAPI.get_presentation
     |> handle_response
   end
   def sync_slides(%Presentation{} = google_presentation) do
