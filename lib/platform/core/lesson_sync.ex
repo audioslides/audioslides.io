@@ -4,6 +4,7 @@ defmodule Platform.Core.LessonSync do
   """
   alias Platform.Repo
   alias Platform.GoogleSlides
+  alias Platform.GoogleSlidesHelper
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
   alias GoogleApi.Slides.V1.Model.Presentation
@@ -50,10 +51,10 @@ defmodule Platform.Core.LessonSync do
 
       changes = %{
         position: index,
-        name: GoogleSlides.get_title(google_slide),
-        speaker_notes: GoogleSlides.get_speaker_notes(google_slide),
-        speaker_notes_hash: GoogleSlides.generate_hash_for_speakernotes(google_slide),
-        page_elements_hash: GoogleSlides.generate_hash_for_page_elements(google_slide),
+        name: GoogleSlidesHelper.get_title(google_slide),
+        speaker_notes: GoogleSlidesHelper.get_speaker_notes(google_slide),
+        speaker_notes_hash: GoogleSlidesHelper.generate_hash_for_speakernotes(google_slide),
+        page_elements_hash: GoogleSlidesHelper.generate_hash_for_page_elements(google_slide),
         synced_at: DateTime.utc_now
       }
 

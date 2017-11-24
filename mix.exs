@@ -63,6 +63,7 @@ defmodule Platform.Mixfile do
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:ex_machina, "~> 2.1", only: :test},
+      {:mox, "~> 0.3", only: :test},
       {:mock, "~> 0.3.1", only: :test},
       {:excoveralls, "~> 0.7", only: :test},
       {:exvcr, "~> 0.9", only: :test},

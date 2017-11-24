@@ -9,14 +9,9 @@ defmodule Platform.GoogleSlidesTest do
   alias Goth.Token
   alias GoogleApi.Slides.V1.Api.Presentations
   alias GoogleApi.Slides.V1.Connection
-  alias GoogleApi.Slides.V1.Model.Page
-  alias GoogleApi.Slides.V1.Model.PageElement
   alias Platform.FileHelper
 
-  import Platform.GoogleSlidesFactory
   import Platform.GoogleSlides
-
-  doctest Platform.GoogleSlides
 
   setup_with_mocks([
       {Presentations, [], [
