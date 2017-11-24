@@ -31,6 +31,9 @@ config :platform, Platform.VideoConverter,
 config :platform,   Platform.FileHelper,
   adapter: Platform.FileHelper.FileSystemAdapter
 
+config :platform,   Platform.SlideAPI,
+  adapter: Platform.GoogleSlidesAPI
+
 config :goth, json: System.get_env("AS_GOOGLE_GCP_CREDENTIALS")
 
 config :platform, :aws,
