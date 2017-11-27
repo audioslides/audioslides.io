@@ -46,7 +46,16 @@ defmodule Platform.Speech.AWS.Polly do
   iex> get_text("<speak>Tag1</speak><speak>Tag2</speak>")
   "<speak>Tag1</speak>"
 
+  Should return empty string on empty string input
+  iex> get_text("")
+  ""
+
+  Should return empty string on empty string input
+  iex> get_text(nil)
+  ""
+
   """
+  def get_text(nil), do: ""
   def get_text(text) do
     case get_text_type(text) do
       "text" -> text
