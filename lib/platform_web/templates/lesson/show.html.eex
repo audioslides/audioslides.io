@@ -11,12 +11,6 @@
 <section>
   <h3>Manage Video</h3>
   <div class="btn-toolbar mb-4">
-    <%= if can?(@conn, :sync, @lesson) do %>
-      <%= link "Sync", to: lesson_path(@conn, :sync, @lesson), method: :post, class: "btn btn-primary" %>
-    <% end %>
-    <%= if can?(@conn, :generate_video, @lesson) do %>
-      <span><%= link "Generate Video", to: lesson_path(@conn, :generate_video, @lesson), method: :post, class: "btn btn-secondary" %></span>
-    <% end %>
     <%= if can?(@conn, :edit, @lesson) do %>
       <span><%= link "Edit", to: lesson_path(@conn, :edit, @lesson), class: "btn btn-secondary" %></span>
     <% end %>
@@ -24,7 +18,18 @@
       <span><%= link "Delete", to: lesson_path(@conn, :delete, @lesson), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></span>
     <% end %>
   </div>
-
+  <h3>Manage Video Generation</h3>
+  <div class="btn-toolbar mb-4">
+      <%= if can?(@conn, :sync, @lesson) do %>
+      <%= link "Sync with Google API", to: lesson_path(@conn, :sync, @lesson), method: :post, class: "btn btn-primary" %>
+      <% end %>
+      <%= if can?(@conn, :generate_video, @lesson) do %>
+        <span><%= link "Generate Video", to: lesson_path(@conn, :generate_video, @lesson), method: :post, class: "btn btn-secondary" %></span>
+      <% end %>
+      <%= if can?(@conn, :invalidate_all_audio_hashes, @lesson) do %>
+        <%= link "Invalidate generate audio", to: lesson_path(@conn, :invalidate_all_audio_hashes, @lesson), method: :post, class: "btn btn-danger" %>
+      <% end %>
+    </div>
 
   <ul>
     <li>

@@ -88,6 +88,11 @@ defmodule Platform.Core do
     LessonSync.sync_slides(lesson)
   end
 
+  def invalidate_all_audio_hashes(lesson) do
+    Enum.each lesson.slides, fn(slide) -> update_slide_audio_hash(slide, nil) end
+    lesson.slides
+  end
+
   def update_slide_audio_hash(%Slide{} = slide, hash) do
     slide
     |> Slide.changeset(%{audio_hash: hash})
@@ -200,6 +205,6 @@ defmodule Platform.Core do
   end
 
   def change_course_lesson(%Course{} = course, %CourseLesson{} = course_lesson) do
-    CourseLesson    .changeset(course_lesson, %{course: course})
+    CourseLesson.changeset(course_lesson, %{course: course})
   end
 end
