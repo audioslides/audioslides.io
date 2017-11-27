@@ -106,6 +106,7 @@ defmodule PlatformWeb.LessonController do
     lesson = Core.get_lesson_with_slides!(id)
 
     Core.invalidate_all_audio_hashes(lesson)
+    Core.invalidate_all_video_hashes(lesson)
 
     conn
     |> put_flash(:info, "All audio hashed invalidated...")

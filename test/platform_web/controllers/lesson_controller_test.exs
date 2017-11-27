@@ -100,7 +100,7 @@ defmodule PlatformWeb.LessonControllerTest do
       [lesson: lesson]
     end
 
-    test "renders form for editing chosen lesson", %{conn: conn, lesson: lesson} do
+    test "should reset all audio hashes", %{conn: conn, lesson: lesson} do
       assert Enum.map(lesson.slides, fn(slide) -> slide.audio_hash end) != [nil, nil]
 
       conn = post conn, lesson_path(conn, :invalidate_all_audio_hashes, lesson)
@@ -109,6 +109,17 @@ defmodule PlatformWeb.LessonControllerTest do
       lesson = Platform.Core.get_lesson_with_slides!(lesson.id)
 
       assert Enum.map(lesson.slides, fn(slide) -> slide.audio_hash end) == [nil, nil]
+    end
+
+    test "should also reset all video hashes", %{conn: conn, lesson: lesson} do
+      assert Enum.map(lesson.slides, fn(slide) -> slide.audio_hash end) != [nil, nil]
+
+      conn = post conn, lesson_path(conn, :invalidate_all_audio_hashes, lesson)
+      assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+
+      lesson = Platform.Core.get_lesson_with_slides!(lesson.id)
+
+      assert Enum.map(lesson.slides, fn(slide) -> slide.video_hash end) == [nil, nil]
     end
   end
 

@@ -88,7 +88,7 @@ defmodule Platform.CoreTest do
       assert Enum.map(lesson.slides, fn(slide) -> slide.google_object_id end) == ["objID_1", "objID_2"]
     end
 
-    test "invalidate_all_audio_hashed/1" do
+    test "invalidate_all_audio_hashes/1" do
       slide1 = Factory.insert(:slide, audio_hash: "VALID_HASH")
       slide2 = Factory.insert(:slide, audio_hash: "VALID_HASH")
       lesson = Factory.insert(:lesson, slides: [slide1, slide2])
@@ -98,6 +98,18 @@ defmodule Platform.CoreTest do
       lesson = Core.get_lesson_with_slides!(lesson.id)
 
       assert Enum.map(lesson.slides, fn(slide) -> slide.audio_hash end) == [nil, nil]
+    end
+
+    test "invalidate_all_video_hashes/1" do
+      slide1 = Factory.insert(:slide, audio_hash: "VALID_HASH")
+      slide2 = Factory.insert(:slide, audio_hash: "VALID_HASH")
+      lesson = Factory.insert(:lesson, slides: [slide1, slide2])
+
+      Core.invalidate_all_video_hashes(lesson)
+
+      lesson = Core.get_lesson_with_slides!(lesson.id)
+
+      assert Enum.map(lesson.slides, fn(slide) -> slide.video_hash end) == [nil, nil]
     end
   end
 
