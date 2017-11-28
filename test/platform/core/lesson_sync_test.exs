@@ -1,12 +1,10 @@
 defmodule Platform.LessonSyncTest do
   use Platform.DataCase
 
-  import Mock
   import Mox
 
   # alias Platform.Core.Schema.Lesson
   alias Platform.Core.LessonSync
-  alias Platform.SlideAPI
   alias Platform.GoogleSlidesFactory
   alias Platform.Factory
   alias GoogleApi.Slides.V1.Model.Presentation
@@ -63,36 +61,41 @@ defmodule Platform.LessonSyncTest do
 
   describe "create_or_update_slides" do
     test "should fetch a google presentation and sync with %Lesson{} as parameter", %{lesson: lesson, google_presentation: google_presentation} do
-      with_mock SlideAPI, [:passthrough], [get_presentation: fn _ -> {:ok, google_presentation} end] do
-        LessonSync.sync_slides(lesson)
+      Platform.SlidesAPIMock
+      |> expect(:get_presentation, fn _x -> {:ok, google_presentation} end)
 
-        assert called SlideAPI.get_presentation(lesson.google_presentation_id)
-      end
+      LessonSync.sync_slides(lesson)
     end
 
     test "should return an error when google api fails", %{lesson: lesson} do
-      with_mock SlideAPI, [:passthrough], [get_presentation: fn _ -> {:error, %{body: "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"A message\",\n    \"status\": \"A status\"\n  }\n}\n"}} end] do
-        result = LessonSync.sync_slides(lesson)
+      example_error = {:error, %{body: "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"A message\",\n    \"status\": \"A status\"\n  }\n}\n"}}
 
-        assert result == {:error, %{message: "A message", status: "A status"}}
-      end
+      Platform.SlidesAPIMock
+      |> expect(:get_presentation, fn _x -> example_error end)
+
+      result = LessonSync.sync_slides(lesson)
+
+      assert result == {:error, %{message: "A message", status: "A status"}}
     end
 
     test "should insert slides if they don't exist with a lesson as input", %{lesson: lesson, google_presentation: google_presentation} do
-      with_mock SlideAPI, [:passthrough], [get_presentation: fn _ -> {:ok, google_presentation} end] do
-        LessonSync.sync_slides(lesson)
+      Platform.SlidesAPIMock
+      |> expect(:get_presentation, fn _x -> {:ok, google_presentation} end)
 
-        lesson =
-          lesson
-          |> Repo.preload(:slides)
+      LessonSync.sync_slides(lesson)
 
-        assert length(lesson.slides) == 2
-        assert Enum.map(lesson.slides, fn(slide) -> slide.google_object_id end) == ["objID_1", "objID_2"]
-      end
+      lesson =
+        lesson
+        |> Repo.preload(:slides)
+
+      assert length(lesson.slides) == 2
+      assert Enum.map(lesson.slides, fn(slide) -> slide.google_object_id end) == ["objID_1", "objID_2"]
     end
 
     test "should not double-insert a slide if already exists", %{lesson: lesson, google_presentation: google_presentation} do
-      with_mock SlideAPI, [:passthrough], [get_presentation: fn _ -> {:ok, google_presentation} end] do
+        Platform.SlidesAPIMock
+        |> expect(:get_presentation, 2, fn _x -> {:ok, google_presentation} end)
+
         LessonSync.sync_slides(lesson)
 
         lesson =
@@ -110,9 +113,7 @@ defmodule Platform.LessonSyncTest do
 
         assert length(lesson.slides) == 2
         assert Enum.map(lesson.slides, fn(slide) -> slide.google_object_id end) == ["objID_1", "objID_2"]
-      end
     end
-
   end
 
   describe "download_all_thumbs!/1" do
@@ -152,4 +153,5 @@ defmodule Platform.LessonSyncTest do
 
     end
   end
+
 end
