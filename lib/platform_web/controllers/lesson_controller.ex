@@ -113,4 +113,15 @@ defmodule PlatformWeb.LessonController do
     |> redirect(to: lesson_path(conn, :show, lesson))
   end
 
+  def download_all_thumbs(conn, %{"id" => id}) do
+    Lesson |> authorize_action!(conn)
+    lesson = Core.get_lesson_with_slides!(id)
+
+    Core.download_all_thumbs!(lesson)
+
+    conn
+    |> put_flash(:info, "All thumbs downloaded...")
+    |> redirect(to: lesson_path(conn, :show, lesson))
+  end
+
 end

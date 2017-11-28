@@ -18,6 +18,7 @@ defmodule PlatformWeb.Router do
     post "/lessons/:id/sync", LessonController, :sync
     post "/lessons/:id/generate_video", LessonController, :generate_video
     post "/lessons/:id/invalidate_all_audio_hashes", LessonController, :invalidate_all_audio_hashes
+    post "/lessons/:id/download_all_thumbs", LessonController, :download_all_thumbs
     resources "/lessons", LessonController do
       post "/slides/:id/generate_video", SlideController, :generate_video
       resources "/slides", SlideController, only: [:show]

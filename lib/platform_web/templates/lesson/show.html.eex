@@ -21,7 +21,10 @@
   <h3>Manage Video Generation</h3>
   <div class="btn-toolbar mb-4">
       <%= if can?(@conn, :sync, @lesson) do %>
-      <%= link "Sync with Google API", to: lesson_path(@conn, :sync, @lesson), method: :post, class: "btn btn-primary" %>
+        <%= link "Sync with Google API", to: lesson_path(@conn, :sync, @lesson), method: :post, class: "btn btn-primary" %>
+      <% end %>
+      <%= if can?(@conn, :sync, @lesson) do %>
+        <%= link "Download all thumbs", to: lesson_path(@conn, :download_all_thumbs, @lesson), method: :post, class: "btn btn-primary" %>
       <% end %>
       <%= if can?(@conn, :generate_video, @lesson) do %>
         <span><%= link "Generate Video", to: lesson_path(@conn, :generate_video, @lesson), method: :post, class: "btn btn-secondary" %></span>

@@ -2,10 +2,13 @@ defmodule PlatformWeb.LessonControllerTest do
   use PlatformWeb.ConnCase
 
   import Mock
+  import Mox
 
   @create_attrs %{google_presentation_id: "some google_presentation_id", name: "some name", voice_gender: "male", voice_language: "de-DE"}
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
+
+  setup :verify_on_exit!
 
   describe "#index" do
     test "lists all lessons", %{conn: conn} do
@@ -143,6 +146,20 @@ defmodule PlatformWeb.LessonControllerTest do
         assert get_flash(conn, :error) == "status : message"
         assert redirected_to(conn) == lesson_path(conn, :show, lesson)
       end
+    end
+  end
+
+  describe "#download_all_thumbs!" do
+    setup :create_lesson
+
+    test "should call Core.download_all_thumbs! with a lesson", %{conn: conn, lesson: lesson} do
+      Platform.GoogleSlidesAPIMock
+      |> expect(:download_slide_thumb!, length(lesson.slides), fn _x, _y, z -> z end)
+
+      conn = post conn, lesson_path(conn, :download_all_thumbs, lesson)
+
+      assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+      assert get_flash(conn, :info) == "All thumbs downloaded..."
     end
   end
 
