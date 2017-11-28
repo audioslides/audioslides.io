@@ -2,6 +2,7 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=<%= Application.get_env(:platform, :google_analytics)[:property] %>"></script>
 <script>
+  var gaProperty = '<%= Application.get_env(:platform, :google_analytics)[:property] %>';
   var disableStr = 'ga-disable-' + gaProperty;
 
   if (document.cookie.indexOf(disableStr + '=true') > -1) {
