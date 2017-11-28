@@ -13,4 +13,12 @@ defmodule Platform.FileHelper.FileSystemAdapter do
     File.close(file)
   end
 
+  def remove_file(filename) do
+    File.rm filename
+  end
+
+  def remove_folder(directory) do
+    File.rm_rf directory
+  end
+
 end
