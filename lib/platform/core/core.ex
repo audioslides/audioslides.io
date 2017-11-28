@@ -10,6 +10,8 @@ defmodule Platform.Core do
   alias Platform.Core.Schema.Course
   alias Platform.Core.Schema.CourseLesson
   alias Platform.Core.LessonSync
+  alias Platform.FileHelper
+  alias Platform.Filename
 
   ### ################################################################### ###
   ### Lesson                                                        ###
@@ -49,6 +51,7 @@ defmodule Platform.Core do
   end
 
   def delete_lesson(%Lesson{} = lesson) do
+    remove_files_for_lesson(lesson)
     Repo.delete(lesson)
   end
 
@@ -76,7 +79,8 @@ defmodule Platform.Core do
     |> Repo.update()
   end
 
-  def delete_slide(%Slide{} = slide) do
+  def delete_slide(%Lesson{} = lesson, %Slide{} = slide) do
+    remove_files_for_slide(lesson, slide)
     Repo.delete(slide)
   end
 
@@ -130,6 +134,19 @@ defmodule Platform.Core do
 
   def invalidate_all_image_hashes(lesson) do
     Enum.each lesson.slides, fn(slide) -> update_slide_image_hash(slide, nil) end
+  end
+
+  # FileHelper to cleanup
+
+  def remove_files_for_slide(lesson, slide) do
+    Filename.get_filename_for_slide_video(lesson, slide) |> FileHelper.remove_file
+    Filename.get_filename_for_slide_audio(lesson, slide) |> FileHelper.remove_file
+    Filename.get_filename_for_slide_image(lesson, slide) |> FileHelper.remove_file
+  end
+
+  def remove_files_for_lesson(lesson) do
+    Filename.get_directory_for_lesson(lesson) |> FileHelper.remove_folder
+    Filename.get_filename_for_lesson_video(lesson) |> FileHelper.remove_file
   end
 
   ### ################################################################### ###

@@ -81,7 +81,7 @@ defmodule Platform.Core.LessonSync do
       |> Repo.all()
 
     Enum.each slides, fn slide ->
-      Core.delete_slide(slide)
+      Core.delete_slide(lesson, slide)
     end
   end
 end

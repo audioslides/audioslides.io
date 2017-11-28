@@ -199,8 +199,9 @@ defmodule Platform.CoreTest do
         end
 
         test "delete_slide/1 deletes the slide" do
-          slide = Factory.insert(:slide)
-          assert {:ok, %Slide{}} = Core.delete_slide(slide)
+          lesson = Factory.insert(:lesson)
+          slide = Factory.insert(:slide, lesson: lesson)
+          assert {:ok, %Slide{}} = Core.delete_slide(lesson, slide)
           assert_raise Ecto.NoResultsError, fn -> Core.get_slide!(slide.id) end
         end
 

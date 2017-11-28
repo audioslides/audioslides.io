@@ -22,6 +22,8 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
 
     opts = "-f concat -safe 0 -i #{concat_input_filename} -c copy -y #{output_filename}"
     System.cmd("ffmpeg", String.split(opts, " "))
+
+    FileHelper.remove_file(concat_input_filename)
   end
 
   def get_audio_duration(audio_filename) do
