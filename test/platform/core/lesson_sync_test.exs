@@ -128,6 +128,19 @@ defmodule Platform.LessonSyncTest do
     end
   end
 
+  describe "download_thumb!/2" do
+    test "should download a thumb" do
+      slide1 = Factory.insert(:slide)
+      slide2 = Factory.insert(:slide)
+      lesson = Factory.insert(:lesson, slides: [slide1, slide2])
+
+      Platform.GoogleSlidesAPIMock
+      |> expect(:download_slide_thumb!, 1, fn _x, _y, z -> z end)
+
+      LessonSync.download_thumb!(lesson, slide1)
+    end
+  end
+
   describe "get_error_from_response" do
     test "should return the reason of a error" do
       example_response = {:error, %{body: "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Request had insufficient authentication scopes.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n"}}

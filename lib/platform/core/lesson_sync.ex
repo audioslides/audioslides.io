@@ -88,8 +88,12 @@ defmodule Platform.Core.LessonSync do
 
   def download_all_thumbs!(%Lesson{} = lesson) do
     Enum.each lesson.slides, fn(slide) ->
-      image_filename = Filename.get_filename_for_slide_image(lesson, slide)
-      SlideAPI.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
+      download_thumb!(lesson, slide)
     end
+  end
+
+  def download_thumb!(%Lesson{} = lesson, %Slide{} = slide) do
+    image_filename = Filename.get_filename_for_slide_image(lesson, slide)
+    SlideAPI.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
   end
 end

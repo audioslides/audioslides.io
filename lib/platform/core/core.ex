@@ -63,6 +63,10 @@ defmodule Platform.Core do
     LessonSync.download_all_thumbs!(lesson)
   end
 
+  def download_thumb!(%Lesson{} = lesson, %Slide{} = slide) do
+    LessonSync.download_thumb!(lesson, slide)
+  end
+
   ### ################################################################### ###
   ### Slide                                                               ###
   ### ################################################################### ###
@@ -143,14 +147,14 @@ defmodule Platform.Core do
   # FileHelper to cleanup
 
   def remove_files_for_slide(lesson, slide) do
-    Filename.get_filename_for_slide_video(lesson, slide) |> FileHelper.remove_file
-    Filename.get_filename_for_slide_audio(lesson, slide) |> FileHelper.remove_file
-    Filename.get_filename_for_slide_image(lesson, slide) |> FileHelper.remove_file
+    FileHelper.remove_file(Filename.get_filename_for_slide_video(lesson, slide))
+    FileHelper.remove_file(Filename.get_filename_for_slide_audio(lesson, slide))
+    FileHelper.remove_file(Filename.get_filename_for_slide_image(lesson, slide))
   end
 
   def remove_files_for_lesson(lesson) do
-    Filename.get_directory_for_lesson(lesson) |> FileHelper.remove_folder
-    Filename.get_filename_for_lesson_video(lesson) |> FileHelper.remove_file
+    FileHelper.remove_folder(Filename.get_directory_for_lesson(lesson))
+    FileHelper.remove_file(Filename.get_filename_for_lesson_video(lesson))
   end
 
   ### ################################################################### ###

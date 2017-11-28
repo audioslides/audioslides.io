@@ -109,11 +109,10 @@ defmodule Platform.Video do
   def generate_video_hash(_), do: nil
 
   def create_or_update_image_for_slide(lesson, slide) do
-    image_filename = Filename.get_filename_for_slide_image(lesson, slide)
     if slide.page_elements_hash != slide.image_hash do
       Logger.info "Slide #{slide.id} Image: need update"
 
-      SlideAPI.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
+      Core.download_thumb!(lesson, slide)
       Core.update_slide_image_hash(slide, slide.page_elements_hash)
 
       Logger.info "Slide #{slide.id} Image: generated"
@@ -121,7 +120,7 @@ defmodule Platform.Video do
       Logger.info "Slide #{slide.id} Image: skipped"
     end
 
-    image_filename
+    Filename.get_filename_for_slide_image(lesson, slide)
   end
 
   def create_or_update_audio_for_slide(lesson, slide) do
