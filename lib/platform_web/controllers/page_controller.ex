@@ -4,7 +4,12 @@ defmodule PlatformWeb.PageController do
   alias Platform.Core
 
   def index(conn, _params) do
-    lessons = Core.list_lessons()
+    lessons =
+      if can?(conn, :show, User) do
+        Core.list_lessons()
+      else
+        Core.list_visible_lessons()
+      end
 
     render(conn, "index.html", lessons: lessons)
   end
