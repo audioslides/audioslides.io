@@ -14,7 +14,7 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', '<%= Application.get_env(:platform, :google_analytics)[:property] %>');
+  gtag('config', gaProperty);
   gtag('config', 'GA_TRACKING_ID', { 'anonymize_ip': true });
 </script>
 <% end %>
