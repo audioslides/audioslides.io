@@ -9,6 +9,7 @@ defmodule Platform.Core.LessonSync do
   alias Platform.Core.Schema.Slide
   alias GoogleApi.Slides.V1.Model.Presentation
   alias Platform.Core
+  alias Platform.Filename
 
   require Ecto.Query
 
@@ -82,6 +83,13 @@ defmodule Platform.Core.LessonSync do
 
     Enum.each slides, fn slide ->
       Core.delete_slide(lesson, slide)
+    end
+  end
+
+  def download_all_thumbs!(%Lesson{} = lesson) do
+    Enum.each lesson.slides, fn(slide) ->
+      image_filename = Filename.get_filename_for_slide_image(lesson, slide)
+      SlideAPI.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
     end
   end
 end
