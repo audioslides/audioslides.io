@@ -59,6 +59,10 @@ defmodule Platform.Core do
     Lesson.changeset(lesson, %{})
   end
 
+  def download_all_thumbs!(%Lesson{} = lesson) do
+    LessonSync.download_all_thumbs!(lesson)
+  end
+
   ### ################################################################### ###
   ### Slide                                                               ###
   ### ################################################################### ###

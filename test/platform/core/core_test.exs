@@ -6,6 +6,10 @@ defmodule Platform.CoreTest do
   alias Platform.Core.Schema.Slide
   alias Platform.GoogleSlidesFactory
 
+  import Mox
+
+  setup :verify_on_exit!
+
   doctest Platform.Core
 
   describe "lessons" do
@@ -86,6 +90,17 @@ defmodule Platform.CoreTest do
 
       assert length(lesson.slides) == 2
       assert Enum.map(lesson.slides, fn(slide) -> slide.google_object_id end) == ["objID_1", "objID_2"]
+    end
+
+    test "download_slide_thumb/1 download all thumbs" do
+      slide1 = Factory.insert(:slide)
+      slide2 = Factory.insert(:slide)
+      lesson = Factory.insert(:lesson, slides: [slide1, slide2])
+
+      Platform.GoogleSlidesAPIMock
+      |> expect(:download_slide_thumb!, length(lesson.slides), fn _x, _y, z -> z end)
+
+      Core.download_all_thumbs!(lesson)
     end
 
     test "invalidate_all_audio_hashes/1" do
