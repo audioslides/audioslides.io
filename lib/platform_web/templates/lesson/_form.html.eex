@@ -6,6 +6,12 @@
   <% end %>
 
   <div class="form-group">
+    <%= checkbox f, :visible %>
+    <%= label f, :visible, class: "control-label" %>
+    <%= error_tag f, :visible %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :google_presentation_id, class: "control-label" %>
     <%= text_input f, :google_presentation_id, class: "form-control" %>
     <%= error_tag f, :google_presentation_id %>

@@ -11,6 +11,7 @@ defmodule Platform.Core.Schema.Lesson do
 
   @timestamps_opts [type: :utc_datetime, usec: false]
   schema "lessons" do
+    field :visible, :boolean
     field :google_presentation_id, :string
     field :name, :string
     field :voice_gender, :string
@@ -24,7 +25,7 @@ defmodule Platform.Core.Schema.Lesson do
   end
 
   @doc false
-  @fields [:google_presentation_id, :name, :voice_language, :voice_gender]
+  @fields [:visible, :google_presentation_id, :name, :voice_language, :voice_gender]
   def changeset(%__MODULE__{} = struct, attrs) do
     struct
     |> cast(attrs, @fields)
