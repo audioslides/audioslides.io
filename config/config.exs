@@ -20,6 +20,10 @@ config :platform, :speech_api, Platform.Speech.AWS.Polly
 
 config :platform, :content_dir, "priv/static/content/"
 
+config :platform, :google_analytics,
+  enabled: false,
+  property: "1234"
+
   # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

@@ -77,6 +77,11 @@ config :goth, json: System.get_env("GOOGLE_GCP_CREDENTIALS")
 config :platform, :aws,
   access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
   secret: System.get_env("AWS_SECRET")
+
+config :platform, :google_analytics,
+  enabled: if System.get_env("GA_ENABLED")  == "true", do: true, else: false,
+  property: System.get_env("GA_PROPERTY") || ""
+
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 # import_config "prod.secret.exs"
