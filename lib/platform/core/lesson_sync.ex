@@ -8,6 +8,7 @@ defmodule Platform.Core.LessonSync do
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
   alias GoogleApi.Slides.V1.Model.Presentation
+  alias Platform.Core
 
   require Ecto.Query
 
@@ -17,7 +18,7 @@ defmodule Platform.Core.LessonSync do
     |> handle_response
   end
   def sync_slides(%Presentation{} = google_presentation) do
-    lesson = get_lesson_by_google_presentation_id!(google_presentation.presentationId)
+    lesson = Core.get_lesson_by_google_presentation_id!(google_presentation.presentationId)
     delete_removed_slides(lesson, google_presentation.slides)
     create_or_update_slides(lesson, google_presentation.slides)
   end
@@ -80,11 +81,7 @@ defmodule Platform.Core.LessonSync do
       |> Repo.all()
 
     Enum.each slides, fn slide ->
-      Repo.delete(slide)
+      Core.delete_slide(slide)
     end
-  end
-
-  def get_lesson_by_google_presentation_id!(id) do
-    Repo.get_by!(Lesson, google_presentation_id: id)
   end
 end
