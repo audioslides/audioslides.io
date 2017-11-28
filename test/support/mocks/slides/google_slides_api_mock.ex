@@ -1,4 +1,4 @@
-defmodule Platform.GoogleSlidesAPIMock do
+defmodule Platform.SlidesAPIMock do
   @moduledoc """
   The google slides mock context
   """

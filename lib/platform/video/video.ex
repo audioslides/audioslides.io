@@ -6,7 +6,6 @@ defmodule Platform.Video do
 
   alias Platform.Filename
   alias Platform.FileHelper
-  alias Platform.SlideAPI
   alias Platform.Speech
   alias Platform.VideoConverter
 

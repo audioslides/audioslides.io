@@ -27,7 +27,7 @@ defmodule Platform.VideoTest do
   describe "the create_or_update_image_for_slide function" do
     test "should call the GoogleSlide.download_slide_thumb! function when image_hash is different", %{lesson: lesson, slide: slide} do
 
-      Platform.GoogleSlidesAPIMock
+      Platform.SlidesAPIMock
       |> expect(:download_slide_thumb!, fn _x, _y, z -> z end)
 
       create_or_update_image_for_slide(lesson, slide)

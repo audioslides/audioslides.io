@@ -121,7 +121,7 @@ defmodule Platform.LessonSyncTest do
       slide2 = Factory.insert(:slide)
       lesson = Factory.insert(:lesson, slides: [slide1, slide2])
 
-      Platform.GoogleSlidesAPIMock
+      Platform.SlidesAPIMock
       |> expect(:download_slide_thumb!, length(lesson.slides), fn _x, _y, z -> z end)
 
       LessonSync.download_all_thumbs!(lesson)
@@ -134,7 +134,7 @@ defmodule Platform.LessonSyncTest do
       slide2 = Factory.insert(:slide)
       lesson = Factory.insert(:lesson, slides: [slide1, slide2])
 
-      Platform.GoogleSlidesAPIMock
+      Platform.SlidesAPIMock
       |> expect(:download_slide_thumb!, 1, fn _x, _y, z -> z end)
 
       LessonSync.download_thumb!(lesson, slide1)

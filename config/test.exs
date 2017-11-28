@@ -34,4 +34,4 @@ config :platform,   Platform.FileHelper,
   adapter: Platform.FileHelper.FileSystemTestAdapter
 
 config :platform,   Platform.SlideAPI,
-  adapter: Platform.GoogleSlidesAPIMock
+  adapter: Platform.SlidesAPIMock

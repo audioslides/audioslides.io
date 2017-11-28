@@ -153,7 +153,7 @@ defmodule PlatformWeb.LessonControllerTest do
     setup :create_lesson
 
     test "should call Core.download_all_thumbs! with a lesson", %{conn: conn, lesson: lesson} do
-      Platform.GoogleSlidesAPIMock
+      Platform.SlidesAPIMock
       |> expect(:download_slide_thumb!, length(lesson.slides), fn _x, _y, z -> z end)
 
       conn = post conn, lesson_path(conn, :download_all_thumbs, lesson)
