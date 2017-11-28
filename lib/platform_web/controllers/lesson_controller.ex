@@ -5,9 +5,10 @@ defmodule PlatformWeb.LessonController do
   alias Platform.Core.Schema.Lesson
 
   alias Platform.Video
+  alias PlatformWeb.AccessHelper
 
   def index(conn, _params) do
-    lessons = Core.list_lessons()
+    lessons = AccessHelper.list_lessons(conn)
     render(conn, "index.html", lessons: lessons)
   end
 

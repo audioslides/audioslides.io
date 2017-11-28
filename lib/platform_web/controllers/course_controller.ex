@@ -4,6 +4,8 @@ defmodule PlatformWeb.CourseController do
   alias Platform.Core
   alias Platform.Core.Schema.Course
 
+  alias PlatformWeb.AccessHelper
+
   def index(conn, _params) do
     courses = Core.list_courses()
     render(conn, "index.html", courses: courses)
@@ -11,7 +13,7 @@ defmodule PlatformWeb.CourseController do
 
   def new(conn, _params) do
     changeset = Core.change_course(%Course{})
-    render(conn, "new.html", changeset: changeset, collections: collections())
+    render(conn, "new.html", changeset: changeset, collections: collections(conn))
   end
 
   def create(conn, %{"course" => course_params}) do
@@ -21,7 +23,7 @@ defmodule PlatformWeb.CourseController do
         |> put_flash(:info, "Course created successfully.")
         |> redirect(to: course_path(conn, :show, course))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset, collections: collections())
+        render(conn, "new.html", changeset: changeset, collections: collections(conn))
     end
   end
 
@@ -33,7 +35,7 @@ defmodule PlatformWeb.CourseController do
   def edit(conn, %{"id" => id}) do
     course = Core.get_course_with_lessons!(id)
     changeset = Core.change_course(course)
-    render(conn, "edit.html", course: course, changeset: changeset, collections: collections())
+    render(conn, "edit.html", course: course, changeset: changeset, collections: collections(conn))
   end
 
   def update(conn, %{"id" => id, "course" => course_params}) do
@@ -45,7 +47,7 @@ defmodule PlatformWeb.CourseController do
         |> put_flash(:info, "Course updated successfully.")
         |> redirect(to: course_path(conn, :show, course))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", course: course, changeset: changeset, collections: collections())
+        render(conn, "edit.html", course: course, changeset: changeset, collections: collections(conn))
     end
   end
 
@@ -59,9 +61,9 @@ defmodule PlatformWeb.CourseController do
   end
 
   # Private methods
-  defp collections do
+  defp collections(conn) do
     %{
-      lessons: Core.list_lessons()
+      lessons:  AccessHelper.list_lessons(conn)
     }
   end
 end

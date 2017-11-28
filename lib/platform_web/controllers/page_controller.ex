@@ -1,15 +1,10 @@
 defmodule PlatformWeb.PageController do
   use PlatformWeb, :controller
 
-  alias Platform.Core
+  alias PlatformWeb.AccessHelper
 
   def index(conn, _params) do
-    lessons =
-      if can?(conn, :show, User) do
-        Core.list_lessons()
-      else
-        Core.list_visible_lessons()
-      end
+    lessons = AccessHelper.list_lessons(conn)
 
     render(conn, "index.html", lessons: lessons)
   end

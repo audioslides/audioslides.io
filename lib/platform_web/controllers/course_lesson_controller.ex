@@ -3,6 +3,7 @@ defmodule PlatformWeb.CourseLessonController do
 
   alias Platform.Core
   alias Platform.Core.Schema.CourseLesson
+  alias PlatformWeb.AccessHelper
 
   def new(conn, %{"course_id" => course_id}) do
     course = Core.get_course!(course_id)
@@ -59,10 +60,9 @@ defmodule PlatformWeb.CourseLessonController do
   end
 
   # Private functions
-  defp collections(_conn) do
+  defp collections(conn) do
     %{
-      lessons:
-        Core.list_lessons()
+      lessons: AccessHelper.list_lessons(conn)
     }
   end
 end
