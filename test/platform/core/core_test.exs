@@ -25,6 +25,16 @@ defmodule Platform.CoreTest do
       assert List.first(lessons).id == lesson.id
     end
 
+    test "list_visible_lessons/0 return only visible lessons" do
+      lesson = Factory.insert(:lesson, visible: true)
+      Factory.insert(:lesson, visible: true)
+      Factory.insert(:lesson, visible: false)
+
+      lessons = Core.list_visible_lessons()
+      assert length(lessons) == 2
+      assert List.first(lessons).id == lesson.id
+    end
+
     test "get_lesson!/1 returns the lesson with given id" do
       lesson = Factory.insert(:lesson)
       assert Core.get_lesson!(lesson.id).id == lesson.id

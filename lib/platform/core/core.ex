@@ -22,6 +22,13 @@ defmodule Platform.Core do
     |> Repo.preload(slides: Slide |> Ecto.Query.order_by([asc: :position]))
   end
 
+  def list_visible_lessons do
+    Lesson
+    |> Ecto.Query.where(visible: true)
+    |> Repo.all
+    |> Repo.preload(slides: Slide |> Ecto.Query.order_by([asc: :position]))
+  end
+
   def get_lesson!(id) do
     Lesson
     |> Repo.get!(id)
