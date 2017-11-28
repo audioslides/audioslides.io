@@ -106,12 +106,30 @@ defmodule Platform.Core do
     |> Repo.update()
   end
 
+  # Invalidate functions to force regeneration
+
+  def invalidate_audio_hash(%Slide{} = slide) do
+    update_slide_audio_hash(slide, nil)
+  end
+
+  def invalidate_video_hash(%Slide{} = slide) do
+    update_slide_video_hash(slide, nil)
+  end
+
+  def invalidate_image_hash(%Slide{} = slide) do
+    update_slide_image_hash(slide, nil)
+  end
+
   def invalidate_all_audio_hashes(lesson) do
-    Enum.each lesson.slides, fn(slide) -> update_slide_audio_hash(slide, nil) end
+    Enum.each lesson.slides, fn(slide) -> invalidate_audio_hash(slide) end
   end
 
   def invalidate_all_video_hashes(lesson) do
     Enum.each lesson.slides, fn(slide) -> update_slide_video_hash(slide, nil) end
+  end
+
+  def invalidate_all_image_hashes(lesson) do
+    Enum.each lesson.slides, fn(slide) -> update_slide_image_hash(slide, nil) end
   end
 
   ### ################################################################### ###
