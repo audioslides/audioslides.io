@@ -1,0 +1,50 @@
+<section>
+  <h2>Manage Video Generation of <%= @lesson.name %></h2>
+  <div class="btn-toolbar mb-4">
+      <%= if can?(@conn, :sync, @lesson) do %>
+        <%= link "Sync with Google API", to: lesson_path(@conn, :sync, @lesson), method: :post, class: "btn btn-primary" %>
+      <% end %>
+      <%= if can?(@conn, :download_all_thumbs, @lesson) do %>
+        <%= link "Download all thumbs", to: lesson_path(@conn, :download_all_thumbs, @lesson), method: :post, class: "btn btn-primary" %>
+      <% end %>
+      <%= if can?(@conn, :generate_video, @lesson) do %>
+        <span><%= link "Generate Video", to: lesson_path(@conn, :generate_video, @lesson), method: :post, class: "btn btn-secondary" %></span>
+      <% end %>
+      <%= if can?(@conn, :invalidate_all_audio_hashes, @lesson) do %>
+        <%= link "Invalidate generate audio", to: lesson_path(@conn, :invalidate_all_audio_hashes, @lesson), method: :post, class: "btn btn-danger" %>
+      <% end %>
+    </div>
+
+  <ul>
+    <li>
+      <strong>Voice language:</strong>
+      <%= @lesson.voice_language %>
+    </li>
+    <li>
+      <strong>Voice gender:</strong>
+      <%= @lesson.voice_gender %>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h3>Slides</h3>
+  <div class="hover-zoom-cards row">
+    <%= for slide <- @lesson.slides do %>
+      <a class="col-4 p-3" href="<%= lesson_slide_path(@conn, :show, @lesson, slide) %>">
+        <div class="card">
+          <div class="card-image">
+              <%= img_tag(get_slide_image(@lesson, slide), class: "card-img-top img-fluid", alt: "Card image #{slide.name}") %>
+          </div>
+          <div class="card-body w-100 h-100">
+            <div class="d-flex align-content-center w-100 h-100">
+              <h4 class="card-title slide-name mx-auto my-auto">
+                  <%= slide.name %>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </a>
+    <% end %>
+  </div>
+</section>

@@ -33,9 +33,13 @@ defmodule PlatformWeb.LessonController do
   end
 
   def show(conn, %{"id" => id}) do
-
-    lesson = Core.get_lesson_with_slides!(id)
+    lesson = Core.get_lesson!(id)
     render(conn, "show.html", lesson: lesson)
+  end
+
+  def manage(conn, %{"id" => id}) do
+    lesson = Core.get_lesson_with_slides!(id)
+    render(conn, "manage.html", lesson: lesson)
   end
 
   def edit(conn, %{"id" => id}) do

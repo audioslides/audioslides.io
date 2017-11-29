@@ -24,6 +24,23 @@ defmodule PlatformWeb.LessonControllerTest do
     end
   end
 
+  describe "#show" do
+    test "displays the video", %{conn: conn} do
+      lesson = Factory.insert(:lesson, name: "Lesson name")
+      conn = get conn, lesson_path(conn, :show, lesson.id)
+      assert html_response(conn, 200) =~ lesson.name
+    end
+  end
+
+  describe "#manage" do
+    test "manage the video", %{conn: conn} do
+      lesson = Factory.insert(:lesson, name: "Lesson name")
+      conn = get conn, lesson_path(conn, :manage, lesson.id)
+      assert html_response(conn, 200) =~ lesson.name
+      assert html_response(conn, 200) =~ "Manage Video"
+    end
+  end
+
   describe "#create" do
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post conn, lesson_path(conn, :create), lesson: @create_attrs
