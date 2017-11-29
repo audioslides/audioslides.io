@@ -18,3 +18,8 @@
       </video>
   </div>
 </section>
+
+<section>
+  <h3>Comments</h3>
+    <%= render PlatformWeb.LayoutView, "_disqus.html", conn: @conn, lesson: @lesson %>
+</section>
