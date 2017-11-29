@@ -24,5 +24,6 @@
     <%= render "_newsletter.html", conn: @conn %>
     <%= render "_footer.html", conn: @conn %>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script id="dsq-count-scr" src="//audioslides-io.disqus.com/count.js" async></script>
   </body>
 </html>
