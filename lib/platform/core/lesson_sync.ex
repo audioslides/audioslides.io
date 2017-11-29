@@ -3,7 +3,6 @@ defmodule Platform.Core.LessonSync do
   Keeps database and online lesson in sync
   """
   alias Platform.Repo
-  alias Platform.SlideAPI
   alias Platform.GoogleSlidesHelper
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
@@ -13,9 +12,11 @@ defmodule Platform.Core.LessonSync do
 
   require Ecto.Query
 
+  @slide_api Application.get_env(:platform, Platform.SlideAPI, [])[:adapter]
+
   def sync_slides(%Lesson{google_presentation_id: google_presentation_id}) do
     google_presentation_id
-    |> SlideAPI.get_presentation
+    |> @slide_api.get_presentation
     |> handle_response
   end
   def sync_slides(%Presentation{} = google_presentation) do
@@ -94,6 +95,6 @@ defmodule Platform.Core.LessonSync do
 
   def download_thumb!(%Lesson{} = lesson, %Slide{} = slide) do
     image_filename = Filename.get_filename_for_slide_image(lesson, slide)
-    SlideAPI.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
+    @slide_api.download_slide_thumb!(lesson.google_presentation_id, slide.google_object_id, image_filename)
   end
 end
