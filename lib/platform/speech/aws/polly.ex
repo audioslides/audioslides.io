@@ -12,18 +12,38 @@ defmodule Platform.Speech.AWS.Polly do
   def get_speech(%{"language_key" => language_key, "voice_gender" => voice_gender, "text" => text}) do
     voice = Voice.get_voice(voice_gender: voice_gender, language: language_key)
 
-    params = %{
-      "OutputFormat" => "mp3",
-      "SampleRate" => "8000",
-      "VoiceId" => voice,
-      "Text" => text,
-      "TextType" => get_text_type(text)
-    }
+    params = build_params(%{"text" => text, "voice" => voice})
 
     data = Poison.encode!(params)
     signed_url = get_signed_url(data)
 
     get_binary_speech(signed_url, data)
+  end
+
+  @doc """
+  Build params for the request
+
+  Should work with pure text
+  iex> build_params(%{"text" => "text", "voice" => "voice"})
+  %{"OutputFormat" => "mp3", "SampleRate" => "8000", "VoiceId" => "voice", "Text" => "text", "TextType" => "text"}
+
+  Should work with SSML
+  iex> build_params(%{"text" => "<speak>text</speak>", "voice" => "voice"})
+  %{"OutputFormat" => "mp3", "SampleRate" => "8000", "VoiceId" => "voice", "Text" => "<speak>text</speak>", "TextType" => "ssml"}
+
+  Should ignore additional text when type SSML
+  iex> build_params(%{"text" => "<speak>text</speak>Some Additional Information", "voice" => "voice"})
+  %{"OutputFormat" => "mp3", "SampleRate" => "8000", "VoiceId" => "voice", "Text" => "<speak>text</speak>", "TextType" => "ssml"}
+
+  """
+  def build_params(%{"text" => text, "voice" => voice}) do
+    %{
+      "OutputFormat" => "mp3",
+      "SampleRate" => "8000",
+      "VoiceId" => voice,
+      "Text" => get_text(text),
+      "TextType" => get_text_type(text)
+    }
   end
 
   @doc """
@@ -44,6 +64,10 @@ defmodule Platform.Speech.AWS.Polly do
 
   Only first tag is used
   iex> get_text("<speak>Tag1</speak><speak>Tag2</speak>")
+  "<speak>Tag1</speak>"
+
+  Ignore additional comments for editors
+  iex> get_text("<speak>Tag1</speak>Some extra information for editors")
   "<speak>Tag1</speak>"
 
   Should return empty string on empty string input
@@ -92,6 +116,9 @@ defmodule Platform.Speech.AWS.Polly do
   true
 
   iex> contains_text_ssml?("<speak>SSML Text\\n\\nLine Breaks also okay</speak>")
+  true
+
+  iex> contains_text_ssml?("<speak>SSML Text\\n\\nLine Breaks also okay</speak>Some extra information for editor.")
   true
 
   """
