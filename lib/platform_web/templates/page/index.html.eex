@@ -12,7 +12,7 @@
 
 <div class="hover-zoom-cards row">
     <%= for lesson <- @lessons do %>
-    <a class="col-4 p-3" href="<%= lesson_path(@conn, :show, lesson) %>">
+    <a class="col-12 col-md-4 p-3" href="<%= lesson_path(@conn, :show, lesson) %>">
       <div class="card">
         <div class="card-image">
             <%= img_tag(get_course_front_slide_image(lesson), class: "card-img-top img-fluid", alt: "Card image #{lesson.name}") %>
