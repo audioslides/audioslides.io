@@ -1,7 +1,7 @@
-defmodule Platform.Accounts.UserFromAuthTest do
+defmodule Platform.Accounts.UserFromGoogleAuthTest do
   use Platform.DataCase
 
-  alias Platform.Accounts.UserFromAuth
+  alias Platform.Accounts.UserFromGoogleAuth
   alias Ueberauth.Auth
 
   describe "#find_or_create" do
@@ -18,7 +18,7 @@ defmodule Platform.Accounts.UserFromAuthTest do
           image: demo_user.image_url
         }
       }
-      {:ok, user} = UserFromAuth.find_or_create(auth)
+      {:ok, user} = UserFromGoogleAuth.find_or_create(auth)
 
       assert user.first_name == demo_user.first_name
       assert user.email == demo_user.email
@@ -36,7 +36,7 @@ defmodule Platform.Accounts.UserFromAuthTest do
           image: "profile.png"
         }
       }
-      {:ok, user} = UserFromAuth.find_or_create(auth)
+      {:ok, user} = UserFromGoogleAuth.find_or_create(auth)
 
       assert user.first_name == "John"
       assert user.email == "john@example.com"

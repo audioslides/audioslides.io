@@ -3,7 +3,9 @@ defmodule PlatformWeb.AuthControllerTest do
 
   alias Ueberauth.Auth
 
-  import Mock
+  import Mox
+
+  setup :verify_on_exit!
 
   describe "#callback" do
     test "when callback fails", %{conn: conn} do
@@ -15,6 +17,10 @@ defmodule PlatformWeb.AuthControllerTest do
 
     test "when callback succeeds", %{conn: conn} do
       demo_user = Factory.insert(:user)
+
+      Platform.Accounts.UserFromAuthMock
+      |> expect(:find_or_create, fn _user -> {:ok, demo_user} end)
+
       auth = %Auth{
         provider: :google,
         uid: String.to_integer(demo_user.google_uid),
@@ -34,25 +40,27 @@ defmodule PlatformWeb.AuthControllerTest do
     end
 
     test "when callback succeeds but error", %{conn: conn} do
-      with_mock Platform.Accounts.UserFromAuth, [find_or_create: fn _ -> {:error, "some reason"} end] do
-        demo_user = Factory.insert(:user)
-        auth = %Auth{
-          provider: :google,
-          uid: 1234, # provoke an error here
-          info: %{
-            first_name: demo_user.first_name,
-            last_name: demo_user.last_name,
-            email: demo_user.email,
-            image: demo_user.image_url
-          }
+
+      Platform.Accounts.UserFromAuthMock
+      |> expect(:find_or_create, fn _user -> {:error, "some reason"} end)
+
+      demo_user = Factory.insert(:user)
+      auth = %Auth{
+        provider: :google,
+        uid: 1234, # provoke an error here
+        info: %{
+          first_name: demo_user.first_name,
+          last_name: demo_user.last_name,
+          email: demo_user.email,
+          image: demo_user.image_url
         }
+      }
 
-        conn = assign(conn, :ueberauth_auth, auth)
-        conn = get conn, auth_path(conn, :callback, "google")
+      conn = assign(conn, :ueberauth_auth, auth)
+      conn = get conn, auth_path(conn, :callback, "google")
 
-        assert get_flash(conn, :error) == "some reason"
-        assert redirected_to(conn) == "/"
-      end
+      assert get_flash(conn, :error) == "some reason"
+      assert redirected_to(conn) == "/"
     end
   end
 
@@ -66,6 +74,10 @@ defmodule PlatformWeb.AuthControllerTest do
 
     test "when callback succeeds", %{conn: conn} do
       demo_user = Factory.insert(:user)
+
+      Platform.Accounts.UserFromAuthMock
+      |> expect(:find_or_create, fn _user -> {:ok, demo_user} end)
+
       auth = %Auth{
         provider: :google,
         uid: String.to_integer(demo_user.google_uid),

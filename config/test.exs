@@ -35,3 +35,6 @@ config :platform,   Platform.FileHelper,
 
 config :platform,   Platform.SlideAPI,
   adapter: Platform.SlidesAPIMock
+
+config :platform, Platform.Accounts.UserFromAuth,
+  adapter: Platform.Accounts.UserFromAuthMock

@@ -2,12 +2,14 @@ defmodule PlatformWeb.AuthController do
   @moduledoc """
   Auth controller responsible for handling Ueberauth responses
   """
-  alias Platform.Accounts.UserFromAuth
+
+  @auth_adapter Application.get_env(:platform, Platform.Accounts.UserFromAuth, [])[:adapter]
+
   use PlatformWeb, :controller
   plug Ueberauth # handles request action
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    case UserFromAuth.find_or_create(auth) do
+    case @auth_adapter.find_or_create(auth) do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Successfully authenticated.")

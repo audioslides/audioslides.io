@@ -38,6 +38,9 @@ config :platform,   Platform.FileHelper,
 config :platform,   Platform.SlideAPI,
   adapter: Platform.GoogleSlidesAPI
 
+config :platform, Platform.Accounts.UserFromAuth,
+  adapter: Platform.Accounts.UserFromGoogleAuth
+
 config :goth, json: System.get_env("AS_GOOGLE_GCP_CREDENTIALS")
 
 config :platform, :aws,
