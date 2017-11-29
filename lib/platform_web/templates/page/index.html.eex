@@ -11,20 +11,7 @@
 <h2>Latest slides</h2>
 
 <div class="hover-zoom-cards row">
-    <%= for lesson <- @lessons do %>
-    <a class="col-12 col-md-4 p-3" href="<%= lesson_path(@conn, :show, lesson) %>">
-      <div class="card">
-        <div class="card-image">
-            <%= img_tag(get_course_front_slide_image(lesson), class: "card-img-top img-fluid", alt: "Card image #{lesson.name}") %>
-        </div>
-        <div class="card-body w-100 h-100">
-          <div class="d-flex align-content-center w-100 h-100">
-            <h4 class="card-title mx-auto my-auto">
-              <%= lesson.name %>
-            </h4>
-          </div>
-        </div>
-      </div>
-    </a>
+  <%= for lesson <- @lessons do %>
+    <%= render PlatformWeb.LessonView, "_lesson.html", conn: @conn, lesson: lesson %>
   <% end %>
 </div>
