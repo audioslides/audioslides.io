@@ -3,6 +3,8 @@ defmodule PlatformWeb.Endpoint do
 
   socket("/socket", PlatformWeb.UserSocket)
 
+  plug PlatformWeb.HttpsRedirectPlug
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
