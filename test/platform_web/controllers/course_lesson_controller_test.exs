@@ -16,19 +16,19 @@ defmodule PlatformWeb.CourseLessonControllerTest do
   end
 
   describe "#create" do
-    test "redirects to show when data is valid", %{conn: conn, course: course} do
+    test "redirects to show when data is valid", %{conn: orig_conn, course: course} do
       lesson = Factory.insert(:lesson)
 
       conn =
         post(
-          conn,
-          course_course_lesson_path(conn, :create, course),
+          orig_conn,
+          course_course_lesson_path(orig_conn, :create, course),
           course_lesson: Map.put(@create_attrs, :lesson_id, lesson.id)
         )
 
       assert redirected_to(conn) == course_path(conn, :show, course)
 
-      conn = get(conn, course_path(conn, :show, course))
+      conn = get(orig_conn, course_path(orig_conn, :show, course))
       assert html_response(conn, 200) =~ course.name
     end
 
@@ -60,21 +60,17 @@ defmodule PlatformWeb.CourseLessonControllerTest do
   describe "#update" do
     setup :create_course_lesson
 
-    test "redirects when data is valid", %{
-      conn: conn,
-      course: course,
-      course_lesson: course_lesson
-    } do
+    test "redirects when data is valid", %{ conn: orig_conn, course: course, course_lesson: course_lesson } do
       conn =
         put(
-          conn,
-          course_course_lesson_path(conn, :update, course, course_lesson),
+          orig_conn,
+          course_course_lesson_path(orig_conn, :update, course, course_lesson),
           course_lesson: @update_attrs
         )
 
       assert redirected_to(conn) == course_path(conn, :show, course)
 
-      conn = get(conn, course_path(conn, :show, course))
+      conn = get(orig_conn, course_path(orig_conn, :show, course))
       assert html_response(conn, 200) =~ course.name
     end
 

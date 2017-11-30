@@ -22,13 +22,13 @@ defmodule PlatformWeb.CourseControllerTest do
   end
 
   describe "#create" do
-    test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, course_path(conn, :create), course: @create_attrs)
+    test "redirects to show when data is valid", %{conn: orig_conn} do
+      conn = post(orig_conn, course_path(orig_conn, :create), course: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == course_path(conn, :show, id)
 
-      conn = get(conn, course_path(conn, :show, id))
+      conn = get(orig_conn, course_path(orig_conn, :show, id))
       assert html_response(conn, 200) =~ @create_attrs.name
     end
 
@@ -50,11 +50,11 @@ defmodule PlatformWeb.CourseControllerTest do
   describe "#update" do
     setup [:create_course]
 
-    test "redirects when data is valid", %{conn: conn, course: course} do
-      conn = put(conn, course_path(conn, :update, course), course: @update_attrs)
+    test "redirects when data is valid", %{conn: orig_conn, course: course} do
+      conn = put(orig_conn, course_path(orig_conn, :update, course), course: @update_attrs)
       assert redirected_to(conn) == course_path(conn, :show, course)
 
-      conn = get(conn, course_path(conn, :show, course))
+      conn = get(orig_conn, course_path(orig_conn, :show, course))
       assert html_response(conn, 200)
     end
 
@@ -67,12 +67,12 @@ defmodule PlatformWeb.CourseControllerTest do
   describe "#delete" do
     setup [:create_course]
 
-    test "deletes chosen course", %{conn: conn, course: course} do
-      conn = delete(conn, course_path(conn, :delete, course))
+    test "deletes chosen course", %{conn: orig_conn, course: course} do
+      conn = delete(orig_conn, course_path(orig_conn, :delete, course))
       assert redirected_to(conn) == course_path(conn, :index)
 
       assert_error_sent(404, fn ->
-        get(conn, course_path(conn, :show, course))
+        get(orig_conn, course_path(orig_conn, :show, course))
       end)
     end
   end

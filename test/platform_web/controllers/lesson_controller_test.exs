@@ -51,17 +51,17 @@ defmodule PlatformWeb.LessonControllerTest do
 
   describe "#create" do
 
-    test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, lesson_path(conn, :create), lesson: @create_attrs)
+    test "redirects to show when data is valid", %{conn: orig_conn} do
+      conn = post(orig_conn, lesson_path(orig_conn, :create), lesson: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == lesson_path(conn, :show, id)
 
-      conn = get(conn, lesson_path(conn, :show, id))
+      conn = get(orig_conn, lesson_path(orig_conn, :show, id))
       assert html_response(conn, 200) =~ "name"
     end
 
-    test "redirects to show when data is valid with google slide url", %{conn: conn} do
+    test "redirects to show when data is valid with google slide url", %{conn: orig_conn} do
       attrs_with_google_slide_url = %{
         google_presentation_id:
           "https://docs.google.com/presentation/d/1tgbdANGoW8BGI-S-_DcP0XsxhoaTO_KConY7-R3FnkM/edit#slide=id.g299abd216d_0_525",
@@ -70,12 +70,12 @@ defmodule PlatformWeb.LessonControllerTest do
         voice_language: "de-DE"
       }
 
-      conn = post(conn, lesson_path(conn, :create), lesson: attrs_with_google_slide_url)
+      conn = post(orig_conn, lesson_path(orig_conn, :create), lesson: attrs_with_google_slide_url)
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == lesson_path(conn, :show, id)
 
-      conn = get(conn, lesson_path(conn, :show, id))
+      conn = get(orig_conn, lesson_path(orig_conn, :show, id))
       assert html_response(conn, 200) =~ "name"
 
       assert Platform.Core.get_lesson!(id).google_presentation_id ==
@@ -100,11 +100,11 @@ defmodule PlatformWeb.LessonControllerTest do
   describe "#update" do
     setup [:create_lesson]
 
-    test "redirects when data is valid", %{conn: conn, lesson: lesson} do
-      conn = put(conn, lesson_path(conn, :update, lesson), lesson: @update_attrs)
+    test "redirects when data is valid", %{conn: orig_conn, lesson: lesson} do
+      conn = put(orig_conn, lesson_path(orig_conn, :update, lesson), lesson: @update_attrs)
       assert redirected_to(conn) == lesson_path(conn, :show, lesson)
 
-      conn = get(conn, lesson_path(conn, :show, lesson))
+      conn = get(orig_conn, lesson_path(orig_conn, :show, lesson))
       assert html_response(conn, 200) =~ "some updated name"
     end
 
