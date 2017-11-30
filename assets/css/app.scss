@@ -11,6 +11,12 @@ $theme-colors: (
   dark: #343a40
 );
 
+$breadcrumb-divider: "›";
+$breadcrumb-bg: inherit;
+$breadcrumb-padding-y: .30rem;
+$breadcrumb-padding-x: 0;
+$breadcrumb-active-color: #666;
+
 $font-family-sans-serif:  "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 $fa-font-path: "../fonts";
@@ -19,4 +25,5 @@ $fa-font-path: "../fonts";
 
 @import "newsletter";
 @import "footer";
+@import "breadcrumb";
 @import "unsorted_crap";
