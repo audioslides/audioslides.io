@@ -1,5 +1,6 @@
 defmodule PlatformWeb.CourseView do
   use PlatformWeb, :view
+  import PlatformWeb.ViewHelper
 
   def page("index.html", conn), do: %{
     title: "Courses",

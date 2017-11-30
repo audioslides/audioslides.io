@@ -1,11 +1,3 @@
-<h2>Show Course</h2>
-
-<ul>
-  <li>
-    <%= @course.name %>
-  </li>
-</ul>
-
 <span><%= link "Edit", to: course_path(@conn, :edit, @course) %></span>
 <span><%= link "Back", to: course_path(@conn, :index) %></span>
 
@@ -13,10 +5,20 @@
 
 <h3>Lessons in this course</h3>
 
-<div class="hover-zoom-cards row">
+<ul class="list-group mb-4">
   <%= for course_lesson <- @course.course_lessons do %>
-    <%= render PlatformWeb.LessonView, "_lesson.html", conn: @conn, lesson: course_lesson.lesson %>
+    <li class="list-group-item p-4">
+      <div class="media">
+      <%= img_tag(get_course_front_slide_image(course_lesson.lesson), class: "d-flex mr-4", width: 200, alt: "Card image #{course_lesson.lesson.name}") %>
+        <div class="media-body">
+          <h2 class="mt-0"><%= course_lesson.lesson.name %></h2>
+          <div style="max-width: 600px;">
+            ....
+          </div>
+        </div>
+      </div>
+    </li>
   <% end %>
-</div>
+</ul>
 
 <%= link "Add lesson", to: course_course_lesson_path(@conn, :new, @course), class: "btn btn-primary" %>
