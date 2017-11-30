@@ -13,7 +13,8 @@ defmodule PlatformWeb.LessonControllerTest do
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
 
-  setup :verify_on_exit!
+  setup [:set_current_user_as_admin, :verify_on_exit!]
+
 
   describe "#index" do
     test "lists all lessons", %{conn: conn} do
@@ -23,7 +24,6 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#new" do
-    setup :set_current_user_as_admin
 
     test "renders form", %{conn: conn} do
       conn = get(conn, lesson_path(conn, :new))
@@ -40,7 +40,6 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#manage" do
-    setup :set_current_user_as_admin
 
     test "manage the video", %{conn: conn} do
       lesson = Factory.insert(:lesson, name: "Lesson name")
@@ -51,7 +50,6 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#create" do
-    setup :set_current_user_as_admin
 
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, lesson_path(conn, :create), lesson: @create_attrs)
@@ -91,7 +89,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#edit" do
-    setup [:create_lesson, :set_current_user_as_admin]
+    setup [:create_lesson]
 
     test "renders form for editing chosen lesson", %{conn: conn, lesson: lesson} do
       conn = get(conn, lesson_path(conn, :edit, lesson))
@@ -100,7 +98,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#update" do
-    setup [:create_lesson, :set_current_user_as_admin]
+    setup [:create_lesson]
 
     test "redirects when data is valid", %{conn: conn, lesson: lesson} do
       conn = put(conn, lesson_path(conn, :update, lesson), lesson: @update_attrs)
@@ -117,7 +115,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#delete" do
-    setup [:create_lesson, :set_current_user_as_admin]
+    setup [:create_lesson]
 
     test "deletes chosen lesson", %{conn: conn, lesson: lesson} do
       conn = delete(conn, lesson_path(conn, :delete, lesson))
@@ -129,7 +127,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#generate_video" do
-    setup [:create_lesson, :set_current_user_as_admin]
+    setup [:create_lesson]
 
     alias Platform.VideoConverter.TestAdapter
 
@@ -141,7 +139,6 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#invalidate_all_audio_hashes" do
-    setup :set_current_user_as_admin
 
     setup do
       slide_1 = Factory.insert(:slide, audio_hash: "VALID_HASH")
@@ -175,7 +172,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#sync" do
-    setup [:create_lesson, :set_current_user_as_admin]
+    setup [:create_lesson]
 
     test "should call Core.sync_lesson with correct lesson", %{conn: conn, lesson: lesson} do
       with_mock Platform.Core, [:passthrough], sync_lesson: fn _ -> "" end do
@@ -199,7 +196,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#download_all_thumbs!" do
-    setup [:create_lesson, :set_current_user_as_admin]
+    setup [:create_lesson]
 
     test "should call Core.download_all_thumbs! with a lesson", %{conn: conn, lesson: lesson} do
       Platform.SlidesAPIMock
