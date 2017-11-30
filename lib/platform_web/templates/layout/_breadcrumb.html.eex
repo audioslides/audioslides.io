@@ -1,0 +1,10 @@
+<nav class="breadcrumb mt-2">
+  <% breadcrumbs = [{"Home", "/"}] ++ PlatformWeb.BreadcrumbHelper.encode(page(@conn)) %>
+  <%= for {{name, path}, index} <- Enum.with_index(breadcrumbs) do %>
+    <%= if length(breadcrumbs) == index + 1 do %>
+      <span class="breadcrumb-item active"><%= name %></span>
+    <% else %>
+      <%= link name, to: path || "", class: "breadcrumb-item" %>
+    <% end %>
+  <% end %>
+</nav>

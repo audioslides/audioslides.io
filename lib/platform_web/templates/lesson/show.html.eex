@@ -1,5 +1,3 @@
-<h2><%= @lesson.name %></h2>
-
 <%= if can?(@conn, :edit, @lesson) do %>
 <section>
   <h3>Manage Video</h3>

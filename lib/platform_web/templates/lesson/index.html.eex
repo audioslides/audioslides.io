@@ -1,7 +1,3 @@
-<div>
-    <h2>Listing Lessons</h2>
-</div>
-
 <div class="hover-zoom-cards row">
   <%= for lesson <- @lessons do %>
     <%= render PlatformWeb.LessonView, "_lesson.html", conn: @conn, lesson: lesson %>

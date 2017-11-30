@@ -1,5 +1,4 @@
 <section>
-  <h2>Manage Video Generation of <%= @lesson.name %></h2>
   <div class="btn-toolbar mb-4">
       <%= if can?(@conn, :sync, @lesson) do %>
         <%= link "Sync with Google API", to: lesson_path(@conn, :sync, @lesson), method: :post, class: "btn btn-primary" %>

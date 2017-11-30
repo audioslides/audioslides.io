@@ -59,7 +59,7 @@ defmodule PlatformWeb.LessonControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, lesson_path(conn, :create), lesson: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Lesson"
+      assert html_response(conn, 200) =~ "New lesson"
     end
   end
 
@@ -68,7 +68,7 @@ defmodule PlatformWeb.LessonControllerTest do
 
     test "renders form for editing chosen lesson", %{conn: conn, lesson: lesson} do
       conn = get(conn, lesson_path(conn, :edit, lesson))
-      assert html_response(conn, 200) =~ "Edit Lesson"
+      assert html_response(conn, 200) =~ "Edit lesson"
     end
   end
 
@@ -85,7 +85,7 @@ defmodule PlatformWeb.LessonControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, lesson: lesson} do
       conn = put(conn, lesson_path(conn, :update, lesson), lesson: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Edit Lesson"
+      assert html_response(conn, 200) =~ "Edit lesson"
     end
   end
 

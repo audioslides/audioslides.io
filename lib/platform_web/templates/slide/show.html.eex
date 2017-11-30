@@ -1,9 +1,3 @@
-<h1>
-  <%= @slide.name %>
-  <small>
-      (#<%= @slide.position+1 %> of <%= length(@lesson.slides) %>)
-  </small>
-</h1>
 <h4>
 Last sync at <%= @slide.synced_at %>
 </h4>
