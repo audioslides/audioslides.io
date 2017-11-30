@@ -95,7 +95,10 @@ defmodule PlatformWeb.CanHelperTest do
         conn = %{conn | private: %{phoenix_action: :some_other_action}}
 
         assert authorize_action!(user, conn) == user
-        assert called(Platform.Permission.can?(conn.assigns.current_user, :some_other_action, user))
+
+        assert called(
+                 Platform.Permission.can?(conn.assigns.current_user, :some_other_action, user)
+               )
       end
     end
 

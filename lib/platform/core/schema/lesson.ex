@@ -40,6 +40,7 @@ defmodule Platform.Core.Schema.Lesson do
 
   def extract_presentation_id(%Ecto.Changeset{} = changeset) do
     input = get_field(changeset, :google_presentation_id)
+
     if input do
       google_presentation_id = GoogleSlidesHelper.extract_presentation_id(input)
       put_change(changeset, :google_presentation_id, google_presentation_id)
@@ -47,5 +48,4 @@ defmodule Platform.Core.Schema.Lesson do
       changeset
     end
   end
-
 end

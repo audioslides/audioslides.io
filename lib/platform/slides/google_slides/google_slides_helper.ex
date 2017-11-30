@@ -215,6 +215,7 @@ defmodule Platform.GoogleSlidesHelper do
 
   """
   def extract_presentation_id(nil), do: nil
+
   def extract_presentation_id(input) do
     regex = ~r/(https:\/\/docs\.google\.com\/presentation\/d\/([\s\S]*?)\/)/
 

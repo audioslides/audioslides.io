@@ -15,9 +15,11 @@ defmodule PlatformWeb.BreadcrumbHelper do
   def encode(%{parent: %{path: _} = parent} = map) when is_map(parent) do
     encode(parent) ++ [encode_single(map)]
   end
+
   def encode(%{parent: parent}) when is_map(parent) do
     raise "Provide a link for parent"
   end
+
   def encode(%{} = map) do
     [encode_single(map)]
   end
