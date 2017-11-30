@@ -24,4 +24,6 @@
   </tbody>
 </table>
 
-<span><%= link "New Course", to: course_path(@conn, :new) %></span>
+<%= if can?(@conn, :delete, Course) do %>
+  <%= link "New Course", to: course_path(@conn, :new), class: "btn btn-primary" %>
+<% end %>

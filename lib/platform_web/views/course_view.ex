@@ -3,6 +3,7 @@ defmodule PlatformWeb.CourseView do
   import PlatformWeb.ViewHelper
 
   alias Platform.Core.Schema.CourseLesson
+  alias Platform.Core.Schema.Course
 
   def page("index.html", conn), do: %{
     title: "Courses",
