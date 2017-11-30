@@ -23,6 +23,8 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#new" do
+    setup :set_current_user_as_admin
+
     test "renders form", %{conn: conn} do
       conn = get(conn, lesson_path(conn, :new))
       assert html_response(conn, 200) =~ "New Lesson"
@@ -38,6 +40,8 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#manage" do
+    setup :set_current_user_as_admin
+
     test "manage the video", %{conn: conn} do
       lesson = Factory.insert(:lesson, name: "Lesson name")
       conn = get(conn, lesson_path(conn, :manage, lesson.id))
@@ -47,6 +51,8 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#create" do
+    setup :set_current_user_as_admin
+
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, lesson_path(conn, :create), lesson: @create_attrs)
 
@@ -59,11 +65,13 @@ defmodule PlatformWeb.LessonControllerTest do
 
     test "redirects to show when data is valid with google slide url", %{conn: conn} do
       attrs_with_google_slide_url = %{
-        google_presentation_id: "https://docs.google.com/presentation/d/1tgbdANGoW8BGI-S-_DcP0XsxhoaTO_KConY7-R3FnkM/edit#slide=id.g299abd216d_0_525",
+        google_presentation_id:
+          "https://docs.google.com/presentation/d/1tgbdANGoW8BGI-S-_DcP0XsxhoaTO_KConY7-R3FnkM/edit#slide=id.g299abd216d_0_525",
         name: "some name",
         voice_gender: "male",
         voice_language: "de-DE"
       }
+
       conn = post(conn, lesson_path(conn, :create), lesson: attrs_with_google_slide_url)
 
       assert %{id: id} = redirected_params(conn)
@@ -72,7 +80,8 @@ defmodule PlatformWeb.LessonControllerTest do
       conn = get(conn, lesson_path(conn, :show, id))
       assert html_response(conn, 200) =~ "name"
 
-      assert Platform.Core.get_lesson!(id).google_presentation_id == "1tgbdANGoW8BGI-S-_DcP0XsxhoaTO_KConY7-R3FnkM"
+      assert Platform.Core.get_lesson!(id).google_presentation_id ==
+               "1tgbdANGoW8BGI-S-_DcP0XsxhoaTO_KConY7-R3FnkM"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -82,7 +91,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#edit" do
-    setup [:create_lesson]
+    setup [:create_lesson, :set_current_user_as_admin]
 
     test "renders form for editing chosen lesson", %{conn: conn, lesson: lesson} do
       conn = get(conn, lesson_path(conn, :edit, lesson))
@@ -91,7 +100,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#update" do
-    setup [:create_lesson]
+    setup [:create_lesson, :set_current_user_as_admin]
 
     test "redirects when data is valid", %{conn: conn, lesson: lesson} do
       conn = put(conn, lesson_path(conn, :update, lesson), lesson: @update_attrs)
@@ -108,12 +117,9 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#delete" do
-    setup [:create_lesson]
+    setup [:create_lesson, :set_current_user_as_admin]
 
     test "deletes chosen lesson", %{conn: conn, lesson: lesson} do
-      user = Factory.insert(:user, admin: true)
-      conn = %{conn | assigns: %{current_user: user}}
-
       conn = delete(conn, lesson_path(conn, :delete, lesson))
       assert redirected_to(conn) == lesson_path(conn, :index)
       # assert_error_sent 404, fn ->
@@ -123,7 +129,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#generate_video" do
-    setup :create_lesson
+    setup [:create_lesson, :set_current_user_as_admin]
 
     alias Platform.VideoConverter.TestAdapter
 
@@ -135,6 +141,8 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#invalidate_all_audio_hashes" do
+    setup :set_current_user_as_admin
+
     setup do
       slide_1 = Factory.insert(:slide, audio_hash: "VALID_HASH")
       slide_2 = Factory.insert(:slide, audio_hash: "VALID_HASH")
@@ -167,7 +175,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#sync" do
-    setup :create_lesson
+    setup [:create_lesson, :set_current_user_as_admin]
 
     test "should call Core.sync_lesson with correct lesson", %{conn: conn, lesson: lesson} do
       with_mock Platform.Core, [:passthrough], sync_lesson: fn _ -> "" end do
@@ -191,7 +199,7 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#download_all_thumbs!" do
-    setup :create_lesson
+    setup [:create_lesson, :set_current_user_as_admin]
 
     test "should call Core.download_all_thumbs! with a lesson", %{conn: conn, lesson: lesson} do
       Platform.SlidesAPIMock
@@ -209,5 +217,11 @@ defmodule PlatformWeb.LessonControllerTest do
     slide_2 = Factory.insert(:slide)
     lesson = Factory.insert(:lesson, google_presentation_id: "1", slides: [slide_1, slide_2])
     {:ok, lesson: lesson}
+  end
+
+  defp set_current_user_as_admin(%{conn: conn}) do
+    user = Factory.insert(:user, admin: true)
+    conn = %{conn | assigns: %{current_user: user}}
+    {:ok, conn: conn}
   end
 end
