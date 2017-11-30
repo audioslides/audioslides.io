@@ -5,6 +5,8 @@ defmodule PlatformWeb.CourseControllerTest do
   @update_attrs %{name: "An awesome course"}
   @invalid_attrs %{name: nil}
 
+  setup :set_current_user_as_admin
+
   describe "#index" do
     test "lists all courses", %{conn: conn} do
       conn = get(conn, course_path(conn, :index))
@@ -79,4 +81,11 @@ defmodule PlatformWeb.CourseControllerTest do
     course = Factory.insert(:course)
     {:ok, course: course}
   end
+
+  defp set_current_user_as_admin(%{conn: conn}) do
+    user = Factory.insert(:user, admin: true)
+    conn = %{conn | assigns: %{current_user: user}}
+    {:ok, conn: conn}
+  end
+
 end
