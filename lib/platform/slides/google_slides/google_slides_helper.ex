@@ -197,4 +197,30 @@ defmodule Platform.GoogleSlidesHelper do
   """
   def contains_element_title?(%{shape: %{placeholder: %{type: "TITLE"}, text: _}}), do: true
   def contains_element_title?(_), do: false
+
+  @doc """
+  Extract a presentation_id from a url string
+
+  iex> extract_presentation_id("https://docs.google.com/presentation/d/1tGbdANGoW8BGI-S-_DcP0XsXhoaTO_KConY7-RVFnkM/edit#slide=id.g299abd206d_0_525")
+  "1tGbdANGoW8BGI-S-_DcP0XsXhoaTO_KConY7-RVFnkM"
+
+  iex> extract_presentation_id("https://docs.google.com/presentation/d/1tGbdANGoW8BGI-S-_DcP0XsXhoaTO_KConY7-RVFnkM/edit#slide=id.g299abd206d_0_525")
+  "1tGbdANGoW8BGI-S-_DcP0XsXhoaTO_KConY7-RVFnkM"
+
+  iex> extract_presentation_id("string-without-valid-id")
+  "string-without-valid-id"
+
+  iex> extract_presentation_id(nil)
+  nil
+
+  """
+  def extract_presentation_id(nil), do: nil
+  def extract_presentation_id(input) do
+    regex = ~r/(https:\/\/docs\.google\.com\/presentation\/d\/([\s\S]*?)\/)/
+
+    case Regex.run(regex, input) do
+      [_, _match, presentation_id] -> presentation_id
+      _ -> input
+    end
+  end
 end

@@ -5,7 +5,7 @@ defmodule PlatformWeb.LessonControllerTest do
   import Mox
 
   @create_attrs %{
-    google_presentation_id: "some google_presentation_id",
+    google_presentation_id: "some-google_presentation_id",
     name: "some name",
     voice_gender: "male",
     voice_language: "de-DE"
@@ -55,6 +55,24 @@ defmodule PlatformWeb.LessonControllerTest do
 
       conn = get(conn, lesson_path(conn, :show, id))
       assert html_response(conn, 200) =~ "name"
+    end
+
+    test "redirects to show when data is valid with google slide url", %{conn: conn} do
+      attrs_with_google_slide_url = %{
+        google_presentation_id: "https://docs.google.com/presentation/d/1tgbdANGoW8BGI-S-_DcP0XsxhoaTO_KConY7-R3FnkM/edit#slide=id.g299abd216d_0_525",
+        name: "some name",
+        voice_gender: "male",
+        voice_language: "de-DE"
+      }
+      conn = post(conn, lesson_path(conn, :create), lesson: attrs_with_google_slide_url)
+
+      assert %{id: id} = redirected_params(conn)
+      assert redirected_to(conn) == lesson_path(conn, :show, id)
+
+      conn = get(conn, lesson_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "name"
+
+      assert Platform.Core.get_lesson!(id).google_presentation_id == "1tgbdANGoW8BGI-S-_DcP0XsxhoaTO_KConY7-R3FnkM"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

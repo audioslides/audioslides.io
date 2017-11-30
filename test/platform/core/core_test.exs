@@ -14,7 +14,7 @@ defmodule Platform.CoreTest do
 
   describe "lessons" do
     @valid_attrs %{
-      google_presentation_id: "some google_presentation_id",
+      google_presentation_id: "some-google_presentation_id",
       name: "some name",
       voice_gender: "female",
       voice_language: "en-US"
@@ -58,7 +58,7 @@ defmodule Platform.CoreTest do
 
     test "create_lesson/1 with valid data creates a lesson" do
       assert {:ok, %Lesson{} = lesson} = Core.create_lesson(@valid_attrs)
-      assert lesson.google_presentation_id == "some google_presentation_id"
+      assert lesson.google_presentation_id == "some-google_presentation_id"
       assert lesson.name == "some name"
       assert lesson.voice_gender == "female"
       assert lesson.voice_language == "en-US"
