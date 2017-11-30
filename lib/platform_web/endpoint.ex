@@ -3,6 +3,7 @@ defmodule PlatformWeb.Endpoint do
 
   socket("/socket", PlatformWeb.UserSocket)
 
+  # plug PlatformWeb.WwwRedirectPlug
   plug PlatformWeb.HttpsRedirectPlug
 
   # Serve at "/" the static files from "priv/static" directory.

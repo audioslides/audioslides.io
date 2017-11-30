@@ -1,21 +1,20 @@
-defmodule PlatformWeb.HttpsRedirectPlug do
+defmodule PlatformWeb.WwwRedirectPlug do
   @moduledoc """
-  Redirects http to https if request comes from a proxy
-  and the x-forwarded-proto header is set to http
+  Removes the www. from an url
   """
   import Plug.Conn
 
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    if get_req_header(conn, "x-forwarded-proto") == ["http"] do
-      redirect_to_https_version(conn)
+    if String.starts_with?(conn.host, "www.") do
+      redirect_to_naked_domain(conn)
     else
       conn
     end
   end
 
-  defp redirect_to_https_version(conn) do
+  defp redirect_to_naked_domain(conn) do
     status = if conn.method in ~w(HEAD GET), do: 301, else: 307
 
     location = "https://" <> naked_host(conn.host) <> conn.request_path <> qs(conn.query_string)
