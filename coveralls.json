@@ -27,7 +27,7 @@
     "lib/platform_web.ex",
     "lib/platform.ex",
     "lib/platform/application.ex",
-    "lib/platform/ability.ex",
+    "lib/platform/permission.ex",
     "test/support"
   ]
 }

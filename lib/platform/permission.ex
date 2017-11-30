@@ -1,4 +1,4 @@
-defmodule Platform.Ability do
+defmodule Platform.Permission do
   @moduledoc """
   Defines all access rights for all models. White listing approach.
   """

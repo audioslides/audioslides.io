@@ -2,11 +2,11 @@ defmodule PlatformWeb.CanHelper do
   @moduledoc false
 
   def can?(conn, action, model) when is_atom(model) do
-    Platform.Ability.can?(conn.assigns.current_user, action, %{__struct__: model})
+    Platform.Permission.can?(conn.assigns.current_user, action, %{__struct__: model})
   end
 
   def can?(conn, action, model) do
-    Platform.Ability.can?(conn.assigns.current_user, action, model)
+    Platform.Permission.can?(conn.assigns.current_user, action, model)
   end
 
   def authorize_action!(model, conn) do

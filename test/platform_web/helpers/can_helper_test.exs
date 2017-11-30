@@ -67,35 +67,35 @@ defmodule PlatformWeb.CanHelperTest do
 
   describe "authorize_action!" do
     test "should check for private_phoenix_action and map :create to :new", %{conn: conn} do
-      with_mock Platform.Ability, [:passthrough], [] do
+      with_mock Platform.Permission, [:passthrough], [] do
         user = Factory.insert(:user, admin: true)
         conn = %{conn | assigns: %{current_user: user}}
         conn = %{conn | private: %{phoenix_action: :create}}
 
         assert authorize_action!(user, conn) == user
-        assert called(Platform.Ability.can?(conn.assigns.current_user, :new, user))
+        assert called(Platform.Permission.can?(conn.assigns.current_user, :new, user))
       end
     end
 
     test "should check for private_phoenix_action and map :update to :edit", %{conn: conn} do
-      with_mock Platform.Ability, [:passthrough], [] do
+      with_mock Platform.Permission, [:passthrough], [] do
         user = Factory.insert(:user, admin: true)
         conn = %{conn | assigns: %{current_user: user}}
         conn = %{conn | private: %{phoenix_action: :update}}
 
         assert authorize_action!(user, conn) == user
-        assert called(Platform.Ability.can?(conn.assigns.current_user, :edit, user))
+        assert called(Platform.Permission.can?(conn.assigns.current_user, :edit, user))
       end
     end
 
     test "should check for private_phoenix_action", %{conn: conn} do
-      with_mock Platform.Ability, [:passthrough], [] do
+      with_mock Platform.Permission, [:passthrough], [] do
         user = Factory.insert(:user, admin: true)
         conn = %{conn | assigns: %{current_user: user}}
         conn = %{conn | private: %{phoenix_action: :some_other_action}}
 
         assert authorize_action!(user, conn) == user
-        assert called(Platform.Ability.can?(conn.assigns.current_user, :some_other_action, user))
+        assert called(Platform.Permission.can?(conn.assigns.current_user, :some_other_action, user))
       end
     end
 
