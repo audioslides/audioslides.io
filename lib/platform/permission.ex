@@ -4,6 +4,7 @@ defmodule Platform.Permission do
   """
   alias Platform.Accounts.Schema.User
   alias Platform.Core.Schema.Lesson
+  alias Platform.Core.Schema.Course
 
   # Admin
   def can?(%User{admin: true}, _action, _model), do: true
@@ -11,6 +12,9 @@ defmodule Platform.Permission do
   # Visitor without login
   def can?(_everybody, :index, %Lesson{}), do: true
   def can?(_everybody, :show, %Lesson{}), do: true
+
+  def can?(_everybody, :index, %Course{}), do: true
+  def can?(_everybody, :show, %Course{}), do: true
 
   # Else no access. Define via whitelisting not blacklisting
   def can?(_everybody, _action, _model), do: false

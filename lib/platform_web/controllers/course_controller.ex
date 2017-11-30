@@ -7,16 +7,25 @@ defmodule PlatformWeb.CourseController do
   alias PlatformWeb.AccessHelper
 
   def index(conn, _params) do
+    Course
+    |> authorize_action!(conn)
+
     courses = Core.list_courses()
     render(conn, "index.html", courses: courses)
   end
 
   def new(conn, _params) do
+    Course
+    |> authorize_action!(conn)
+
     changeset = Core.change_course(%Course{})
     render(conn, "new.html", changeset: changeset, collections: collections(conn))
   end
 
   def create(conn, %{"course" => course_params}) do
+    Course
+    |> authorize_action!(conn)
+
     case Core.create_course(course_params) do
       {:ok, course} ->
         conn
@@ -29,12 +38,20 @@ defmodule PlatformWeb.CourseController do
   end
 
   def show(conn, %{"id" => id}) do
-    course = Core.get_course_with_lessons!(id)
+    course =
+      id
+      |> Core.get_course_with_lessons!()
+      |> authorize_action!(conn)
+
     render(conn, "show.html", course: course)
   end
 
   def edit(conn, %{"id" => id}) do
-    course = Core.get_course_with_lessons!(id)
+    course =
+      id
+      |> Core.get_course_with_lessons!()
+      |> authorize_action!(conn)
+
     changeset = Core.change_course(course)
 
     render(
@@ -47,7 +64,10 @@ defmodule PlatformWeb.CourseController do
   end
 
   def update(conn, %{"id" => id, "course" => course_params}) do
-    course = Core.get_course!(id)
+    course =
+      id
+      |> Core.get_course!()
+      |> authorize_action!(conn)
 
     case Core.update_course(course, course_params) do
       {:ok, course} ->
@@ -67,7 +87,11 @@ defmodule PlatformWeb.CourseController do
   end
 
   def delete(conn, %{"id" => id}) do
-    course = Core.get_course!(id)
+    course =
+    id
+    |> Core.get_course!()
+    |> authorize_action!(conn)
+
     {:ok, _course} = Core.delete_course(course)
 
     conn
