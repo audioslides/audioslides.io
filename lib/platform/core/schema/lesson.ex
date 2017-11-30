@@ -38,10 +38,14 @@ defmodule Platform.Core.Schema.Lesson do
     |> validate_inclusion(:voice_gender, ["female", "male"])
   end
 
-  def extract_presentation_id(%Ecto.Changeset{changes: %{google_presentation_id: input}} = changeset) do
-    google_presentation_id = GoogleSlidesHelper.extract_presentation_id(input)
-    put_change(changeset, :google_presentation_id, google_presentation_id)
+  def extract_presentation_id(%Ecto.Changeset{} = changeset) do
+    input = get_field(changeset, :google_presentation_id)
+    if input do
+      google_presentation_id = GoogleSlidesHelper.extract_presentation_id(input)
+      put_change(changeset, :google_presentation_id, google_presentation_id)
+    else
+      changeset
+    end
   end
-  def extract_presentation_id(%Ecto.Changeset{} = changeset), do: changeset
 
 end
