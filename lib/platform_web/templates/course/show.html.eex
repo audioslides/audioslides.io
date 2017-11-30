@@ -1,5 +1,7 @@
-<span><%= link "Edit", to: course_path(@conn, :edit, @course) %></span>
-<span><%= link "Back", to: course_path(@conn, :index) %></span>
+<%= if can?(@conn, :edit, @course) do %>
+  <%= link "Edit", to: course_path(@conn, :edit, @course), class: "btn btn-primary" %>
+<% end %>
+<%= link "Back", to: course_path(@conn, :index), class: "btn btn-secondary" %>
 
 <br>
 
@@ -21,4 +23,6 @@
   <% end %>
 </ul>
 
-<%= link "Add lesson", to: course_course_lesson_path(@conn, :new, @course), class: "btn btn-primary" %>
+<%= if can?(@conn, :edit, CourseLesson) do %>
+  <%= link "Add lesson", to: course_course_lesson_path(@conn, :new, @course), class: "btn btn-primary" %>
+<% end %>

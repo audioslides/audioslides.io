@@ -2,6 +2,8 @@ defmodule PlatformWeb.CourseView do
   use PlatformWeb, :view
   import PlatformWeb.ViewHelper
 
+  alias Platform.Core.Schema.CourseLesson
+
   def page("index.html", conn), do: %{
     title: "Courses",
     path: course_path(conn, :index)
