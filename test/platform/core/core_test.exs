@@ -13,10 +13,19 @@ defmodule Platform.CoreTest do
   doctest Platform.Core
 
   describe "lessons" do
-
-    @valid_attrs %{google_presentation_id: "some google_presentation_id", name: "some name", voice_gender: "female", voice_language: "en-US"}
+    @valid_attrs %{
+      google_presentation_id: "some google_presentation_id",
+      name: "some name",
+      voice_gender: "female",
+      voice_language: "en-US"
+    }
     @update_attrs %{name: "some updated name"}
-    @invalid_attrs %{google_presentation_id: nil, name: nil, voice_gender: nil, voice_language: nil}
+    @invalid_attrs %{
+      google_presentation_id: nil,
+      name: nil,
+      voice_gender: nil,
+      voice_language: nil
+    }
 
     test "list_lessons/0 returns all lessons" do
       lesson = Factory.insert(:lesson)
@@ -42,7 +51,9 @@ defmodule Platform.CoreTest do
 
     test "get_lesson_by_google_presentation_id!/1 returns the lesson with given id" do
       lesson = Factory.insert(:lesson)
-      assert Core.get_lesson_by_google_presentation_id!(lesson.google_presentation_id).id == lesson.id
+
+      assert Core.get_lesson_by_google_presentation_id!(lesson.google_presentation_id).id ==
+               lesson.id
     end
 
     test "create_lesson/1 with valid data creates a lesson" do
@@ -84,8 +95,19 @@ defmodule Platform.CoreTest do
     test "sync_lesson/1 sync lessons" do
       lesson = Factory.insert(:lesson)
 
-      google_slide1 = GoogleSlidesFactory.get_base_slide(object_id: "objID_1", content: "Example Content 1", speaker_notes: "Speaker Notes 1")
-      google_slide2 = GoogleSlidesFactory.get_base_slide(object_id: "objID_2", content: "Example Content 2", speaker_notes: "Speaker Notes 2")
+      google_slide1 =
+        GoogleSlidesFactory.get_base_slide(
+          object_id: "objID_1",
+          content: "Example Content 1",
+          speaker_notes: "Speaker Notes 1"
+        )
+
+      google_slide2 =
+        GoogleSlidesFactory.get_base_slide(
+          object_id: "objID_2",
+          content: "Example Content 2",
+          speaker_notes: "Speaker Notes 2"
+        )
 
       google_lesson = %GoogleApi.Slides.V1.Model.Presentation{
         presentationId: lesson.google_presentation_id,
@@ -99,7 +121,11 @@ defmodule Platform.CoreTest do
         |> Repo.preload(:slides)
 
       assert length(lesson.slides) == 2
-      assert Enum.map(lesson.slides, fn(slide) -> slide.google_object_id end) == ["objID_1", "objID_2"]
+
+      assert Enum.map(lesson.slides, fn slide -> slide.google_object_id end) == [
+               "objID_1",
+               "objID_2"
+             ]
     end
 
     test "download_slide_thumb/1 download all thumbs" do
@@ -122,7 +148,7 @@ defmodule Platform.CoreTest do
 
       lesson = Core.get_lesson_with_slides!(lesson.id)
 
-      assert Enum.map(lesson.slides, fn(slide) -> slide.audio_hash end) == [nil, nil]
+      assert Enum.map(lesson.slides, fn slide -> slide.audio_hash end) == [nil, nil]
     end
 
     test "invalidate_all_video_hashes/1" do
@@ -134,7 +160,7 @@ defmodule Platform.CoreTest do
 
       lesson = Core.get_lesson_with_slides!(lesson.id)
 
-      assert Enum.map(lesson.slides, fn(slide) -> slide.video_hash end) == [nil, nil]
+      assert Enum.map(lesson.slides, fn slide -> slide.video_hash end) == [nil, nil]
     end
 
     test "invalidate_all_image_hashes/1" do
@@ -146,7 +172,7 @@ defmodule Platform.CoreTest do
 
       lesson = Core.get_lesson_with_slides!(lesson.id)
 
-      assert Enum.map(lesson.slides, fn(slide) -> slide.image_hash end) == [nil, nil]
+      assert Enum.map(lesson.slides, fn slide -> slide.image_hash end) == [nil, nil]
     end
 
     test "invalidate_image_hash/1" do
@@ -181,82 +207,80 @@ defmodule Platform.CoreTest do
   end
 
   describe "slides" do
+    @valid_attrs %{google_object_id: "some google_object_id", name: "some name", position: "1"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{google_presentation_id: nil, name: nil, position: nil}
 
-        @valid_attrs %{google_object_id: "some google_object_id", name: "some name", position: "1"}
-        @update_attrs %{name: "some updated name"}
-        @invalid_attrs %{google_presentation_id: nil, name: nil, position: nil}
+    # test "list_slides/0 returns all slides" do
+    #   slide = Factory.insert(:slide)
+    #   slides = Core.list_slides()
+    #   assert length(slides) == 1
+    #   assert List.first(slides).id == slide.id
+    # end
 
-        # test "list_slides/0 returns all slides" do
-        #   slide = Factory.insert(:slide)
-        #   slides = Core.list_slides()
-        #   assert length(slides) == 1
-        #   assert List.first(slides).id == slide.id
-        # end
+    # test "get_slide!/1 returns the slide with given id" do
+    #   slide = Factory.insert(:slide)
+    #   assert Core.get_slide!(slide.id).id == slide.id
+    # end
 
-        # test "get_slide!/1 returns the slide with given id" do
-        #   slide = Factory.insert(:slide)
-        #   assert Core.get_slide!(slide.id).id == slide.id
-        # end
+    test "create_slide/1 with valid data creates a slide" do
+      lesson = Factory.insert(:lesson)
+      assert {:ok, %Slide{} = slide} = Core.create_slide(lesson, @valid_attrs)
+      assert slide.google_object_id == "some google_object_id"
+      assert slide.name == "some name"
+    end
 
-        test "create_slide/1 with valid data creates a slide" do
-          lesson = Factory.insert(:lesson)
-          assert {:ok, %Slide{} = slide} = Core.create_slide(lesson, @valid_attrs)
-          assert slide.google_object_id == "some google_object_id"
-          assert slide.name == "some name"
-        end
+    test "create_slide/1 with invalid data returns error changeset" do
+      lesson = Factory.insert(:lesson)
+      assert {:error, %Ecto.Changeset{}} = Core.create_slide(lesson, @invalid_attrs)
+    end
 
-        test "create_slide/1 with invalid data returns error changeset" do
-          lesson = Factory.insert(:lesson)
-          assert {:error, %Ecto.Changeset{}} = Core.create_slide(lesson, @invalid_attrs)
-        end
+    test "update_slide/2 with valid data updates the slide" do
+      slide = Factory.insert(:slide)
+      assert {:ok, slide} = Core.update_slide(slide, @update_attrs)
+      assert %Slide{} = slide
+      assert slide.name == "some updated name"
+    end
 
-        test "update_slide/2 with valid data updates the slide" do
-          slide = Factory.insert(:slide)
-          assert {:ok, slide} = Core.update_slide(slide, @update_attrs)
-          assert %Slide{} = slide
-          assert slide.name == "some updated name"
-        end
+    test "update_slide/2 with invalid data returns error changeset" do
+      slide = Factory.insert(:slide)
+      assert {:error, %Ecto.Changeset{}} = Core.update_slide(slide, @invalid_attrs)
+      assert slide.id == Core.get_slide!(slide.id).id
+    end
 
-        test "update_slide/2 with invalid data returns error changeset" do
-          slide = Factory.insert(:slide)
-          assert {:error, %Ecto.Changeset{}} = Core.update_slide(slide, @invalid_attrs)
-          assert slide.id == Core.get_slide!(slide.id).id
-        end
+    test "delete_slide/1 deletes the slide" do
+      lesson = Factory.insert(:lesson)
+      slide = Factory.insert(:slide, lesson: lesson)
+      assert {:ok, %Slide{}} = Core.delete_slide(lesson, slide)
+      assert_raise Ecto.NoResultsError, fn -> Core.get_slide!(slide.id) end
+    end
 
-        test "delete_slide/1 deletes the slide" do
-          lesson = Factory.insert(:lesson)
-          slide = Factory.insert(:slide, lesson: lesson)
-          assert {:ok, %Slide{}} = Core.delete_slide(lesson, slide)
-          assert_raise Ecto.NoResultsError, fn -> Core.get_slide!(slide.id) end
-        end
+    test "change_slide/1 returns a slide changeset" do
+      lesson = Factory.insert(:lesson)
+      slide = Factory.insert(:slide)
+      assert %Ecto.Changeset{} = Core.change_slide(lesson, slide)
+    end
 
-        test "change_slide/1 returns a slide changeset" do
-          lesson = Factory.insert(:lesson)
-          slide = Factory.insert(:slide)
-          assert %Ecto.Changeset{} = Core.change_slide(lesson, slide)
-        end
+    test "update_slide_audio_hash/2 with valid data updates the slide" do
+      slide = Factory.insert(:slide)
+      assert {:ok, slide} = Core.update_slide_audio_hash(slide, "NEW_HASH")
+      assert slide.audio_hash == "NEW_HASH"
+    end
 
-        test "update_slide_audio_hash/2 with valid data updates the slide" do
-          slide = Factory.insert(:slide)
-          assert {:ok, slide} = Core.update_slide_audio_hash(slide, "NEW_HASH")
-          assert slide.audio_hash == "NEW_HASH"
-        end
+    test "update_slide_image_hash/2 with valid data updates the slide" do
+      slide = Factory.insert(:slide)
+      assert {:ok, slide} = Core.update_slide_image_hash(slide, "NEW_HASH")
+      assert slide.image_hash == "NEW_HASH"
+    end
 
-        test "update_slide_image_hash/2 with valid data updates the slide" do
-          slide = Factory.insert(:slide)
-          assert {:ok, slide} = Core.update_slide_image_hash(slide, "NEW_HASH")
-          assert slide.image_hash == "NEW_HASH"
-        end
-
-        test "update_slide_video_hash/2 with valid data updates the slide" do
-          slide = Factory.insert(:slide)
-          assert {:ok, slide} = Core.update_slide_video_hash(slide, "NEW_HASH")
-          assert slide.video_hash == "NEW_HASH"
-        end
-      end
+    test "update_slide_video_hash/2 with valid data updates the slide" do
+      slide = Factory.insert(:slide)
+      assert {:ok, slide} = Core.update_slide_video_hash(slide, "NEW_HASH")
+      assert slide.video_hash == "NEW_HASH"
+    end
+  end
 
   describe "course_lessons" do
-
     test "should be provide a lesson" do
       lesson = Factory.insert(:lesson)
       course = Factory.insert(:course)
@@ -272,7 +296,6 @@ defmodule Platform.CoreTest do
 
       assert course_lesson.course == course
     end
-
   end
 
   describe "get_course!" do
@@ -290,6 +313,4 @@ defmodule Platform.CoreTest do
       assert course_lesson.course.id == course_from_db.id
     end
   end
-
 end
-

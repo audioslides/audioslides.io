@@ -8,9 +8,18 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
 
   @behaviour Platform.VideoConverter
 
-  def generate_video(image_filename: image_filename, audio_filename: audio_filename, output_filename: output_filename) do
+  def generate_video(
+        image_filename: image_filename,
+        audio_filename: audio_filename,
+        output_filename: output_filename
+      ) do
     duration = get_audio_duration(audio_filename)
-    opts = "-loop 1 -t #{duration} -i #{image_filename} -i #{audio_filename} -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -y #{output_filename}"
+
+    opts =
+      "-loop 1 -t #{duration} -i #{image_filename} -i #{audio_filename} -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -y #{
+        output_filename
+      }"
+
     System.cmd("ffmpeg", String.split(opts, " "))
   end
 
@@ -52,10 +61,10 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
 
   """
   def generate_video_filenames_in_ffmpeg_format(filenames) when is_list(filenames) do
-    Enum.map_join(filenames,
-      fn(filename) ->
-        "file '#{filename}'\n"
-      end)
+    Enum.map_join(filenames, fn filename ->
+      "file '#{filename}'\n"
+    end)
   end
+
   def generate_video_filenames_in_ffmpeg_format(_), do: ""
 end

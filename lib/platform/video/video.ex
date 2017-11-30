@@ -18,19 +18,24 @@ defmodule Platform.Video do
 
     #### ASync Version Start
     # start async creation of the videos
-    #video_generation_tasks = create_async_video_tasks(lesson)
+    # video_generation_tasks = create_async_video_tasks(lesson)
 
     # wait 60 seconds for all video generator processes
-    #tasks_with_results = Task.yield_many(video_generation_tasks, 60_000)
+    # tasks_with_results = Task.yield_many(video_generation_tasks, 60_000)
 
-    #generated_video_filenames = get_results_or_kill_tasks(tasks_with_results)
+    # generated_video_filenames = get_results_or_kill_tasks(tasks_with_results)
     #### ASync Version END
 
     #### Sync Version Start
-    generated_video_filenames = Enum.map(lesson.slides, fn(slide) -> generate_video_for_slide(lesson, slide) end)
+    generated_video_filenames =
+      Enum.map(lesson.slides, fn slide -> generate_video_for_slide(lesson, slide) end)
+
     #### Sync Version End
 
-    VideoConverter.merge_videos(video_filename_list: generated_video_filenames, output_filename: final_output_filename)
+    VideoConverter.merge_videos(
+      video_filename_list: generated_video_filenames,
+      output_filename: final_output_filename
+    )
   end
 
   # def create_async_video_tasks(lesson) do
@@ -45,6 +50,7 @@ defmodule Platform.Video do
       case res do
         {:ok, value} ->
           value
+
         nil ->
           Task.shutdown(task, :brutal_kill)
       end
@@ -59,7 +65,7 @@ defmodule Platform.Video do
 
     # Only generate video of audio or video changed
     if generate_video_hash(slide) != slide.video_hash do
-      Logger.info "Slide #{slide.id} Video: need update"
+      Logger.info("Slide #{slide.id} Video: need update")
 
       VideoConverter.generate_video(
         image_filename: image_filename,
@@ -68,9 +74,9 @@ defmodule Platform.Video do
       )
 
       Core.update_slide_video_hash(slide, generate_video_hash(slide))
-      Logger.info "Slide #{slide.id} Video: generated"
+      Logger.info("Slide #{slide.id} Video: generated")
     else
-      Logger.info "Slide #{slide.id} Video: skipped"
+      Logger.info("Slide #{slide.id} Video: skipped")
     end
 
     # relative_output_filename, important for ffmmpeg concat method
@@ -100,23 +106,25 @@ defmodule Platform.Video do
   "58BB119C35513A451D24DC20EF0E9031EC85B35BFC919D263E7E5D9868909CB5"
 
   """
-  def generate_video_hash(%Slide{audio_hash: audio_hash, image_hash: image_hash}) when is_binary(audio_hash) and is_binary(image_hash) do
+  def generate_video_hash(%Slide{audio_hash: audio_hash, image_hash: image_hash})
+      when is_binary(audio_hash) and is_binary(image_hash) do
     "#{audio_hash}#{image_hash}"
     |> sha256()
     |> Base.encode16()
   end
+
   def generate_video_hash(_), do: nil
 
   def create_or_update_image_for_slide(lesson, slide) do
     if slide.page_elements_hash != slide.image_hash do
-      Logger.info "Slide #{slide.id} Image: need update"
+      Logger.info("Slide #{slide.id} Image: need update")
 
       Core.download_thumb!(lesson, slide)
       Core.update_slide_image_hash(slide, slide.page_elements_hash)
 
-      Logger.info "Slide #{slide.id} Image: generated"
+      Logger.info("Slide #{slide.id} Image: generated")
     else
-      Logger.info "Slide #{slide.id} Image: skipped"
+      Logger.info("Slide #{slide.id} Image: skipped")
     end
 
     Filename.get_filename_for_slide_image(lesson, slide)
@@ -124,21 +132,23 @@ defmodule Platform.Video do
 
   def create_or_update_audio_for_slide(lesson, slide) do
     audio_filename = Filename.get_filename_for_slide_audio(lesson, slide)
-    if slide.speaker_notes_hash != slide.audio_hash do
-      Logger.info "Slide #{slide.id} Audio: need update"
 
-      speech_binary = Speech.run(%{
-        "language_key" => lesson.voice_language,
-        "voice_gender" => lesson.voice_gender,
-        "text" => slide.speaker_notes
-      })
+    if slide.speaker_notes_hash != slide.audio_hash do
+      Logger.info("Slide #{slide.id} Audio: need update")
+
+      speech_binary =
+        Speech.run(%{
+          "language_key" => lesson.voice_language,
+          "voice_gender" => lesson.voice_gender,
+          "text" => slide.speaker_notes
+        })
 
       FileHelper.write_to_file(audio_filename, speech_binary)
       Core.update_slide_audio_hash(slide, slide.speaker_notes_hash)
 
-      Logger.info "Slide #{slide.id} Audio: generated"
+      Logger.info("Slide #{slide.id} Audio: generated")
     else
-      Logger.info "Slide #{slide.id} Audio: skipped"
+      Logger.info("Slide #{slide.id} Audio: skipped")
     end
 
     audio_filename

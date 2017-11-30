@@ -14,10 +14,10 @@ defmodule Platform.Core.Schema.CourseLesson do
 
   @timestamps_opts [type: :utc_datetime, usec: false]
   schema "course_lessons" do
-    field :position, :integer
+    field(:position, :integer)
 
-    belongs_to :course, Course
-    belongs_to :lesson, Lesson
+    belongs_to(:course, Course)
+    belongs_to(:lesson, Lesson)
   end
 
   @doc false

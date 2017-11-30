@@ -7,23 +7,23 @@ defmodule Platform.Mixfile do
       aliases: aliases(),
       version: "0.0.1",
       elixir: "~> 1.4",
-      elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers,
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         "test.integration": :test,
-        "coveralls": :test,
+        coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test,
         "coveralls.semaphore": :test,
-        "vcr": :test,
+        vcr: :test,
         "vcr.delete": :test,
         "vcr.check": :test,
         "vcr.show": :test
-      ],
+      ]
     ]
   end
 
@@ -39,7 +39,7 @@ defmodule Platform.Mixfile do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
   #
@@ -73,13 +73,13 @@ defmodule Platform.Mixfile do
 
   defp aliases do
     [
-      "credo": "credo --strict",
+      credo: "credo --strict",
       "ecto.setup": ["ecto.create", "ecto.migrate"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "phx.server": ["ecto.migrate", "phx.server"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
-      "s": ["phx.server"],
-      "t": ["test.watch"],
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      s: ["phx.server"],
+      t: ["test.watch"],
       "test.integration": ["test --include integration:true"]
     ]
   end

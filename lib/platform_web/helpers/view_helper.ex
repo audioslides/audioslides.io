@@ -52,6 +52,7 @@ defmodule PlatformWeb.ViewHelper do
     slide = List.first(lesson.slides)
     get_slide_image(lesson, slide)
   end
+
   def get_course_front_slide_image(_), do: @example_image
 
   @doc """
@@ -65,8 +66,13 @@ defmodule PlatformWeb.ViewHelper do
   "/images/example-slide.png"
 
   """
-  def get_slide_image(%{id: lesson_id} = _lesson, %{image_hash: image_hash, id: slide_id} = _slide) when is_binary(image_hash) do
-      "/content/#{lesson_id}/#{slide_id}.png"
+  def get_slide_image(
+        %{id: lesson_id} = _lesson,
+        %{image_hash: image_hash, id: slide_id} = _slide
+      )
+      when is_binary(image_hash) do
+    "/content/#{lesson_id}/#{slide_id}.png"
   end
+
   def get_slide_image(_lesson, _slide), do: @example_image
 end

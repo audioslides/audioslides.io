@@ -4,6 +4,7 @@ defmodule PlatformWeb.CanHelper do
   def can?(conn, action, model) when is_atom(model) do
     Platform.Ability.can?(conn.assigns.current_user, action, %{__struct__: model})
   end
+
   def can?(conn, action, model) do
     Platform.Ability.can?(conn.assigns.current_user, action, model)
   end
@@ -13,7 +14,7 @@ defmodule PlatformWeb.CanHelper do
       case conn.private.phoenix_action do
         :create -> :new
         :update -> :edit
-        _       -> conn.private.phoenix_action
+        _ -> conn.private.phoenix_action
       end
 
     authorize!(model, conn, action)

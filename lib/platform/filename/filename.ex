@@ -88,5 +88,4 @@ defmodule Platform.Filename do
   def get_filename_for_ffmpeg_concat do
     "#{@content_dir}ffmpeg_concat_temporary.txt"
   end
-
 end

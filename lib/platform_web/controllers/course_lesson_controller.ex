@@ -20,8 +20,15 @@ defmodule PlatformWeb.CourseLessonController do
         conn
         |> put_flash(:info, "Course lesson created successfully.")
         |> redirect(to: course_path(conn, :show, course))
+
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", course: course, changeset: changeset, collections: collections(conn))
+        render(
+          conn,
+          "new.html",
+          course: course,
+          changeset: changeset,
+          collections: collections(conn)
+        )
     end
   end
 
@@ -30,10 +37,22 @@ defmodule PlatformWeb.CourseLessonController do
 
     course_lesson = Core.get_course_lesson!(course, id)
     changeset = Core.change_course_lesson(course, course_lesson)
-    render(conn, "edit.html", course: course, course_lesson: course_lesson, changeset: changeset, collections: collections(conn))
+
+    render(
+      conn,
+      "edit.html",
+      course: course,
+      course_lesson: course_lesson,
+      changeset: changeset,
+      collections: collections(conn)
+    )
   end
 
-  def update(conn, %{"course_id" => course_id, "id" => id, "course_lesson" => course_lesson_params}) do
+  def update(conn, %{
+        "course_id" => course_id,
+        "id" => id,
+        "course_lesson" => course_lesson_params
+      }) do
     course = Core.get_course!(course_id)
 
     course_lesson = Core.get_course_lesson!(course, id)
@@ -43,8 +62,16 @@ defmodule PlatformWeb.CourseLessonController do
         conn
         |> put_flash(:info, "Course lesson updated successfully.")
         |> redirect(to: course_path(conn, :show, course))
+
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", course: course, course_lesson: course_lesson, changeset: changeset, collections: collections(conn))
+        render(
+          conn,
+          "edit.html",
+          course: course,
+          course_lesson: course_lesson,
+          changeset: changeset,
+          collections: collections(conn)
+        )
     end
   end
 

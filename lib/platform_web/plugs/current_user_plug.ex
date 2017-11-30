@@ -23,6 +23,7 @@ defmodule PlatformWeb.CurrentUserPlug do
     conn
     |> put_current_user(user)
   end
+
   def call(%Plug.Conn{} = conn, _) do
     user_id = get_user_id(conn)
 

@@ -18,8 +18,8 @@ defmodule Platform.Speech.AWS.Voice do
   "Joanna"
 
   """
-  def get_voice([voice_gender: "male", language: "de-DE"]), do: "Hans"
-  def get_voice([voice_gender: "female", language: "de-DE"]), do: "Vicki"
-  def get_voice([voice_gender: "male", language: "en-US"]), do: "Joey"
-  def get_voice([voice_gender: "female", language: "en-US"]), do: "Joanna"
+  def get_voice(voice_gender: "male", language: "de-DE"), do: "Hans"
+  def get_voice(voice_gender: "female", language: "de-DE"), do: "Vicki"
+  def get_voice(voice_gender: "male", language: "en-US"), do: "Joey"
+  def get_voice(voice_gender: "female", language: "en-US"), do: "Joanna"
 end

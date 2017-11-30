@@ -9,7 +9,7 @@ defmodule PlatformWeb.AuthControllerTest do
 
   describe "#callback" do
     test "when callback fails", %{conn: conn} do
-      conn = get conn, auth_path(conn, :callback, "google")
+      conn = get(conn, auth_path(conn, :callback, "google"))
 
       assert get_flash(conn, :error) == "Failed to authenticate."
       assert redirected_to(conn) == "/"
@@ -33,21 +33,22 @@ defmodule PlatformWeb.AuthControllerTest do
       }
 
       conn = assign(conn, :ueberauth_auth, auth)
-      conn = get conn, auth_path(conn, :callback, "google")
+      conn = get(conn, auth_path(conn, :callback, "google"))
 
       assert get_flash(conn, :info) == "Successfully authenticated."
       assert redirected_to(conn) == "/"
     end
 
     test "when callback succeeds but error", %{conn: conn} do
-
       Platform.Accounts.UserFromAuthMock
       |> expect(:find_or_create, fn _user -> {:error, "some reason"} end)
 
       demo_user = Factory.insert(:user)
+
       auth = %Auth{
         provider: :google,
-        uid: 1234, # provoke an error here
+        # provoke an error here
+        uid: 1234,
         info: %{
           first_name: demo_user.first_name,
           last_name: demo_user.last_name,
@@ -57,7 +58,7 @@ defmodule PlatformWeb.AuthControllerTest do
       }
 
       conn = assign(conn, :ueberauth_auth, auth)
-      conn = get conn, auth_path(conn, :callback, "google")
+      conn = get(conn, auth_path(conn, :callback, "google"))
 
       assert get_flash(conn, :error) == "some reason"
       assert redirected_to(conn) == "/"
@@ -66,7 +67,7 @@ defmodule PlatformWeb.AuthControllerTest do
 
   describe "#delete" do
     test "logout successfull", %{conn: conn} do
-      conn = delete conn, auth_path(conn, :delete)
+      conn = delete(conn, auth_path(conn, :delete))
 
       assert get_flash(conn, :info) == "You have been logged out!"
       assert redirected_to(conn) == "/"
@@ -90,7 +91,7 @@ defmodule PlatformWeb.AuthControllerTest do
       }
 
       conn = assign(conn, :ueberauth_auth, auth)
-      conn = get conn, auth_path(conn, :callback, "google")
+      conn = get(conn, auth_path(conn, :callback, "google"))
 
       assert redirected_to(conn) == "/"
     end

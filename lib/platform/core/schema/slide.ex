@@ -7,22 +7,22 @@ defmodule Platform.Core.Schema.Slide do
 
   @timestamps_opts [type: :utc_datetime, usec: false]
   schema "slides" do
-    field :name, :string
-    field :google_object_id, :string
-    field :speaker_notes_hash, :string
-    field :page_elements_hash, :string
-    field :position, :integer
-    field :synced_at, :utc_datetime
-    field :speaker_notes, :string
-    field :audio_hash, :string
-    field :audio_sync_pid, :string
-    field :image_hash, :string
-    field :image_sync_pid, :string
-    field :video_hash, :string
-    field :video_sync_pid, :string
+    field(:name, :string)
+    field(:google_object_id, :string)
+    field(:speaker_notes_hash, :string)
+    field(:page_elements_hash, :string)
+    field(:position, :integer)
+    field(:synced_at, :utc_datetime)
+    field(:speaker_notes, :string)
+    field(:audio_hash, :string)
+    field(:audio_sync_pid, :string)
+    field(:image_hash, :string)
+    field(:image_sync_pid, :string)
+    field(:video_hash, :string)
+    field(:video_sync_pid, :string)
     timestamps()
 
-    belongs_to :lesson, Platform.Core.Schema.Lesson
+    belongs_to(:lesson, Platform.Core.Schema.Lesson)
   end
 
   @doc false

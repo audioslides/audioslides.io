@@ -8,7 +8,7 @@ defmodule PlatformWeb.SlideController do
     lesson = Core.get_lesson_with_slides!(lesson_id)
     slide = Core.get_slide!(id)
 
-    render conn, "show.html", lesson: lesson, slide: slide
+    render(conn, "show.html", lesson: lesson, slide: slide)
   end
 
   def generate_video(conn, %{"lesson_id" => lesson_id, "id" => id}) do

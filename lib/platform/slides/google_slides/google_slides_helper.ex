@@ -48,7 +48,7 @@ defmodule Platform.GoogleSlidesHelper do
   """
   def generate_hash_for_page_elements(%Page{pageElements: page_elements}) do
     page_elements
-    |> Poison.encode!
+    |> Poison.encode!()
     |> sha256()
     |> Base.encode16()
   end
@@ -71,18 +71,18 @@ defmodule Platform.GoogleSlidesHelper do
 
     notes_root_element =
       notesPage.pageElements
-      |> Enum.find(fn(e) -> e.objectId == notes_object_id end)
+      |> Enum.find(fn e -> e.objectId == notes_object_id end)
 
     if notes_root_element.shape.text do
       text_elements =
         notes_root_element.shape.text.textElements
-        |> Enum.map(fn(e) ->
-          if e.textRun != nil do
-            e.textRun.content
-          end
-        end)
+        |> Enum.map(fn e ->
+             if e.textRun != nil do
+               e.textRun.content
+             end
+           end)
 
-        Enum.join(text_elements)
+      Enum.join(text_elements)
     else
       ""
     end
@@ -101,7 +101,8 @@ defmodule Platform.GoogleSlidesHelper do
 
   """
   def any_content_changed?(slide, google_slide) do
-    content_changed_for_speaker_notes?(slide, google_slide) || content_changed_for_page_elements?(slide, google_slide)
+    content_changed_for_speaker_notes?(slide, google_slide) ||
+      content_changed_for_page_elements?(slide, google_slide)
   end
 
   @doc """
@@ -144,6 +145,7 @@ defmodule Platform.GoogleSlidesHelper do
 
   """
   def get_title(%Page{pageElements: nil}), do: "NO TITLE"
+
   def get_title(%Page{pageElements: pageElements}) do
     page =
       pageElements
@@ -166,11 +168,12 @@ defmodule Platform.GoogleSlidesHelper do
   """
   def get_text_from_page(%{shape: %{text: %{textElements: elements}}}) do
     text_element =
-    elements
-    |> Enum.find(fn(e) -> e.textRun != nil end)
+      elements
+      |> Enum.find(fn e -> e.textRun != nil end)
 
     text_element.textRun.content
   end
+
   def get_text_from_page(_), do: "NO TITLE"
 
   @doc """
@@ -194,5 +197,4 @@ defmodule Platform.GoogleSlidesHelper do
   """
   def contains_element_title?(%{shape: %{placeholder: %{type: "TITLE"}, text: _}}), do: true
   def contains_element_title?(_), do: false
-
 end

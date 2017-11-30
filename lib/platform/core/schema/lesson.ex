@@ -11,17 +11,17 @@ defmodule Platform.Core.Schema.Lesson do
 
   @timestamps_opts [type: :utc_datetime, usec: false]
   schema "lessons" do
-    field :visible, :boolean
-    field :google_presentation_id, :string
-    field :name, :string
-    field :voice_gender, :string
-    field :voice_language, :string
-    field :synced_at, :utc_datetime
+    field(:visible, :boolean)
+    field(:google_presentation_id, :string)
+    field(:name, :string)
+    field(:voice_gender, :string)
+    field(:voice_language, :string)
+    field(:synced_at, :utc_datetime)
     timestamps()
 
-    has_many :course_lessons, CourseLesson
-    has_many :slides,  Slide, on_delete: :delete_all
-    belongs_to :user, User
+    has_many(:course_lessons, CourseLesson)
+    has_many(:slides, Slide, on_delete: :delete_all)
+    belongs_to(:user, User)
   end
 
   @doc false

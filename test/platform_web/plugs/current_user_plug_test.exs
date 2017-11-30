@@ -15,12 +15,14 @@ defmodule PlatformWeb.CurrentUserPlugTest do
 
   describe "#call" do
     test "assigns user and token when user_id is given", %{conn: conn} do
-      with_mock Phoenix.Token, [sign: fn _, _, _ -> "MYTOKEN" end] do
+      with_mock Phoenix.Token, sign: fn _, _, _ -> "MYTOKEN" end do
         user = Factory.insert(:user)
 
-        conn = conn
+        # raises ** (ArgumentError) session not fetched, call fetch_session/2
+        conn =
+          conn
           |> init_test_session(%{user_id: user.id})
-          |> put_session(:user_id, user.id) # raises ** (ArgumentError) session not fetched, call fetch_session/2
+          |> put_session(:user_id, user.id)
           |> CurrentUserPlug.call([])
 
         assert conn.assigns.current_user.id == user.id
@@ -29,12 +31,12 @@ defmodule PlatformWeb.CurrentUserPlugTest do
     end
 
     test "assigns user and token when current_user is given", %{conn: conn} do
-      with_mock Phoenix.Token, [sign: fn _, _, _ -> "MYTOKEN" end] do
+      with_mock Phoenix.Token, sign: fn _, _, _ -> "MYTOKEN" end do
         user = Factory.insert(:user)
         conn = %{conn | assigns: %{current_user: user}}
 
-
-        conn = conn
+        conn =
+          conn
           |> CurrentUserPlug.call([])
 
         assert conn.assigns.current_user.id == user.id

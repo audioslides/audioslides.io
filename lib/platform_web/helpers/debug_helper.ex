@@ -12,7 +12,7 @@ defmodule PlatformWeb.DebugHelper do
   def debug(input, opts \\ []) do
     content_tag :pre, opts do
       content_tag :code do
-       inspect(input, pretty: true, limit: 1000, width: 150)
+        inspect(input, pretty: true, limit: 1000, width: 150)
       end
     end
   end

@@ -17,24 +17,20 @@ config :platform, Platform.Repo,
   hostname: System.get_env("DATABASE_MYSQL_HOSTNAME") || "127.0.0.1",
   pool: Ecto.Adapters.SQL.Sandbox
 
-config :exvcr, [
-  vcr_cassette_library_dir: "test/support/vcr_cassettes",
-]
+config :exvcr, vcr_cassette_library_dir: "test/support/vcr_cassettes"
 
-#config :platform, :speech_api, Platform.Speech.AWS.Polly
+# config :platform, :speech_api, Platform.Speech.AWS.Polly
 
-config :goth, json: ~S[{ "type": "", "project_id": "", "private_key_id": "", "private_key": "", "client_email": "", "client_id": "", "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://accounts.google.com/o/oauth2/token", "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_x509_cert_url": "" }]
+config :goth,
+  json:
+    ~S[{ "type": "", "project_id": "", "private_key_id": "", "private_key": "", "client_email": "", "client_id": "", "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://accounts.google.com/o/oauth2/token", "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_x509_cert_url": "" }]
 
 config :platform, :speech_api, Platform.Speech.Mock.SpeechApi
 
-config :platform, Platform.VideoConverter,
-  adapter: Platform.VideoConverter.TestAdapter
+config :platform, Platform.VideoConverter, adapter: Platform.VideoConverter.TestAdapter
 
-config :platform,   Platform.FileHelper,
-  adapter: Platform.FileHelper.FileSystemTestAdapter
+config :platform, Platform.FileHelper, adapter: Platform.FileHelper.FileSystemTestAdapter
 
-config :platform,   Platform.SlideAPI,
-  adapter: Platform.SlidesAPIMock
+config :platform, Platform.SlideAPI, adapter: Platform.SlidesAPIMock
 
-config :platform, Platform.Accounts.UserFromAuth,
-  adapter: Platform.Accounts.UserFromAuthMock
+config :platform, Platform.Accounts.UserFromAuth, adapter: Platform.Accounts.UserFromAuthMock

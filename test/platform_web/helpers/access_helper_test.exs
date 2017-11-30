@@ -10,7 +10,7 @@ defmodule PlatformWeb.AccessHelperTest do
 
       user = Factory.insert(:user, admin: true)
       conn = %{conn | assigns: %{current_user: user}}
-      conn = get conn, page_path(conn, :index)
+      conn = get(conn, page_path(conn, :index))
 
       lessons = list_lessons(conn)
 
@@ -23,12 +23,11 @@ defmodule PlatformWeb.AccessHelperTest do
 
       user = Factory.insert(:user, admin: false)
       conn = %{conn | assigns: %{current_user: user}}
-      conn = get conn, page_path(conn, :index)
+      conn = get(conn, page_path(conn, :index))
 
       lessons = list_lessons(conn)
 
       assert length(lessons) == 1
     end
   end
-
 end

@@ -4,9 +4,9 @@ ExUnit.configure(exclude: :integration)
 
 Ecto.Adapters.SQL.Sandbox.mode(Platform.Repo, :manual)
 
-Platform.VideoConverter.TestAdapter.start_link
+Platform.VideoConverter.TestAdapter.start_link()
 
 # deactivate "warning: redefining module"
-#Code.compiler_options(ignore_module_conflict: true)
+# Code.compiler_options(ignore_module_conflict: true)
 Mox.defmock(Platform.SlidesAPIMock, for: Platform.SlideAPI)
 Mox.defmock(Platform.Accounts.UserFromAuthMock, for: Platform.Accounts.UserFromAuth)

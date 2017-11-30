@@ -3,7 +3,7 @@ defmodule PlatformWeb.PageControllerTest do
 
   describe "#index" do
     test "shows the homepage", %{conn: conn} do
-      conn = get conn, page_path(conn, :index)
+      conn = get(conn, page_path(conn, :index))
       assert html_response(conn, 200) =~ ~s(<main role="main">)
     end
 
@@ -13,7 +13,7 @@ defmodule PlatformWeb.PageControllerTest do
 
       user = Factory.insert(:user, admin: false)
       conn = %{conn | assigns: %{current_user: user}}
-      conn = get conn, page_path(conn, :index)
+      conn = get(conn, page_path(conn, :index))
 
       assert html_response(conn, 200) =~ "A TEST LESSON"
       refute html_response(conn, 200) =~ "ANOTHER TEST LESSON"
@@ -25,7 +25,7 @@ defmodule PlatformWeb.PageControllerTest do
 
       user = Factory.insert(:user, admin: true)
       conn = %{conn | assigns: %{current_user: user}}
-      conn = get conn, page_path(conn, :index)
+      conn = get(conn, page_path(conn, :index))
 
       assert html_response(conn, 200) =~ "A TEST LESSON"
       assert html_response(conn, 200) =~ "ANOTHER TEST LESSON"

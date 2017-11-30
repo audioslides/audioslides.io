@@ -18,15 +18,15 @@ defmodule Platform.Core do
   ### ################################################################### ###
   def list_lessons do
     Lesson
-    |> Repo.all
-    |> Repo.preload(slides: Slide |> Ecto.Query.order_by([asc: :position]))
+    |> Repo.all()
+    |> Repo.preload(slides: Slide |> Ecto.Query.order_by(asc: :position))
   end
 
   def list_visible_lessons do
     Lesson
     |> Ecto.Query.where(visible: true)
-    |> Repo.all
-    |> Repo.preload(slides: Slide |> Ecto.Query.order_by([asc: :position]))
+    |> Repo.all()
+    |> Repo.preload(slides: Slide |> Ecto.Query.order_by(asc: :position))
   end
 
   def get_lesson!(id) do
@@ -42,7 +42,7 @@ defmodule Platform.Core do
   def get_lesson_with_slides!(id) do
     Lesson
     |> Repo.get!(id)
-    |> Repo.preload(slides: Slide |> Ecto.Query.order_by([asc: :position]))
+    |> Repo.preload(slides: Slide |> Ecto.Query.order_by(asc: :position))
   end
 
   def create_lesson(attrs \\ %{}) do
@@ -140,15 +140,15 @@ defmodule Platform.Core do
   end
 
   def invalidate_all_audio_hashes(lesson) do
-    Enum.each lesson.slides, fn(slide) -> invalidate_audio_hash(slide) end
+    Enum.each(lesson.slides, fn slide -> invalidate_audio_hash(slide) end)
   end
 
   def invalidate_all_video_hashes(lesson) do
-    Enum.each lesson.slides, fn(slide) -> update_slide_video_hash(slide, nil) end
+    Enum.each(lesson.slides, fn slide -> update_slide_video_hash(slide, nil) end)
   end
 
   def invalidate_all_image_hashes(lesson) do
-    Enum.each lesson.slides, fn(slide) -> update_slide_image_hash(slide, nil) end
+    Enum.each(lesson.slides, fn slide -> update_slide_image_hash(slide, nil) end)
   end
 
   # FileHelper to cleanup
@@ -192,7 +192,7 @@ defmodule Platform.Core do
   def get_course_with_lessons!(id) do
     Course
     |> Repo.get!(id)
-    |> Repo.preload([course_lessons: :lesson])
+    |> Repo.preload(course_lessons: :lesson)
   end
 
   @doc """

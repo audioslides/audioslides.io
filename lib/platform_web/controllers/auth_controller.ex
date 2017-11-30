@@ -6,16 +6,18 @@ defmodule PlatformWeb.AuthController do
   @auth_adapter Application.get_env(:platform, Platform.Accounts.UserFromAuth, [])[:adapter]
 
   use PlatformWeb, :controller
-  plug Ueberauth # handles request action
+  # handles request action
+  plug(Ueberauth)
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     case @auth_adapter.find_or_create(auth) do
       {:ok, user} ->
+        # |> put_session(:current_user, user)
         conn
         |> put_flash(:info, "Successfully authenticated.")
-        # |> put_session(:current_user, user)
         |> put_session(:user_id, user.id)
         |> redirect(to: "/")
+
       {:error, reason} ->
         conn
         |> put_flash(:error, reason)

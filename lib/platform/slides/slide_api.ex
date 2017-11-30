@@ -7,30 +7,29 @@ defmodule Platform.SlideAPI do
   Get a presentation from the api
 
   """
-  @callback get_presentation(String.t) :: {:ok, String.t} | {:error, String.t}
+  @callback get_presentation(String.t()) :: {:ok, String.t()} | {:error, String.t()}
 
   @doc """
   Get a slide from the api
 
   """
-  @callback get_slide!(String.t, String.t) :: {}
+  @callback get_slide!(String.t(), String.t()) :: {}
 
   @doc """
   Get a slide from the api
 
   """
-  @callback get_slide!(String.t, String.t) :: {}
+  @callback get_slide!(String.t(), String.t()) :: {}
 
   @doc """
   Get a slide thump from the api
 
   """
-  @callback get_slide_thumb!(String.t, String.t) :: {}
+  @callback get_slide_thumb!(String.t(), String.t()) :: {}
 
   @doc """
   Get a download a slide thump from the api
 
   """
-  @callback download_slide_thumb!(String.t, String.t, String.t) :: {}
-
+  @callback download_slide_thumb!(String.t(), String.t(), String.t()) :: {}
 end

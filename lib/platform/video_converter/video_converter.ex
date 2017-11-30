@@ -10,7 +10,11 @@ defmodule Platform.VideoConverter do
   The return value is the filename of the generated file as {:ok, filename}
   If an error occurs the an {:error, reason will be returned}
   """
-  @callback generate_video([image_filename: String.t, audio_filename: String.t, output_filename: String.t]) :: {:ok, String.t} | {:error, String.t}
+  @callback generate_video(
+              image_filename: String.t(),
+              audio_filename: String.t(),
+              output_filename: String.t()
+            ) :: {:ok, String.t()} | {:error, String.t()}
   defdelegate generate_video(opts), to: @adapter
 
   @doc """
@@ -19,7 +23,7 @@ defmodule Platform.VideoConverter do
   The return value is the filename of the generated file as {:ok, filename}
   If an error occurs the an {:error, reason will be returned}
   """
-  @callback merge_videos([video_filename_list: list(String.t), output_filename: String.t]) :: {:ok, String.t} | {:error, String.t}
+  @callback merge_videos(video_filename_list: list(String.t()), output_filename: String.t()) ::
+              {:ok, String.t()} | {:error, String.t()}
   defdelegate merge_videos(opts), to: @adapter
-
 end

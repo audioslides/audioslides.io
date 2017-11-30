@@ -79,7 +79,7 @@ config :platform, :aws,
   secret: System.get_env("AWS_SECRET")
 
 config :platform, :google_analytics,
-  enabled: if(System.get_env("GA_ENABLED")  == "true", do: true, else: false),
+  enabled: if(System.get_env("GA_ENABLED") == "true", do: true, else: false),
   property: System.get_env("GA_PROPERTY") || ""
 
 # Finally import the config/prod.secret.exs

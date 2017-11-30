@@ -75,5 +75,4 @@ defmodule Platform.Speech do
   def text(params, text) do
     Map.put(params, "text", text)
   end
-
 end

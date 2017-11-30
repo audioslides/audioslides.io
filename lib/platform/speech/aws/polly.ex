@@ -80,9 +80,12 @@ defmodule Platform.Speech.AWS.Polly do
 
   """
   def get_text(nil), do: ""
+
   def get_text(text) do
     case get_text_type(text) do
-      "text" -> text
+      "text" ->
+        text
+
       "ssml" ->
         [_, speak_tag_group] = Regex.run(@regex_ssml, text)
         speak_tag_group
@@ -158,10 +161,10 @@ defmodule Platform.Speech.AWS.Polly do
       "https://polly.us-east-1.amazonaws.com:443/v1/speech/",
       "us-east-1",
       "polly",
-      Map.new,
-      DateTime.utc_now |> DateTime.to_naive,
+      Map.new(),
+      DateTime.utc_now() |> DateTime.to_naive(),
       params
-      )
+    )
   end
 
   ### Private functions
@@ -170,11 +173,12 @@ defmodule Platform.Speech.AWS.Polly do
     case HTTPoison.post(url, data) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         body
+
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         raise "404 - Not found"
+
       {:error, %HTTPoison.Error{reason: reason}} ->
         raise "Error in AWS Speech Polly at HTTP: #{reason}"
     end
   end
-
 end

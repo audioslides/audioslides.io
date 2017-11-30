@@ -17,5 +17,4 @@ defmodule Platform.Speech.Mock.SpeechApi do
   def get_speech(_) do
     <<73, 68, 51, 4, 0, 0, 0, 0, 0>>
   end
-
 end

@@ -22,6 +22,7 @@ defmodule PlatformWeb.CourseController do
         conn
         |> put_flash(:info, "Course created successfully.")
         |> redirect(to: course_path(conn, :show, course))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset, collections: collections(conn))
     end
@@ -35,7 +36,14 @@ defmodule PlatformWeb.CourseController do
   def edit(conn, %{"id" => id}) do
     course = Core.get_course_with_lessons!(id)
     changeset = Core.change_course(course)
-    render(conn, "edit.html", course: course, changeset: changeset, collections: collections(conn))
+
+    render(
+      conn,
+      "edit.html",
+      course: course,
+      changeset: changeset,
+      collections: collections(conn)
+    )
   end
 
   def update(conn, %{"id" => id, "course" => course_params}) do
@@ -46,8 +54,15 @@ defmodule PlatformWeb.CourseController do
         conn
         |> put_flash(:info, "Course updated successfully.")
         |> redirect(to: course_path(conn, :show, course))
+
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", course: course, changeset: changeset, collections: collections(conn))
+        render(
+          conn,
+          "edit.html",
+          course: course,
+          changeset: changeset,
+          collections: collections(conn)
+        )
     end
   end
 
@@ -63,7 +78,7 @@ defmodule PlatformWeb.CourseController do
   # Private methods
   defp collections(conn) do
     %{
-      lessons:  AccessHelper.list_lessons(conn)
+      lessons: AccessHelper.list_lessons(conn)
     }
   end
 end

@@ -10,10 +10,10 @@ defmodule Platform.Core.Schema.Course do
 
   @timestamps_opts [type: :utc_datetime, usec: false]
   schema "courses" do
-    field :name, :string
+    field(:name, :string)
     timestamps()
 
-    has_many :course_lessons, CourseLesson
+    has_many(:course_lessons, CourseLesson)
   end
 
   @doc false

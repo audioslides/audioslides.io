@@ -6,7 +6,6 @@ defmodule Platform.Speech.AWS.PollyTest do
 
   doctest Platform.Speech.AWS.Polly
 
-
   describe "get_speech" do
     test "should convert text to speech" do
       use_cassette "polly#working" do
@@ -15,6 +14,7 @@ defmodule Platform.Speech.AWS.PollyTest do
           "voice_gender" => "male",
           "text" => "TEST"
         }
+
         response = get_speech(params)
 
         # MP3 Header
@@ -29,6 +29,7 @@ defmodule Platform.Speech.AWS.PollyTest do
           "voice_gender" => "male",
           "text" => "TEST"
         }
+
         assert_raise RuntimeError, ~r/^Error in AWS Speech Polly at HTTP: nxdomain$/, fn ->
           get_speech(params)
         end
@@ -42,6 +43,7 @@ defmodule Platform.Speech.AWS.PollyTest do
           "voice_gender" => "male",
           "text" => "TEST"
         }
+
         assert_raise RuntimeError, ~r/^404 - Not found$/, fn ->
           get_speech(params)
         end

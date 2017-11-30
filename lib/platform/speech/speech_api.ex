@@ -3,6 +3,5 @@ defmodule Platform.SpeechAPI do
   The Speech context
   """
 
-  @callback get_speech(params :: Map.t) :: any
-
+  @callback get_speech(params :: Map.t()) :: any
 end

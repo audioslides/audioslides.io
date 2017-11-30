@@ -12,7 +12,7 @@ defmodule Platform.AccountsTest do
 
     test "paginate_users/1 returns all users" do
       Factory.insert(:user)
-      #assert %Scrivener.Page{entries: [_user]} = Accounts.paginate_users(%{})
+      # assert %Scrivener.Page{entries: [_user]} = Accounts.paginate_users(%{})
     end
 
     test "get_user!/1 returns the user with given id" do
@@ -43,7 +43,7 @@ defmodule Platform.AccountsTest do
       user = Factory.insert(:user)
       assert {:ok, user} = Accounts.update_user(user, @update_attrs)
       assert %User{} = user
-      assert user.first_name ==  @update_attrs.first_name
+      assert user.first_name == @update_attrs.first_name
     end
 
     test "update_user/2 with invalid data returns error changeset" do

@@ -20,5 +20,4 @@ defmodule Platform.SlidesAPIMock do
   def download_slide_thumb!(_presentation_id, _slide_id, filename) do
     filename
   end
-
 end

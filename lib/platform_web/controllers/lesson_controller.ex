@@ -27,6 +27,7 @@ defmodule PlatformWeb.LessonController do
         conn
         |> put_flash(:info, "Lesson created successfully.")
         |> redirect(to: lesson_path(conn, :show, lesson))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -46,7 +47,7 @@ defmodule PlatformWeb.LessonController do
     Lesson |> authorize_action!(conn)
 
     lesson = Core.get_lesson!(id)
-    #Video.convert_lesson(lesson.google_presentation_id)
+    # Video.convert_lesson(lesson.google_presentation_id)
     changeset = Core.change_lesson(lesson)
     render(conn, "edit.html", lesson: lesson, changeset: changeset)
   end
@@ -61,6 +62,7 @@ defmodule PlatformWeb.LessonController do
         conn
         |> put_flash(:info, "Lesson updated successfully.")
         |> redirect(to: lesson_path(conn, :show, lesson))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", lesson: lesson, changeset: changeset)
     end
@@ -87,6 +89,7 @@ defmodule PlatformWeb.LessonController do
         conn
         |> put_flash(:error, "#{error.status} : #{error.message}")
         |> redirect(to: lesson_path(conn, :show, lesson))
+
       _ ->
         conn
         |> put_flash(:info, "Lesson synced...")
@@ -128,5 +131,4 @@ defmodule PlatformWeb.LessonController do
     |> put_flash(:info, "All thumbs downloaded...")
     |> redirect(to: lesson_path(conn, :show, lesson))
   end
-
 end

@@ -12,20 +12,33 @@ defmodule Platform.GoogleSlidesAPI do
 
   def get_presentation(presentation_id) when is_binary(presentation_id) do
     connection = get_google_slides_connection!()
-    Presentations.slides_presentations_get(connection, presentation_id, fields: "presentationId,title,slides")
+
+    Presentations.slides_presentations_get(
+      connection,
+      presentation_id,
+      fields: "presentationId,title,slides"
+    )
   end
 
   def get_slide!(presentation_id, slide_id) do
     connection = get_google_slides_connection!()
 
-    {:ok, slide_page} = Presentations.slides_presentations_pages_get(connection, presentation_id, slide_id)
+    {:ok, slide_page} =
+      Presentations.slides_presentations_pages_get(connection, presentation_id, slide_id)
+
     slide_page
   end
 
   def get_slide_thumb!(presentation_id, slide_id) do
     connection = get_google_slides_connection!()
 
-    {:ok, slide_page_thumb} = Presentations.slides_presentations_pages_get_thumbnail(connection, presentation_id, slide_id)
+    {:ok, slide_page_thumb} =
+      Presentations.slides_presentations_pages_get_thumbnail(
+        connection,
+        presentation_id,
+        slide_id
+      )
+
     slide_page_thumb
   end
 
@@ -50,5 +63,4 @@ defmodule Platform.GoogleSlidesAPI do
 
     Connection.new(goth_token.token)
   end
-
 end

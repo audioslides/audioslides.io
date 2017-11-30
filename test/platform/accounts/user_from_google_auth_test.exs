@@ -18,6 +18,7 @@ defmodule Platform.Accounts.UserFromGoogleAuthTest do
           image: demo_user.image_url
         }
       }
+
       {:ok, user} = UserFromGoogleAuth.find_or_create(auth)
 
       assert user.first_name == demo_user.first_name
@@ -36,6 +37,7 @@ defmodule Platform.Accounts.UserFromGoogleAuthTest do
           image: "profile.png"
         }
       }
+
       {:ok, user} = UserFromGoogleAuth.find_or_create(auth)
 
       assert user.first_name == "John"
