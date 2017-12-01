@@ -1,6 +1,18 @@
 import jQuery from "jquery";
 import CodeMirror from "codemirror";
 
+function getTextFromCurrentWordTillEnd(editor) {
+  let currentLine = editor.getCursor().line;
+  let currentChar = editor.getCursor().ch;
+
+  let lastLine = editor.lastLine()
+  let lastChar = editor.getLine(lastLine).length
+
+  let wordChar = editor.findWordAt({line: currentLine, ch: currentChar}).anchor.ch;
+
+  return editor.getRange({line: currentLine, ch: wordChar}, {line: lastLine, ch: lastChar})
+}
+
 jQuery(document).ready(function () {
   let elem = document.getElementById('slide_speaker_notes');
 
@@ -14,15 +26,10 @@ jQuery(document).ready(function () {
     viewportMargin: Infinity,
   });
 
-  editor.on('cursorActivity', function(){
-    var A1 = editor.getCursor().line;
-    var A2 = editor.getCursor().ch;
-
-    var lastLine = editor.lastLine()
-    var lastChar = editor.getLine(lastLine).length
-
-    var B1 = editor.findWordAt({line: A1, ch: A2}).anchor.ch;
-
-    console.log(editor.getRange({line: A1,ch: B1}, {line: lastLine, ch: lastChar}));
+  editor.on('cursorActivity', function () {
+    let text = getTextFromCurrentWordTillEnd(editor);
+    console.log(text);
   });
+
+
 });
