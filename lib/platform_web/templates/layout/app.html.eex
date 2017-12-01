@@ -14,12 +14,12 @@
 
   <body>
     <%= render "_navigation.html", conn: @conn %>
-    <div class="container pt-4 pb-5">
-      <%= render "_flash_messages.html", conn: @conn %>
+    <div class="container pb-5">
       <%= render "_breadcrumb.html", conn: @conn %>
+      <%= render "_flash_messages.html", conn: @conn %>
 
       <main role="main">
-        <%= content_tag :h1, page(@conn)[:headline] || page(@conn)[:title], class: "page-header" %>
+        <%= content_tag :h1, page(@conn)[:headline] || page(@conn)[:title], class: "page-header pb-2" %>
         <%= render @view_module, @view_template, assigns %>
       </main>
     </div> <!-- /container -->
