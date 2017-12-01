@@ -15,9 +15,8 @@
     "popper.js": "^1.13.0"
   },
   "devDependencies": {
-    "babel-brunch": "^6.1.1",
-    "brunch": "^2.10.12",
-    "brunch-typescript": "^2.1.0",
+    "babel-brunch": "6.1.1",
+    "brunch": "2.10.12",
     "clean-css-brunch": "2.10.0",
     "copycat-brunch": "^1.1.0",
     "sass-brunch": "^2.10.4",
