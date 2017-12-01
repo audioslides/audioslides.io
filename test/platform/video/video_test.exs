@@ -47,8 +47,10 @@ defmodule Platform.VideoTest do
   end
 
   describe "the create_or_update_image_for_slide function" do
-    test "should call the GoogleSlide.download_slide_thumb! function when image_hash is different",
-         %{lesson: lesson, slide: slide} do
+    test "should call the GoogleSlide.download_slide_thumb! function when image_hash is different", %{
+      lesson: lesson,
+      slide: slide
+    } do
       Platform.SlidesAPIMock
       |> expect(:download_slide_thumb!, fn _x, _y, z -> z end)
 
@@ -86,8 +88,10 @@ defmodule Platform.VideoTest do
              )
     end
 
-    test "should not call the GoogleSlide.download_slide_thumb! function when audio_hash is the same",
-         %{lesson: lesson, slide_up_to_date: slide} do
+    test "should not call the GoogleSlide.download_slide_thumb! function when audio_hash is the same", %{
+      lesson: lesson,
+      slide_up_to_date: slide
+    } do
       create_or_update_audio_for_slide(lesson, slide)
 
       assert not called(

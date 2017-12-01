@@ -17,9 +17,7 @@ defmodule Platform.VideoConverter.TestAdapter do
     end)
   end
 
-  def merge_videos(
-        [video_filename_list: _video_filename_list, output_filename: _output_filename] = opts
-      ) do
+  def merge_videos([video_filename_list: _video_filename_list, output_filename: _output_filename] = opts) do
     Agent.update(__MODULE__, fn {generate_video_list, merge_videos_list} ->
       {generate_video_list, [opts | merge_videos_list]}
     end)

@@ -101,8 +101,7 @@ defmodule Platform.GoogleSlidesHelper do
 
   """
   def any_content_changed?(slide, google_slide) do
-    content_changed_for_speaker_notes?(slide, google_slide) ||
-      content_changed_for_page_elements?(slide, google_slide)
+    content_changed_for_speaker_notes?(slide, google_slide) || content_changed_for_page_elements?(slide, google_slide)
   end
 
   @doc """

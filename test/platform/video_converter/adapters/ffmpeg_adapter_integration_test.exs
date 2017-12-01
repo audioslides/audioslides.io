@@ -5,8 +5,7 @@ defmodule Platform.VideoConverter.FFMpegAdapterIntegrationTest do
   @moduletag integration: true
 
   test "generate_video" do
-    result =
-      generate_video(image_filename: "1.png", audio_filename: "1.mp3", output_filename: "out.mp4")
+    result = generate_video(image_filename: "1.png", audio_filename: "1.mp3", output_filename: "out.mp4")
 
     assert elem(result, 0) =~ "Output #0, mp4, to 'out.mp4"
   end

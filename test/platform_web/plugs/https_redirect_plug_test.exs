@@ -17,6 +17,7 @@ defmodule PlatformWeb.HttpsRedirectPlugTest do
       response_2 = HttpsRedirectPlug.call(conn_2, nil)
 
       assert List.last(response_1.resp_headers) == {"cache-control", "max-age=0, private, must-revalidate"}
+
       assert List.last(response_2.resp_headers) == {"cache-control", "max-age=0, private, must-revalidate"}
     end
 
@@ -44,6 +45,7 @@ defmodule PlatformWeb.HttpsRedirectPlugTest do
       response = HttpsRedirectPlug.call(conn, nil)
 
       assert List.last(response.resp_headers) == {"location", "https://workshops.de/some/path?foo=bar"}
+
       assert response(response, 301)
     end
 

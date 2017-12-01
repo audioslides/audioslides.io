@@ -27,8 +27,7 @@ defmodule Platform.Video do
     #### ASync Version END
 
     #### Sync Version Start
-    generated_video_filenames =
-      Enum.map(lesson.slides, fn slide -> generate_video_for_slide(lesson, slide) end)
+    generated_video_filenames = Enum.map(lesson.slides, fn slide -> generate_video_for_slide(lesson, slide) end)
 
     #### Sync Version End
 

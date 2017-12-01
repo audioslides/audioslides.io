@@ -41,9 +41,7 @@ defmodule Platform.GoogleSlidesAPITest do
     test "should get a slide via GoogleAPI" do
       get_slide!("presentation_id", "slide_id")
 
-      assert called(
-               Presentations.slides_presentations_pages_get(:_, "presentation_id", "slide_id")
-             )
+      assert called(Presentations.slides_presentations_pages_get(:_, "presentation_id", "slide_id"))
     end
   end
 

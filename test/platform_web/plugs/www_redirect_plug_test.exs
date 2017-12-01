@@ -14,8 +14,7 @@ defmodule PlatformWeb.WwwRedirectPlugTest do
       conn = %{build_conn(:get, "/") | host: "workshops.de"}
       response = WwwRedirectPlug.call(conn, nil)
 
-      assert List.last(response.resp_headers) ==
-               {"cache-control", "max-age=0, private, must-revalidate"}
+      assert List.last(response.resp_headers) == {"cache-control", "max-age=0, private, must-revalidate"}
     end
 
     test "test redirect of naked path" do
@@ -38,8 +37,7 @@ defmodule PlatformWeb.WwwRedirectPlugTest do
       conn = %{build_conn(:get, "/some/path?foo=bar") | host: "www.workshops.de"}
       response = WwwRedirectPlug.call(conn, nil)
 
-      assert List.last(response.resp_headers) ==
-               {"location", "https://workshops.de/some/path?foo=bar"}
+      assert List.last(response.resp_headers) == {"location", "https://workshops.de/some/path?foo=bar"}
 
       assert response(response, 301)
     end

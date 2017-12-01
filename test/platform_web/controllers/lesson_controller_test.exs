@@ -15,7 +15,6 @@ defmodule PlatformWeb.LessonControllerTest do
 
   setup [:set_current_user_as_admin, :verify_on_exit!]
 
-
   describe "#index" do
     test "lists all lessons", %{conn: conn} do
       conn = get(conn, lesson_path(conn, :index))
@@ -24,7 +23,6 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#new" do
-
     test "renders form", %{conn: conn} do
       conn = get(conn, lesson_path(conn, :new))
       assert html_response(conn, 200) =~ "New Lesson"
@@ -40,7 +38,6 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#manage" do
-
     test "manage the video", %{conn: conn} do
       lesson = Factory.insert(:lesson, name: "Lesson name")
       conn = get(conn, lesson_path(conn, :manage, lesson.id))
@@ -50,7 +47,6 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#create" do
-
     test "redirects to show when data is valid", %{conn: orig_conn} do
       conn = post(orig_conn, lesson_path(orig_conn, :create), lesson: @create_attrs)
 
@@ -78,8 +74,7 @@ defmodule PlatformWeb.LessonControllerTest do
       conn = get(orig_conn, lesson_path(orig_conn, :show, id))
       assert html_response(conn, 200) =~ "name"
 
-      assert Platform.Core.get_lesson!(id).google_presentation_id ==
-               "1tgbdANGoW8BGI-S-_DcP0XsxhoaTO_KConY7-R3FnkM"
+      assert Platform.Core.get_lesson!(id).google_presentation_id == "1tgbdANGoW8BGI-S-_DcP0XsxhoaTO_KConY7-R3FnkM"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -139,7 +134,6 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#invalidate_all_audio_hashes" do
-
     setup do
       slide_1 = Factory.insert(:slide, audio_hash: "VALID_HASH")
       slide_2 = Factory.insert(:slide, audio_hash: "VALID_HASH")

@@ -54,5 +54,4 @@ defmodule PlatformWeb.SlideController do
     |> put_flash(:info, "Thumb downloaded successfully.")
     |> redirect(to: lesson_slide_path(conn, :show, lesson, slide_id))
   end
-
 end

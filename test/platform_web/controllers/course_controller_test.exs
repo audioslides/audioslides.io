@@ -87,5 +87,4 @@ defmodule PlatformWeb.CourseControllerTest do
     conn = %{conn | assigns: %{current_user: user}}
     {:ok, conn: conn}
   end
-
 end

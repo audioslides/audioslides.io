@@ -60,7 +60,11 @@ defmodule PlatformWeb.CourseLessonControllerTest do
   describe "#update" do
     setup :create_course_lesson
 
-    test "redirects when data is valid", %{ conn: orig_conn, course: course, course_lesson: course_lesson } do
+    test "redirects when data is valid", %{
+      conn: orig_conn,
+      course: course,
+      course_lesson: course_lesson
+    } do
       conn =
         put(
           orig_conn,
@@ -98,8 +102,7 @@ defmodule PlatformWeb.CourseLessonControllerTest do
       course: course,
       course_lesson: course_lesson
     } do
-      conn =
-        delete(orig_conn, course_course_lesson_path(orig_conn, :delete, course, course_lesson))
+      conn = delete(orig_conn, course_course_lesson_path(orig_conn, :delete, course, course_lesson))
 
       assert redirected_to(conn) == course_path(conn, :show, course)
 

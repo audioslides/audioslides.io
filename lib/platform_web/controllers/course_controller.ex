@@ -88,9 +88,9 @@ defmodule PlatformWeb.CourseController do
 
   def delete(conn, %{"id" => id}) do
     course =
-    id
-    |> Core.get_course!()
-    |> authorize_action!(conn)
+      id
+      |> Core.get_course!()
+      |> authorize_action!(conn)
 
     {:ok, _course} = Core.delete_course(course)
 

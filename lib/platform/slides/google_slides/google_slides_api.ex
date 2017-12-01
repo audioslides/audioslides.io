@@ -23,8 +23,7 @@ defmodule Platform.GoogleSlidesAPI do
   def get_slide!(presentation_id, slide_id) do
     connection = get_google_slides_connection!()
 
-    {:ok, slide_page} =
-      Presentations.slides_presentations_pages_get(connection, presentation_id, slide_id)
+    {:ok, slide_page} = Presentations.slides_presentations_pages_get(connection, presentation_id, slide_id)
 
     slide_page
   end
