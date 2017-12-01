@@ -11,7 +11,7 @@
   <%= for course_lesson <- @course.course_lessons do %>
     <li class="list-group-item p-4">
       <div class="media">
-      <%= img_tag(get_course_front_slide_image(course_lesson.lesson), class: "d-flex mr-4", width: 200, alt: "Card image #{course_lesson.lesson.name}") %>
+      <%= link img_tag(get_course_front_slide_image(course_lesson.lesson), class: "d-flex mr-4", width: 200, alt: "Card image #{course_lesson.lesson.name}"), to: lesson_path(@conn, :show, course_lesson.lesson) %>
         <div class="media-body">
           <h2 class="mt-0"><%= course_lesson.lesson.name %></h2>
           <div style="max-width: 600px;">
