@@ -14,10 +14,7 @@ defmodule Platform.Speech.AWS.Polly do
 
     params = build_params(%{"text" => text, "voice" => voice})
 
-    data = Poison.encode!(params)
-    signed_url = get_signed_url(data)
-
-    get_binary_speech(signed_url, data)
+    get_binary_speech(params)
   end
 
   @doc """
@@ -159,23 +156,21 @@ defmodule Platform.Speech.AWS.Polly do
 
   Just do a basic smoke-test, function AWSAuth is already tested
 
-  iex> params = Poison.encode!(%{"param1" => "x"})
-  iex> result = get_signed_url(params)
+  iex> result = get_signed_url(%{"param1" => "x"})
   iex> result =~ "polly"
   true
 
-  iex> params = Poison.encode!(%{"param1" => "x"})
-  iex> result = get_signed_url(params)
+  iex> result = get_signed_url(%{"param1" => "x"})
   iex> result =~ "X-Amz-Algorithm=AWS4-HMAC-SHA256"
   true
 
-  iex> params = Poison.encode!(%{"param1" => "x"})
-  iex> result = get_signed_url(params)
+  iex> result = get_signed_url(%{"param1" => "x"})
   iex> result =~ "X-Amz-Signature="
   true
 
   """
   def get_signed_url(params) do
+    data = Poison.encode!(params)
     AWSAuth.QueryParameters.sign(
       Application.get_env(:platform, :aws)[:access_key_id],
       Application.get_env(:platform, :aws)[:secret],
@@ -185,7 +180,7 @@ defmodule Platform.Speech.AWS.Polly do
       "polly",
       Map.new(),
       DateTime.utc_now() |> DateTime.to_naive(),
-      params
+      data
     )
   end
 
@@ -234,7 +229,10 @@ defmodule Platform.Speech.AWS.Polly do
 
   ### Private functions
 
-  defp get_binary_speech(url, data) do
+  defp get_binary_speech(params) do
+    url = get_signed_url(params)
+    data = Poison.encode!(params)
+
     case HTTPoison.post(url, data) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         body
