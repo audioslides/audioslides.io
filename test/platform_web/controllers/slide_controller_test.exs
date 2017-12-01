@@ -27,15 +27,6 @@ defmodule PlatformWeb.SlideControllerTest do
     end
   end
 
-  describe "#get_speech_preview" do
-    test "returns a binary stream of audio/mpeg", %{conn: conn, lesson: lesson, slide: slide} do
-      conn = post(conn, lesson_slide_path(conn, :get_speech_preview, lesson, slide))
-
-      assert response_content_type(conn, :mpeg) =~ "audio/mpeg; charset=utf-8"
-      assert response(conn, 200) =~ <<73, 68, 51, 4, 0, 0, 0, 0, 0>>
-    end
-  end
-
   # Private functions
   defp create_lesson(_) do
     lesson = Factory.insert(:lesson)
