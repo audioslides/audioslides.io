@@ -10,6 +10,11 @@ slideChannel.join()
 
 slideChannel.on("speech", function (obj) {
   console.log(obj);
+  let audio_elem = document.getElementById("speaker_preview")
+  audio_elem.src = obj.preview_url
+  audio_elem.pause();
+  audio_elem.load(); //suspends and restores all audio element
+  audio_elem.play();
 })
 
 function getTextFromCurrentWordTillEnd(editor) {

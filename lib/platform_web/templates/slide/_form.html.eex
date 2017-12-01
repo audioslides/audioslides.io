@@ -11,6 +11,7 @@
     <%= error_tag f, :speaker_notes %>
   </div>
 
+  <audio id="speaker_preview" type="audio/mpeg"></audio>
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
