@@ -1,5 +1,12 @@
 import jQuery from "jquery";
 import CodeMirror from "codemirror";
+import socket from "./socket";
+
+// Now that you are connected, you can join channels with a topic:
+let slideChannel = socket.channel("slide", {})
+slideChannel.join()
+  .receive("ok", resp => { console.log("Joined successfully", resp) })
+  .receive("error", resp => { console.log("Unable to join", resp) })
 
 function getTextFromCurrentWordTillEnd(editor) {
   let lastLine = editor.lastLine()
@@ -30,10 +37,12 @@ jQuery(document).ready(function () {
     "Cmd-Enter": function (cm) {
       let text = getTextFromCurrentWordTillEndOfSentence(editor);
       console.log(text);
+      slideChannel.push('speech', {language_key: 'en-US', voice_gender: 'female', text: text})
     },
     "Shift-Cmd-Enter": function (cm) {
       let text = getTextFromCurrentWordTillEnd(editor);
       console.log(text);
+      slideChannel.push('speech', {language_key: 'en-US', voice_gender: 'female', text: text})
     }
   }
   editor.addKeyMap(map);
