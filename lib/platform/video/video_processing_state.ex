@@ -40,6 +40,7 @@ defmodule Platform.VideoProcessingState do
   end
 
   def get_state_for_slide_audio(%Slide{audio_hash: nil}), do: "NEW"
+  def get_state_for_slide_audio(%Slide{audio_sync_pid: audio_sync_pid}) when not is_nil(audio_sync_pid), do: "PROCESSING"
   def get_state_for_slide_audio(%Slide{audio_hash: audio_hash, speaker_notes_hash: speaker_notes_hash}) do
     case speaker_notes_hash == audio_hash do
       true -> "NO_UPDATED_NEEDED"
@@ -48,6 +49,7 @@ defmodule Platform.VideoProcessingState do
   end
 
   def get_state_for_slide_image(%Slide{image_hash: nil}), do: "NEW"
+  def get_state_for_slide_image(%Slide{image_sync_pid: image_sync_pid}) when not is_nil(image_sync_pid), do: "PROCESSING"
   def get_state_for_slide_image(%Slide{image_hash: image_hash, page_elements_hash: page_elements_hash}) do
     case page_elements_hash == image_hash do
       true -> "NO_UPDATED_NEEDED"
@@ -56,6 +58,7 @@ defmodule Platform.VideoProcessingState do
   end
 
   def get_state_for_slide_video(%Slide{video_hash: nil}), do: "NEW"
+  def get_state_for_slide_video(%Slide{video_sync_pid: video_sync_pid}) when not is_nil(video_sync_pid), do: "PROCESSING"
   def get_state_for_slide_video(%Slide{video_hash: video_hash} = slide) do
     case Video.generate_video_hash(slide) == video_hash do
       true -> "NO_UPDATED_NEEDED"

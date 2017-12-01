@@ -79,6 +79,13 @@ defmodule Platform.VideoProcessingStateTest do
       assert result.video_state == "NEED_UPDATE"
     end
 
+    test "should set video_state to PROCESSING if video_sync_pid is set" do
+      slide = Factory.insert(:slide, video_hash: "SOME_HASH", speaker_notes_hash: "SOME_OTHER_HASH", video_sync_pid: "PID")
+
+      result = get_processing_state_for_slide(slide)
+      assert result.video_state == "PROCESSING"
+    end
+
     # AUDIO
     test "should set audio_state to NEW if no audio is genereted by now" do
       slide = Factory.insert(:slide, audio_hash: nil)
@@ -101,6 +108,13 @@ defmodule Platform.VideoProcessingStateTest do
       assert result.audio_state == "NEED_UPDATE"
     end
 
+    test "should set audio_state to PROCESSING if audio_sync_pid is set" do
+      slide = Factory.insert(:slide, audio_hash: "SOME_HASH", speaker_notes_hash: "SOME_OTHER_HASH", audio_sync_pid: "PID")
+
+      result = get_processing_state_for_slide(slide)
+      assert result.audio_state == "PROCESSING"
+    end
+
     # Image
     test "should set image_state to NEW if no image is genereted by now" do
       slide = Factory.insert(:slide, image_hash: nil)
@@ -121,6 +135,13 @@ defmodule Platform.VideoProcessingStateTest do
 
       result = get_processing_state_for_slide(slide)
       assert result.image_state == "NEED_UPDATE"
+    end
+
+    test "should set image_state to PROCESSING if image_sync_pid is set" do
+      slide = Factory.insert(:slide, image_hash: "SOME_HASH", page_elements_hash: "SOME_OTHER_HASH", image_sync_pid: "PID")
+
+      result = get_processing_state_for_slide(slide)
+      assert result.image_state == "PROCESSING"
     end
   end
 end
