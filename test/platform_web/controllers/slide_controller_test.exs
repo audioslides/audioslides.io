@@ -1,11 +1,11 @@
 defmodule PlatformWeb.SlideControllerTest do
   use PlatformWeb.ConnCase
 
-  setup [:create_lesson, :set_current_user_as_admin]
+  alias Platform.VideoConverter.TestAdapter
+
+  setup [:create_lesson, :create_slide, :set_current_user_as_admin]
 
   describe "#show" do
-    setup :create_slide
-
     test "renders a slide", %{conn: conn, lesson: lesson, slide: slide} do
       conn = get(conn, lesson_slide_path(conn, :show, lesson, slide))
       assert html_response(conn, 200) =~ slide.name
@@ -13,8 +13,6 @@ defmodule PlatformWeb.SlideControllerTest do
   end
 
   describe "#edit" do
-    setup :create_slide
-
     test "renders form for editing chosen slide", %{conn: conn, lesson: lesson, slide: slide} do
       conn = get(conn, lesson_slide_path(conn, :edit, lesson, slide))
       assert html_response(conn, 200) =~ slide.name
@@ -22,14 +20,19 @@ defmodule PlatformWeb.SlideControllerTest do
   end
 
   describe "#generate_video" do
-    setup :create_slide
-
-    alias Platform.VideoConverter.TestAdapter
-
     test "renders form for editing chosen slide", %{conn: conn, lesson: lesson, slide: slide} do
       conn = post(conn, lesson_slide_path(conn, :generate_video, lesson, slide))
       assert redirected_to(conn) == lesson_slide_path(conn, :show, lesson, slide)
       assert length(TestAdapter.generate_video_list()) == 1
+    end
+  end
+
+  describe "#get_speech_preview" do
+    test "returns a binary stream of audio/mpeg", %{conn: conn, lesson: lesson, slide: slide} do
+      conn = post(conn, lesson_slide_path(conn, :get_speech_preview, lesson, slide))
+
+      assert response_content_type(conn, :mpeg) =~ "audio/mpeg; charset=utf-8"
+      assert response(conn, 200) =~ <<73, 68, 51, 4, 0, 0, 0, 0, 0>>
     end
   end
 

@@ -54,4 +54,27 @@ defmodule PlatformWeb.SlideController do
     |> put_flash(:info, "Thumb downloaded successfully.")
     |> redirect(to: lesson_slide_path(conn, :show, lesson, slide_id))
   end
+
+  def get_speech_preview(conn, %{"lesson_id" => lesson_id, "id" => slide_id}) do
+    lesson =
+      lesson_id
+      |> Core.get_lesson!()
+      |> authorize_action!(conn)
+
+    slide =
+      slide_id
+      |> Core.get_slide!()
+      |> authorize_action!(conn)
+
+    speech_binary =
+      Speech.run(%{
+        "language_key" => lesson.voice_language,
+        "voice_gender" => lesson.voice_gender,
+        "text" => slide.speaker_notes
+      })
+
+    conn
+    |> put_resp_content_type("audio/mpeg")
+    |> send_resp(200, speech_binary)
+  end
 end
