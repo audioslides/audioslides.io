@@ -17,4 +17,15 @@ defmodule Platform.Speech.Mock.SpeechApi do
   def get_speech(_) do
     <<73, 68, 51, 4, 0, 0, 0, 0, 0>>
   end
+
+  @doc """
+  Mock a
+
+  iex> get_speech_url(%{})
+  "http://mocked-amazon.com/polly/?Text=EXAMPLE"
+
+  """
+  def get_speech_url(_) do
+    "http://mocked-amazon.com/polly/?Text=EXAMPLE"
+  end
 end

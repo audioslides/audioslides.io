@@ -18,6 +18,18 @@ defmodule Platform.Speech do
   end
 
   @doc """
+  Run the API call with gathered params
+  In this test-case via SpeechApiMock
+
+  iex> %{} |> run()
+  <<73, 68, 51, 4, 0, 0, 0, 0, 0>>
+
+  """
+  def get_speech_url(params) do
+    @speech_api.get_speech_url(params)
+  end
+
+  @doc """
 
   iex> speak()
   %{"language_key" => "de-DE","voice_gender" => "female", "text" => ""}

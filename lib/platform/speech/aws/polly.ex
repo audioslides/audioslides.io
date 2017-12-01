@@ -21,6 +21,28 @@ defmodule Platform.Speech.AWS.Polly do
   end
 
   @doc """
+  Get signed URL from amazon polly
+
+  iex> result = get_speech_url(%{"text" => "EXAMPLE_TEXT", "voice_gender" => "male", "language_key" => "de-DE"})
+  iex> result =~ "Text=EXAMPLE_TEXT"
+  true
+
+  iex> result = get_speech_url(%{"text" => "EXAMPLE_TEXT", "voice_gender" => "male", "language_key" => "de-DE"})
+  iex> result =~ "TextType=text"
+  true
+
+  iex> result = get_speech_url(%{"text" => "<speak>EXAMPLE_TEXT</speak>", "voice_gender" => "male", "language_key" => "de-DE"})
+  iex> result =~ "TextType=ssml"
+  true
+
+  """
+  def get_speech_url(%{"language_key" => language_key, "voice_gender" => voice_gender, "text" => text}) do
+    voice = Voice.get_voice(voice_gender: voice_gender, language: language_key)
+    params = build_params(%{"text" => text, "voice" => voice})
+    get_signed_get_url(params)
+  end
+
+  @doc """
   Build params for the request
 
   Should work with pure text
@@ -164,6 +186,49 @@ defmodule Platform.Speech.AWS.Polly do
       Map.new(),
       DateTime.utc_now() |> DateTime.to_naive(),
       params
+    )
+  end
+
+  @doc """
+  signs a url for speech with Amazon v4 API
+
+  Example:
+  "https://polly.eu-central-1.amazonaws.com:443/v1/speech/?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAISGI2ES3XMIAV23Q%2F20171019%2Feu-central-1%2Fpolly%2Faws4_request&X-Amz-Date=20171019T082646Z&X-Amz-Expires=86400&X-Amz-Signature=b487f67c26926e71cf6d8711e68ce4f5e015138621869375b0681bfcba2e8757&X-Amz-SignedHeaders=host"
+
+  Just do a basic smoke-test, function AWSAuth is already tested
+
+  iex> params = %{"param1" => "x"}
+  iex> result = get_signed_get_url(params)
+  iex> result =~ "polly"
+  true
+
+  iex> params = %{"param1" => "x"}
+  iex> result = get_signed_get_url(params)
+  iex> result =~ "X-Amz-Algorithm=AWS4-HMAC-SHA256"
+  true
+
+  iex> params = %{"param1" => "x"}
+  iex> result = get_signed_get_url(params)
+  iex> result =~ "X-Amz-Signature="
+  true
+
+  iex> params = %{"text" => "example_text"}
+  iex> result = get_signed_get_url(params)
+  iex> result =~ "text=example_text"
+  true
+
+  """
+  def get_signed_get_url(params) do
+    AWSAuth.QueryParameters.sign(
+      Application.get_env(:platform, :aws)[:access_key_id],
+      Application.get_env(:platform, :aws)[:secret],
+      "GET",
+      "https://polly.us-east-1.amazonaws.com:443/v1/speech/?#{URI.encode_query(params)}",
+      "us-east-1",
+      "polly",
+      Map.new(),
+      DateTime.utc_now() |> DateTime.to_naive(),
+      ""
     )
   end
 
