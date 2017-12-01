@@ -18,11 +18,11 @@ defmodule Platform.Speech do
   end
 
   @doc """
-  Run the API call with gathered params
+  Run the API call with gathered params and return the generated URL
   In this test-case via SpeechApiMock
 
-  iex> %{} |> run()
-  <<73, 68, 51, 4, 0, 0, 0, 0, 0>>
+  iex> get_speech_url(%{})
+  "http://mocked-amazon.com/polly/?Text=EXAMPLE"
 
   """
   def get_speech_url(params) do
