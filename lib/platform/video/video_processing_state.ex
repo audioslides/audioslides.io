@@ -10,17 +10,18 @@ defmodule Platform.VideoProcessingState do
   def get_initial_processing_state(%Lesson{slides: slides} = lesson) when is_list(slides) do
     %{
      lesson_id: lesson.id,
-     video_state: "NEW",
-     slides: Enum.map(slides, fn slide -> get_initial_processing_state(slide) end)
+     video_state: get_initial_state_for_lesson_video(lesson),
+     slides: Enum.map(slides, fn slide -> get_initial_processing_state_for_slide(slide) end)
     }
   end
   def get_initial_processing_state(%Lesson{slides: slides} = lesson) when not is_list(slides) do
     %{
      lesson_id: lesson.id,
-     video_state: "NEW",
+     video_state: get_initial_state_for_lesson_video(lesson),
      slides: []
     }
   end
+
 
   def get_initial_state_for_lesson_video(%Lesson{video_hash: nil}), do: "NEW"
   def get_initial_state_for_lesson_video(%Lesson{video_hash: video_hash} = lesson) do
@@ -29,7 +30,6 @@ defmodule Platform.VideoProcessingState do
       false -> "NEED_UPDATE"
     end
   end
-
 
   def get_initial_processing_state_for_slide(%Slide{} = slide) do
     %{

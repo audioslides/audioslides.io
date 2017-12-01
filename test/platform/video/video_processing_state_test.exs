@@ -19,8 +19,33 @@ defmodule Platform.VideoProcessingStateTest do
       result = get_initial_processing_state(lesson)
       assert result.video_state == "NEW"
     end
-  end
 
+    test "should set video_state to NEED_UPDATE if some of the sub videos changed" do
+      slide1 = Factory.build(:slide, video_hash: "SAME_HASH")
+      slide2 = Factory.build(:slide, video_hash: "OTHER_HASH")
+      lesson = Factory.build(:lesson, video_hash: "SAME_HASHSAME_HASH", slides: [slide1, slide2])
+
+      result = get_initial_processing_state(lesson)
+      assert result.video_state == "NEED_UPDATE"
+    end
+
+    test "should set video_state to NO_UPDATED_NEEDED if all sub videos still the same" do
+      slide1 = Factory.build(:slide, video_hash: "SAME_HASH")
+      slide2 = Factory.build(:slide, video_hash: "SAME_HASH")
+      lesson = Factory.build(:lesson, video_hash: "SAME_HASHSAME_HASH", slides: [slide1, slide2])
+
+      result = get_initial_processing_state(lesson)
+      assert result.video_state == "NO_UPDATED_NEEDED"
+    end
+
+    test "should list slide changes in list slides" do
+      slide = Factory.build(:slide)
+      lesson = Factory.build(:lesson, slides: [slide])
+
+      result = get_initial_processing_state(lesson)
+      assert length(result.slides) == 1
+    end
+  end
 
   describe "get_initial_processing_state_for_slide/1" do
     test "should set slide_id" do
