@@ -31,7 +31,7 @@ defmodule PlatformWeb.SlideController do
       |> Core.get_slide!()
       |> authorize_action!(conn)
 
-    changeset = Core.change_slide(%Lesson{}, %Slide{})
+    changeset = Core.change_slide(lesson, slide)
 
     render(conn, "edit.html", lesson: lesson, slide: slide, changeset: changeset)
   end
