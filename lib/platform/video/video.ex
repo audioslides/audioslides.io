@@ -99,17 +99,17 @@ defmodule Platform.Video do
   nil
 
   iex> generate_video_hash(%Slide{audio_hash: "A", image_hash: "B"})
-  "38164FBD17603D73F696B8B4D72664D735BB6A7C88577687FD2AE33FD6964153"
+  "AB"
 
   iex> generate_video_hash(%Slide{audio_hash: "A", image_hash: "A"})
-  "58BB119C35513A451D24DC20EF0E9031EC85B35BFC919D263E7E5D9868909CB5"
+  "AA"
 
   """
   def generate_video_hash(%Slide{audio_hash: audio_hash, image_hash: image_hash})
       when is_binary(audio_hash) and is_binary(image_hash) do
     "#{audio_hash}#{image_hash}"
-    |> sha256()
-    |> Base.encode16()
+    # |> sha256()
+    # |> Base.encode16()
   end
 
   def generate_video_hash(_), do: nil
@@ -152,4 +152,53 @@ defmodule Platform.Video do
 
     audio_filename
   end
+
+  def get_initial_processing_state(%Lesson{slides: slides} = lesson) when is_list(slides) do
+    %{
+     lesson_id: lesson.id,
+     video_state: "NEW",
+     slides: Enum.map(slides, fn slide -> get_initial_processing_state(slide) end)
+    }
+  end
+  def get_initial_processing_state(%Lesson{slides: slides} = lesson) when not is_list(slides) do
+    %{
+     lesson_id: lesson.id,
+     video_state: "NEW",
+     slides: []
+    }
+  end
+
+  def get_initial_processing_state_for_slide(%Slide{} = slide) do
+    %{
+      slide_id: slide.id,
+      video_state: get_initial_state_for_slide_video(slide),
+      audio_state: get_initial_state_for_slide_audio(slide),
+      image_state: get_initial_state_for_slide_image(slide)
+    }
+  end
+
+  def get_initial_state_for_slide_audio(%Slide{audio_hash: nil}), do: "NEW"
+  def get_initial_state_for_slide_audio(%Slide{audio_hash: audio_hash, speaker_notes_hash: speaker_notes_hash}) do
+    case speaker_notes_hash == audio_hash do
+      true -> "NO_UPDATED_NEEDED"
+      false -> "NEED_UPDATE"
+    end
+  end
+
+  def get_initial_state_for_slide_image(%Slide{image_hash: nil}), do: "NEW"
+  def get_initial_state_for_slide_image(%Slide{image_hash: image_hash, page_elements_hash: page_elements_hash}) do
+    case page_elements_hash == image_hash do
+      true -> "NO_UPDATED_NEEDED"
+      false -> "NEED_UPDATE"
+    end
+  end
+
+  def get_initial_state_for_slide_video(%Slide{video_hash: nil}), do: "NEW"
+  def get_initial_state_for_slide_video(%Slide{video_hash: video_hash} = slide) do
+    case generate_video_hash(slide) == video_hash do
+      true -> "NO_UPDATED_NEEDED"
+      false -> "NEED_UPDATE"
+    end
+  end
+
 end
