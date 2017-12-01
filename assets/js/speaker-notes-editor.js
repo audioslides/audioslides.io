@@ -2,21 +2,6 @@ import jQuery from "jquery";
 import CodeMirror from "codemirror";
 import socket from "./socket";
 
-// Now that you are connected, you can join channels with a topic:
-let slideChannel = socket.channel("slide", {})
-slideChannel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
-
-slideChannel.on("speech", function (obj) {
-  console.log(obj);
-  let audio_elem = document.getElementById("speaker_preview")
-  audio_elem.src = obj.preview_url
-  audio_elem.pause();
-  audio_elem.load(); //suspends and restores all audio element
-  audio_elem.play();
-})
-
 function getTextFromCurrentWordTillEnd(editor) {
   let lastLine = editor.lastLine()
   let lastChar = editor.getLine(lastLine).length
@@ -30,9 +15,7 @@ function getTextFromCurrentWordTillEndOfSentence(editor) {
   return text.split(".")[0];
 }
 
-jQuery(document).ready(function () {
-  let elem = document.getElementById('slide_speaker_notes');
-
+function createCodeMirrorEditor(elem) {
   let editor = CodeMirror.fromTextArea(elem, {
     theme: "default",
     lineNumbers: false,
@@ -55,4 +38,26 @@ jQuery(document).ready(function () {
     }
   }
   editor.addKeyMap(map);
+
+  let slideChannel = socket.channel("slide", {})
+  slideChannel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
+
+  slideChannel.on("speech", function (obj) {
+    console.log(obj);
+    let audio_elem = document.getElementById("speaker_preview")
+    audio_elem.src = obj.preview_url
+    audio_elem.pause();
+    audio_elem.load(); //suspends and restores all audio element
+    audio_elem.play();
+    })
+}
+
+jQuery(document).ready(() => {
+  let elem = document.getElementById('slide_speaker_notes');
+
+  if (elem) {
+    createCodeMirrorEditor(elem)
+  }
 });
