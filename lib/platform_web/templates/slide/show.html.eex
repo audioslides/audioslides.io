@@ -5,11 +5,13 @@ Last sync at <%= @slide.synced_at %>
   <%= link "Generate Video", to: lesson_slide_path(@conn, :generate_video, @lesson, @slide), method: :post, class: "btn btn-primary" %>
 <% end %>
 
+<%= link "Edit speaker notes", to: lesson_slide_path(@conn, :edit, @lesson, @slide), class: "btn btn-secondary" %>
+
 <section>
-    <div class="embed-responsive embed-responsive-16by9">
-        <video controls>
-          <source src="/content/<%= @lesson.id %>/<%= @slide.id %>.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-    </div>
-  </section>
+  <div class="embed-responsive embed-responsive-16by9">
+      <video controls>
+        <source src="/content/<%= @lesson.id %>/<%= @slide.id %>.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+  </div>
+</section>

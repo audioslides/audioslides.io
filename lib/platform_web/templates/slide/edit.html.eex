@@ -1,0 +1,1 @@
+<%= render "_form.html", Map.put(assigns, :action, lesson_slide_path(@conn, :update, @lesson, @slide)) %>

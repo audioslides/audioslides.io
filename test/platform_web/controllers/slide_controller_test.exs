@@ -6,8 +6,17 @@ defmodule PlatformWeb.SlideControllerTest do
   describe "#show" do
     setup :create_slide
 
-    test "renders form for editing chosen slide", %{conn: conn, lesson: lesson, slide: slide} do
+    test "renders a slide", %{conn: conn, lesson: lesson, slide: slide} do
       conn = get(conn, lesson_slide_path(conn, :show, lesson, slide))
+      assert html_response(conn, 200) =~ slide.name
+    end
+  end
+
+  describe "#edit" do
+    setup :create_slide
+
+    test "renders form for editing chosen slide", %{conn: conn, lesson: lesson, slide: slide} do
+      conn = get(conn, lesson_slide_path(conn, :edit, lesson, slide))
       assert html_response(conn, 200) =~ slide.name
     end
   end

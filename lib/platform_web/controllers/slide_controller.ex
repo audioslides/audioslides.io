@@ -3,12 +3,23 @@ defmodule PlatformWeb.SlideController do
 
   alias Platform.Core
   alias Platform.Video
+  alias Platform.Core.Schema.Lesson
+  alias Platform.Core.Schema.Slide
 
   def show(conn, %{"lesson_id" => lesson_id, "id" => id}) do
     lesson = Core.get_lesson_with_slides!(lesson_id)
     slide = Core.get_slide!(id)
 
     render(conn, "show.html", lesson: lesson, slide: slide)
+  end
+
+  def edit(conn, %{"lesson_id" => lesson_id, "id" => id}) do
+    lesson = Core.get_lesson_with_slides!(lesson_id)
+    slide = Core.get_slide!(id)
+
+    changeset = Core.change_slide(%Lesson{}, %Slide{})
+
+    render(conn, "edit.html", lesson: lesson, slide: slide, changeset: changeset)
   end
 
   def generate_video(conn, %{"lesson_id" => lesson_id, "id" => id}) do

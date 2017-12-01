@@ -30,7 +30,7 @@ defmodule PlatformWeb.Router do
 
     resources "/lessons", LessonController do
       post("/slides/:id/generate_video", SlideController, :generate_video)
-      resources("/slides", SlideController, only: [:show])
+      resources("/slides", SlideController, only: [:show, :edit, :update])
     end
 
     resources "/courses", CourseController do
