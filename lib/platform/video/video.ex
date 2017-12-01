@@ -168,6 +168,15 @@ defmodule Platform.Video do
     }
   end
 
+  def get_initial_state_for_lesson_video(%Lesson{video_hash: nil}), do: "NEW"
+  def get_initial_state_for_lesson_video(%Lesson{video_hash: video_hash} = lesson) do
+    case generate_video_hash(lesson) == video_hash do
+      true -> "NO_UPDATED_NEEDED"
+      false -> "NEED_UPDATE"
+    end
+  end
+
+
   def get_initial_processing_state_for_slide(%Slide{} = slide) do
     %{
       slide_id: slide.id,
