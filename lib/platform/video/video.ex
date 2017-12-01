@@ -85,13 +85,16 @@ defmodule Platform.Video do
 
   @doc """
   iex> sha256("TEST")
-  <<148, 238, 5, 147, 53, 229, 135, 229, 1, 204, 75, 249, 6, 19, 224, 129, 79, 0, 167, 176, 139, 199, 198, 72, 253, 134, 90, 42, 246, 162, 44, 194>>
+  "94EE059335E587E501CC4BF90613E0814F00A7B08BC7C648FD865A2AF6A22CC2"
 
   iex> sha256("")
-  <<227, 176, 196, 66, 152, 252, 28, 20, 154, 251, 244, 200, 153, 111, 185, 36, 39, 174, 65, 228, 100, 155, 147, 76, 164, 149, 153, 27, 120, 82, 184, 85>>
+  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
 
   """
-  def sha256(data), do: :crypto.hash(:sha256, data)
+  def sha256(data) do
+    sha_hash = :crypto.hash(:sha256, data)
+    Base.encode16(sha_hash)
+  end
 
   @doc """
 
@@ -99,24 +102,22 @@ defmodule Platform.Video do
   nil
 
   iex> generate_video_hash(%Slide{audio_hash: "A", image_hash: "B"})
-  "AB"
+  "38164FBD17603D73F696B8B4D72664D735BB6A7C88577687FD2AE33FD6964153"
 
   iex> generate_video_hash(%Slide{audio_hash: "A", image_hash: "A"})
-  "AA"
+  "58BB119C35513A451D24DC20EF0E9031EC85B35BFC919D263E7E5D9868909CB5"
 
   """
   def generate_video_hash(%Slide{audio_hash: audio_hash, image_hash: image_hash})
       when is_binary(audio_hash) and is_binary(image_hash) do
     "#{audio_hash}#{image_hash}"
-    # |> sha256()
-    # |> Base.encode16()
+    |> sha256()
   end
   def generate_video_hash(%Lesson{slides: slides}) when is_list(slides) do
     slides
     |> Enum.map(fn slide -> slide.video_hash end)
     |> Enum.join
-  # |> sha256()
-  # |> Base.encode16()
+    |> sha256()
   end
   def generate_video_hash(_), do: nil
 

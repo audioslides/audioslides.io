@@ -3,6 +3,8 @@ defmodule Platform.VideoProcessingStateTest do
 
   import Platform.VideoProcessingState
 
+  alias Platform.Video
+
   doctest Platform.VideoProcessingState
 
   describe "get_initial_processing_state/1" do
@@ -23,7 +25,7 @@ defmodule Platform.VideoProcessingStateTest do
     test "should set video_state to NEED_UPDATE if some of the sub videos changed" do
       slide1 = Factory.build(:slide, video_hash: "SAME_HASH")
       slide2 = Factory.build(:slide, video_hash: "OTHER_HASH")
-      lesson = Factory.build(:lesson, video_hash: "SAME_HASHSAME_HASH", slides: [slide1, slide2])
+      lesson = Factory.build(:lesson, video_hash: Video.sha256("SAME_HASHSAME_HASH"), slides: [slide1, slide2])
 
       result = get_initial_processing_state(lesson)
       assert result.video_state == "NEED_UPDATE"
@@ -32,7 +34,7 @@ defmodule Platform.VideoProcessingStateTest do
     test "should set video_state to NO_UPDATED_NEEDED if all sub videos still the same" do
       slide1 = Factory.build(:slide, video_hash: "SAME_HASH")
       slide2 = Factory.build(:slide, video_hash: "SAME_HASH")
-      lesson = Factory.build(:lesson, video_hash: "SAME_HASHSAME_HASH", slides: [slide1, slide2])
+      lesson = Factory.build(:lesson, video_hash: Video.sha256("SAME_HASHSAME_HASH"), slides: [slide1, slide2])
 
       result = get_initial_processing_state(lesson)
       assert result.video_state == "NO_UPDATED_NEEDED"
@@ -64,14 +66,14 @@ defmodule Platform.VideoProcessingStateTest do
     end
 
     test "should set video_state to NO_UPDATED_NEEDED if speaker_notes_hash is same" do
-      slide = Factory.insert(:slide, audio_hash: "SAME_HASH", image_hash: "SAME_HASH", video_hash: "SAME_HASHSAME_HASH")
+      slide = Factory.insert(:slide, audio_hash: "SAME_HASH", image_hash: "SAME_HASH", video_hash: Video.sha256("SAME_HASHSAME_HASH"))
 
       result = get_initial_processing_state_for_slide(slide)
       assert result.video_state == "NO_UPDATED_NEEDED"
     end
 
     test "should set video_state to NEED_UPDATE if speaker_notes_hash is different" do
-      slide = Factory.insert(:slide, audio_hash: "SOME_HASH", image_hash: "SOME_OTHER_HASH", video_hash: "SOME_HASHSOME_HASH")
+      slide = Factory.insert(:slide, audio_hash: "SOME_HASH", image_hash: "SOME_OTHER_HASH", video_hash: Video.sha256("SOME_HASHSOME_HASH"))
 
       result = get_initial_processing_state_for_slide(slide)
       assert result.video_state == "NEED_UPDATE"
