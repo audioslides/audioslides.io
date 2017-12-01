@@ -21,5 +21,6 @@ import "phoenix_html"
 // import socket from "./socket"
 import "./jquery-initializer";
 import "./popover-initializer";
+import "./speaker-notes-editor";
 
 import "bootstrap/dist/js/bootstrap.min";

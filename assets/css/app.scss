@@ -17,12 +17,15 @@ $breadcrumb-padding-y: .30rem;
 $breadcrumb-padding-x: 0;
 $breadcrumb-active-color: #666;
 
-$font-family-sans-serif:  "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-sans-serif: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 $fa-font-path: "../fonts";
+
 @import "font-awesome";
 @import "bootstrap";
 
+@import "codemirror-core";
+@import "codemirror-theme";
 @import "newsletter";
 @import "footer";
 @import "breadcrumb";
