@@ -6,6 +6,8 @@ defmodule PlatformWeb.SlideChannel do
 
   alias Platform.Speech
 
+  @endpoint PlatformWeb.Endpoint # move this to a config option
+
   def join("slide", _payload, socket) do
     {:ok, socket}
   end
@@ -14,6 +16,9 @@ defmodule PlatformWeb.SlideChannel do
   # broadcast to everyone in the current topic (room:lobby).
   def handle_in("speech", payload, socket) do
     preview_url = Speech.get_speech_url(payload)
-    {:reply, {:ok, %{"preview_url"=> preview_url}}, socket}
+
+    @endpoint.broadcast! "slide", "speech", %{"preview_url"=> preview_url}
+
+    {:noreply, socket}
   end
 end
