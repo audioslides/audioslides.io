@@ -1,7 +1,7 @@
 defmodule PlatformWeb.SlideControllerTest do
   use PlatformWeb.ConnCase
 
-  setup :create_lesson
+  setup [:create_lesson, :set_current_user_as_admin]
 
   describe "#show" do
     setup :create_slide
@@ -42,5 +42,11 @@ defmodule PlatformWeb.SlideControllerTest do
   defp create_slide(%{lesson: lesson}) do
     slide = Factory.insert(:slide, lesson: lesson, video_hash: "B")
     {:ok, slide: slide}
+  end
+
+  defp set_current_user_as_admin(%{conn: conn}) do
+    user = Factory.insert(:user, admin: true)
+    conn = %{conn | assigns: %{current_user: user}}
+    {:ok, conn: conn}
   end
 end
