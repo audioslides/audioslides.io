@@ -18,6 +18,8 @@ defmodule Platform.Core.Schema.Lesson do
     field(:name, :string)
     field(:voice_gender, :string)
     field(:voice_language, :string)
+    field(:video_hash, :string)
+    field(:video_sync_pid, :string)
     field(:synced_at, :utc_datetime)
     timestamps()
 
