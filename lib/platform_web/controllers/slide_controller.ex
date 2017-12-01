@@ -5,7 +5,6 @@ defmodule PlatformWeb.SlideController do
   alias Platform.Video
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
-  alias Platform.Speech
 
   def show(conn, %{"lesson_id" => lesson_id, "id" => slide_id}) do
     lesson =
