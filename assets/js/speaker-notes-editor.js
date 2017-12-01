@@ -8,6 +8,10 @@ slideChannel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
+slideChannel.on("speech", function (obj) {
+  console.log(obj);
+})
+
 function getTextFromCurrentWordTillEnd(editor) {
   let lastLine = editor.lastLine()
   let lastChar = editor.getLine(lastLine).length
