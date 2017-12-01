@@ -112,7 +112,9 @@ defmodule Platform.Video do
     # |> Base.encode16()
   end
   def generate_video_hash(%Lesson{slides: slides}) when is_list(slides) do
-    Enum.map(slides, fn slide -> slide.video_hash end) |> Enum.join
+    slides
+    |> Enum.map(fn slide -> slide.video_hash end)
+    |> Enum.join
   # |> sha256()
   # |> Base.encode16()
   end

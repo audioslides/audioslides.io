@@ -22,7 +22,6 @@ defmodule Platform.VideoProcessingState do
     }
   end
 
-
   def get_initial_state_for_lesson_video(%Lesson{video_hash: nil}), do: "NEW"
   def get_initial_state_for_lesson_video(%Lesson{video_hash: video_hash} = lesson) do
     case Video.generate_video_hash(lesson) == video_hash do
