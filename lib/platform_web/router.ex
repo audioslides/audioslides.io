@@ -20,6 +20,7 @@ defmodule PlatformWeb.Router do
     post"/lessons/:id/generate_video", LessonController, :generate_video
 
     post"/lessons/:id/invalidate_all_audio_hashes", LessonController, :invalidate_all_audio_hashes
+    post"/lessons/:id/invalidate_all_video_hashes", LessonController, :invalidate_all_video_hashes
 
     post"/lessons/:id/download_all_thumbs", LessonController, :download_all_thumbs
     get"/lessons/:id/manage", LessonController, :manage

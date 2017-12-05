@@ -155,6 +155,19 @@ defmodule PlatformWeb.LessonController do
     |> redirect(to: lesson_path(conn, :manage, lesson))
   end
 
+  def invalidate_all_video_hashes(conn, %{"id" => id}) do
+    lesson =
+      id
+      |> Core.get_lesson_with_slides!()
+      |> authorize_action!(conn)
+
+    Core.invalidate_all_video_hashes(lesson)
+
+    conn
+    |> put_flash(:info, "All audio hashed invalidated...")
+    |> redirect(to: lesson_path(conn, :manage, lesson))
+  end
+
   def download_all_thumbs(conn, %{"id" => id}) do
     lesson =
       id
