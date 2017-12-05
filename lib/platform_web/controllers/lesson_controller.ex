@@ -3,6 +3,7 @@ defmodule PlatformWeb.LessonController do
 
   alias Platform.Core
   alias Platform.Core.Schema.Lesson
+  alias Platform.VideoProcessingState
 
   alias Platform.Video
   alias PlatformWeb.AccessHelper
@@ -107,12 +108,12 @@ defmodule PlatformWeb.LessonController do
       {:error, error} ->
         conn
         |> put_flash(:error, "#{error.status} : #{error.message}")
-        |> redirect(to: lesson_path(conn, :show, lesson))
+        |> redirect(to: lesson_path(conn, :manage, lesson))
 
       _ ->
         conn
         |> put_flash(:info, "Lesson synced...")
-        |> redirect(to: lesson_path(conn, :show, lesson))
+        |> redirect(to: lesson_path(conn, :manage, lesson))
     end
   end
 
@@ -123,28 +124,21 @@ defmodule PlatformWeb.LessonController do
       |> authorize_action!(conn)
 
 
-    spawn fn -> Video.convert_lesson_to_video(lesson) end
-    Process.register self(), :lesson_controller
+    spawn fn -> Video.convert_lesson_to_video(lesson)
+      |> Enum.each(fn(_) ->
+        lesson =
+        id
+        |> Core.get_lesson_with_slides!()
 
-    create_stream() |> Enum.each &IO.inspect&1
+        html =
+        Phoenix.View.render_to_string(PlatformWeb.LessonView, "_processing.html", lesson: lesson, conn: conn)
+        PlatformWeb.Endpoint.broadcast!("lesson:#{lesson.id}", "new-processing-state", %{lesson_html: html})
+      end)
+    end
 
     conn
     |> put_flash(:info, "Generating Lesson video...")
-    |> redirect(to: lesson_path(conn, :show, lesson))
-  end
-
-  defp create_stream do
-    Stream.resource(
-      fn -> %{} end,
-      fn(%{}) -> loop() end,
-      fn(_) -> nil end)
-  end
-
-  defp loop do
-    receive do
-      {:step, state} -> {state, state}
-      {:done, state} -> {:halt, state}
-    end
+    |> redirect(to: lesson_path(conn, :manage, lesson))
   end
 
   def invalidate_all_audio_hashes(conn, %{"id" => id}) do
@@ -158,7 +152,7 @@ defmodule PlatformWeb.LessonController do
 
     conn
     |> put_flash(:info, "All audio hashed invalidated...")
-    |> redirect(to: lesson_path(conn, :show, lesson))
+    |> redirect(to: lesson_path(conn, :manage, lesson))
   end
 
   def download_all_thumbs(conn, %{"id" => id}) do
@@ -167,14 +161,10 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson_with_slides!()
       |> authorize_action!(conn)
 
-    Process.register self(), :lesson_controller
-    spawn fn -> Core.download_all_thumbs!(lesson) end
-
-
-    create_stream() |> Enum.each &IO.inspect&1
+    Core.download_all_thumbs!(lesson)
 
     conn
     |> put_flash(:info, "All thumbs downloaded...")
-    |> redirect(to: lesson_path(conn, :show, lesson))
+    |> redirect(to: lesson_path(conn, :manage, lesson))
   end
 end

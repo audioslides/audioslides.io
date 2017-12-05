@@ -13,7 +13,7 @@ $(document).ready(() => {
 
     channel.on('new-processing-state', payload => {
       console.log(jQuery(payload.lesson_html))
-      elem.replaceWith($(payload.lesson_html)[0])
+      $(elem).html(payload.lesson_html)
     })
   })
 });

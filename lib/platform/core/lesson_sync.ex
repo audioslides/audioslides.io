@@ -96,7 +96,6 @@ defmodule Platform.Core.LessonSync do
 
   def download_all_thumbs!(%Lesson{} = lesson) do
     Enum.each(lesson.slides, fn slide ->
-      send :lesson_controller, {:step, VideoProcessingState.get_processing_state(lesson)}
       download_thumb!(lesson, slide)
     end)
   end

@@ -1,0 +1,2 @@
+<%= debug Platform.VideoProcessingState.get_processing_state(@lesson) %>
+

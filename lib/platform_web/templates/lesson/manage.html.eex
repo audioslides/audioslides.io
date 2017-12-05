@@ -26,6 +26,10 @@
   </ul>
 </section>
 
+<section data-lesson-id="<%= @lesson.id %>">
+  <%= render PlatformWeb.LessonView, "_processing.html", conn: @conn, lesson: @lesson %>
+</section>
+
 <section>
   <h3>Slides</h3>
   <div class="hover-zoom-cards row">

@@ -15,40 +15,40 @@ defmodule Platform.Video do
   alias Platform.Core.Schema.Slide
 
   def convert_lesson_to_video(%Lesson{} = lesson) do
-    final_output_filename = Filename.get_filename_for_lesson_video(lesson)
+    #final_output_filename = Filename.get_filename_for_lesson_video(lesson)
 
     #### ASync Version Start
     # start async creation of the videos
-    # video_generation_tasks = create_async_video_tasks(lesson)
+    lesson
+    |> create_async_video_tasks()
+    #|> Enum.each(&IO.inspect(&1))
 
     # wait 60 seconds for all video generator processes
     # tasks_with_results = Task.yield_many(video_generation_tasks, 60_000)
 
-    # generated_video_filenames = get_results_or_kill_tasks(tasks_with_results)
+    #generated_video_filenames = get_results_or_kill_tasks(tasks_with_results)
     #### ASync Version END
 
     #### Sync Version Start
-    send :lesson_controller,{:step, VideoProcessingState.get_processing_state(lesson)}
-    Core.update_lesson(lesson, %{video_sync_pid: self()})
+    #
+    # Core.update_lesson(lesson, %{video_sync_pid: self()})
 
-    generated_video_filenames = Enum.map(lesson.slides, fn slide -> generate_video_for_slide(lesson, slide) end)
-    VideoConverter.merge_videos(
-      video_filename_list: generated_video_filenames,
-      output_filename: final_output_filename
-    )
+    # generated_video_filenames = Enum.map(lesson.slides, fn slide -> generate_video_for_slide(lesson, slide) end)
+    # VideoConverter.merge_videos(
+    #   video_filename_list: generated_video_filenames,
+    #   output_filename: final_output_filename
+    # )
 
 
-    Core.update_lesson(lesson, %{video_sync_pid: nil})
-    send :lesson_controller,{:done, VideoProcessingState.get_processing_state(lesson)}
+    # Core.update_lesson(lesson, %{video_sync_pid: nil})
+    # send :processing_stream,{:done, VideoProcessingState.get_processing_state(lesson)}
     #### Sync Version End
 
   end
 
-  # def create_async_video_tasks(lesson) do
-  #   Enum.map(lesson.slides, fn(slide) ->
-  #     Task.async(fn -> generate_video_for_slide(lesson, slide) end)
-  #   end)
-  # end
+  def create_async_video_tasks(lesson) do
+    Task.async_stream(lesson.slides, fn(slide) -> generate_video_for_slide(lesson, slide) end, timeout: 120_000)
+  end
 
   def get_results_or_kill_tasks(tasks_with_results) do
     Enum.map(tasks_with_results, fn {task, res} ->
@@ -74,7 +74,6 @@ defmodule Platform.Video do
       Logger.info("Slide #{slide.id} Video: need update")
 
       Core.update_slide(slide, %{video_sync_pid: self()})
-      send :lesson_controller,{:step, VideoProcessingState.get_processing_state(lesson)}
 
       VideoConverter.generate_video(
         image_filename: image_filename,
@@ -84,7 +83,6 @@ defmodule Platform.Video do
 
       Core.update_slide_video_hash(slide, generate_video_hash(slide))
       Core.update_slide(slide, %{video_sync_pid: nil})
-      send :lesson_controller,{:step, VideoProcessingState.get_processing_state(lesson)}
 
       Logger.info("Slide #{slide.id} Video: generated")
     else
@@ -139,13 +137,13 @@ defmodule Platform.Video do
       Logger.info("Slide #{slide.id} Image: need update")
 
       Core.update_slide(slide, %{image_sync_pid: self()})
-      send :lesson_controller, {:step, VideoProcessingState.get_processing_state(lesson)}
+
 
       Core.download_thumb!(lesson, slide)
       Core.update_slide_image_hash(slide, slide.page_elements_hash)
 
       Core.update_slide(slide, %{image_sync_pid: nil})
-      send :lesson_controller, {:step, VideoProcessingState.get_processing_state(lesson)}
+
 
       Logger.info("Slide #{slide.id} Image: generated")
     else
@@ -162,7 +160,7 @@ defmodule Platform.Video do
       Logger.info("Slide #{slide.id} Audio: need update")
 
       Core.update_slide(slide, %{audio_sync_pid: self()})
-      send :lesson_controller,{:step, VideoProcessingState.get_processing_state(lesson)}
+
 
       speech_binary =
         Speech.run(%{
@@ -175,7 +173,7 @@ defmodule Platform.Video do
       Core.update_slide_audio_hash(slide, slide.speaker_notes_hash)
 
       Core.update_slide(slide, %{audio_sync_pid: nil})
-      send :lesson_controller,{:step, VideoProcessingState.get_processing_state(lesson)}
+
 
       Logger.info("Slide #{slide.id} Audio: generated")
     else
