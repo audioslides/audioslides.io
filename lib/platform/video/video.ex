@@ -27,7 +27,11 @@ defmodule Platform.Video do
     #### ASync Version END
 
     #### Sync Version Start
+    Core.update_lesson(lesson, %{video_sync_pid: self()})
+
     generated_video_filenames = Enum.map(lesson.slides, fn slide -> generate_video_for_slide(lesson, slide) end)
+
+    Core.update_lesson(lesson, %{video_sync_pid: nil})
 
     #### Sync Version End
 
@@ -66,6 +70,8 @@ defmodule Platform.Video do
     if generate_video_hash(slide) != slide.video_hash do
       Logger.info("Slide #{slide.id} Video: need update")
 
+      Core.update_slide(slide, %{video_sync_pid: self()})
+
       VideoConverter.generate_video(
         image_filename: image_filename,
         audio_filename: audio_filename,
@@ -73,6 +79,8 @@ defmodule Platform.Video do
       )
 
       Core.update_slide_video_hash(slide, generate_video_hash(slide))
+      Core.update_slide(slide, %{video_sync_pid: nil})
+
       Logger.info("Slide #{slide.id} Video: generated")
     else
       Logger.info("Slide #{slide.id} Video: skipped")
@@ -125,8 +133,12 @@ defmodule Platform.Video do
     if slide.page_elements_hash != slide.image_hash do
       Logger.info("Slide #{slide.id} Image: need update")
 
+      Core.update_slide(slide, %{image_sync_pid: self()})
+
       Core.download_thumb!(lesson, slide)
       Core.update_slide_image_hash(slide, slide.page_elements_hash)
+
+      Core.update_slide(slide, %{image_sync_pid: nil})
 
       Logger.info("Slide #{slide.id} Image: generated")
     else
@@ -142,6 +154,8 @@ defmodule Platform.Video do
     if slide.speaker_notes_hash != slide.audio_hash do
       Logger.info("Slide #{slide.id} Audio: need update")
 
+      Core.update_slide(slide, %{audio_sync_pid: self()})
+
       speech_binary =
         Speech.run(%{
           "language_key" => lesson.voice_language,
@@ -151,6 +165,8 @@ defmodule Platform.Video do
 
       FileHelper.write_to_file(audio_filename, speech_binary)
       Core.update_slide_audio_hash(slide, slide.speaker_notes_hash)
+
+      Core.update_slide(slide, %{audio_sync_pid: nil})
 
       Logger.info("Slide #{slide.id} Audio: generated")
     else
