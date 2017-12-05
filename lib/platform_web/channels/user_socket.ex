@@ -3,6 +3,7 @@ defmodule PlatformWeb.UserSocket do
 
   ## Channels
   channel "slide", PlatformWeb.SlideChannel
+  channel "lesson:*", PlatformWeb.LessonChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

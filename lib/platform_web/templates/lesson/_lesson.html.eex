@@ -1,4 +1,4 @@
-<a class="col-12 col-md-4 p-3" href="<%= lesson_path(@conn, :show, @lesson) %>">
+<a class="col-12 col-md-4 p-3" href="<%= lesson_path(@conn, :show, @lesson) %>" data-lesson-id="<%= @lesson.id %>">
   <div class="card">
     <div class="card-image">
         <%= img_tag(get_course_front_slide_image(@lesson), class: "card-img-top img-fluid", alt: "Card image #{@lesson.name}") %>
@@ -11,5 +11,6 @@
       </div>
     </div>
   </div>
+  <%= debug Platform.VideoProcessingState.get_state_for_lesson_video(@lesson) %>
 </a>
 <span class="disqus-comment-count" data-disqus-url="http://audioslides.io/lessons/6"> <!-- Count will be inserted here --> </span>

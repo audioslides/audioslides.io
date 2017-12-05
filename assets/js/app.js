@@ -22,5 +22,6 @@ import "phoenix_html"
 import "./jquery-initializer";
 import "./popover-initializer";
 import "./speaker-notes-editor";
+import "./lesson-state-updater";
 
 import "bootstrap/dist/js/bootstrap.min";
