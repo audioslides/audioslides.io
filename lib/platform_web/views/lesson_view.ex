@@ -32,4 +32,11 @@ defmodule PlatformWeb.LessonView do
       parent: page("index.html", conn),
       title: "Edit lesson"
     }
+
+  def state_view(lesson) do
+    state = Platform.VideoProcessingState.get_state_for_lesson_video(lesson)
+    case state do
+      _ -> state
+    end
+  end
 end
