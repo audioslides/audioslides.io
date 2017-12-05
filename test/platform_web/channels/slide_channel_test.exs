@@ -20,6 +20,4 @@ defmodule PlatformWeb.SlideChannelTest do
       assert_broadcast "speech", %{"preview_url" => "http://mocked-amazon.com/polly/?Text=EXAMPLE"}
     end
   end
-
-
 end
