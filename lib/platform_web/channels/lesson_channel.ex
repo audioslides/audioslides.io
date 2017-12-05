@@ -7,11 +7,11 @@ defmodule PlatformWeb.LessonChannel do
   alias Platform.Core
 
   def join("lesson:" <> lesson_id, _payload, socket) do
-    socket_with_lesson_id =
-      socket
-      |> assign(:lesson_id, lesson_id)
+    # socket_with_lesson_id =
+    #   socket
+    #   |> assign(:lesson_id, lesson_id)
 
-    {:ok, socket_with_lesson_id}
+    {:ok, socket}
   end
 
   def broadcast_processing_to_socket(id, conn) do
