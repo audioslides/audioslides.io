@@ -13,4 +13,8 @@ defmodule PlatformWeb.SlideView do
       parent: page("show.html", conn),
       title: "Edit slide"
     }
+
+  def google_slides_url(%{google_presentation_id: google_presentation_id}, %{google_object_id: google_object_id}) do
+    "https://docs.google.com/presentation/d/#{google_presentation_id}/edit#slide=id.#{google_object_id}"
+  end
 end
