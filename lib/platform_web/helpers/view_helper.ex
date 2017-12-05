@@ -75,4 +75,7 @@ defmodule PlatformWeb.ViewHelper do
   end
 
   def get_slide_image(_lesson, _slide), do: @example_image
+
+  def get_class_for_processing_state("UP_TO_DATE"), do: "bg-success"
+  def get_class_for_processing_state("NEEDS_UPDATE"), do: "bg-warning"
 end

@@ -5,15 +5,15 @@
       <div class="col">
         <%= debug slide_state.slide_id %>
       </div>
-      <div class="col">
+      <div class="col <%= get_class_for_processing_state(slide_state.audio_state) %>">
         <i class="fa fa-file-audio-o" aria-hidden="true"></i>
         <%= debug slide_state.audio_state %>
       </div>
-      <div class="col">
+      <div class="col <%= get_class_for_processing_state(slide_state.image_state) %>">
           <i class="fa fa-file-image-o" aria-hidden="true"></i>
         <%= debug slide_state.image_state %>
       </div>
-      <div class="col">
+      <div class="col <%= get_class_for_processing_state(slide_state.video_state) %>">
           <i class="fa fa-file-video-o" aria-hidden="true"></i>
         <%= debug slide_state.video_state %>
       </div>
