@@ -8,6 +8,7 @@ defmodule Platform.Video do
   alias Platform.FileHelper
   alias Platform.Speech
   alias Platform.VideoConverter
+  alias Platform.VideoProcessingState
 
   alias Platform.Core
   alias Platform.Core.Schema.Lesson
@@ -27,18 +28,20 @@ defmodule Platform.Video do
     #### ASync Version END
 
     #### Sync Version Start
+    send :lesson_controller,{:step, VideoProcessingState.get_processing_state(lesson)}
     Core.update_lesson(lesson, %{video_sync_pid: self()})
 
     generated_video_filenames = Enum.map(lesson.slides, fn slide -> generate_video_for_slide(lesson, slide) end)
-
-    Core.update_lesson(lesson, %{video_sync_pid: nil})
-
-    #### Sync Version End
-
     VideoConverter.merge_videos(
       video_filename_list: generated_video_filenames,
       output_filename: final_output_filename
     )
+
+
+    Core.update_lesson(lesson, %{video_sync_pid: nil})
+    send :lesson_controller,{:done, VideoProcessingState.get_processing_state(lesson)}
+    #### Sync Version End
+
   end
 
   # def create_async_video_tasks(lesson) do
@@ -71,6 +74,7 @@ defmodule Platform.Video do
       Logger.info("Slide #{slide.id} Video: need update")
 
       Core.update_slide(slide, %{video_sync_pid: self()})
+      send :lesson_controller,{:step, VideoProcessingState.get_processing_state(lesson)}
 
       VideoConverter.generate_video(
         image_filename: image_filename,
@@ -80,6 +84,7 @@ defmodule Platform.Video do
 
       Core.update_slide_video_hash(slide, generate_video_hash(slide))
       Core.update_slide(slide, %{video_sync_pid: nil})
+      send :lesson_controller,{:step, VideoProcessingState.get_processing_state(lesson)}
 
       Logger.info("Slide #{slide.id} Video: generated")
     else
@@ -134,11 +139,13 @@ defmodule Platform.Video do
       Logger.info("Slide #{slide.id} Image: need update")
 
       Core.update_slide(slide, %{image_sync_pid: self()})
+      send :lesson_controller, {:step, VideoProcessingState.get_processing_state(lesson)}
 
       Core.download_thumb!(lesson, slide)
       Core.update_slide_image_hash(slide, slide.page_elements_hash)
 
       Core.update_slide(slide, %{image_sync_pid: nil})
+      send :lesson_controller, {:step, VideoProcessingState.get_processing_state(lesson)}
 
       Logger.info("Slide #{slide.id} Image: generated")
     else
@@ -155,6 +162,7 @@ defmodule Platform.Video do
       Logger.info("Slide #{slide.id} Audio: need update")
 
       Core.update_slide(slide, %{audio_sync_pid: self()})
+      send :lesson_controller,{:step, VideoProcessingState.get_processing_state(lesson)}
 
       speech_binary =
         Speech.run(%{
@@ -167,6 +175,7 @@ defmodule Platform.Video do
       Core.update_slide_audio_hash(slide, slide.speaker_notes_hash)
 
       Core.update_slide(slide, %{audio_sync_pid: nil})
+      send :lesson_controller,{:step, VideoProcessingState.get_processing_state(lesson)}
 
       Logger.info("Slide #{slide.id} Audio: generated")
     else

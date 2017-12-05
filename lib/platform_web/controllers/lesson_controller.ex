@@ -122,11 +122,29 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson_with_slides!()
       |> authorize_action!(conn)
 
-    Video.convert_lesson_to_video(lesson)
+
+    spawn fn -> Video.convert_lesson_to_video(lesson) end
+    Process.register self(), :lesson_controller
+
+    create_stream() |> Enum.each &IO.inspect&1
 
     conn
     |> put_flash(:info, "Generating Lesson video...")
     |> redirect(to: lesson_path(conn, :show, lesson))
+  end
+
+  defp create_stream do
+    Stream.resource(
+      fn -> %{} end,
+      fn(%{}) -> loop() end,
+      fn(_) -> nil end)
+  end
+
+  defp loop do
+    receive do
+      {:step, state} -> {state, state}
+      {:done, state} -> {:halt, state}
+    end
   end
 
   def invalidate_all_audio_hashes(conn, %{"id" => id}) do
@@ -149,7 +167,11 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson_with_slides!()
       |> authorize_action!(conn)
 
-    Core.download_all_thumbs!(lesson)
+    Process.register self(), :lesson_controller
+    spawn fn -> Core.download_all_thumbs!(lesson) end
+
+
+    create_stream() |> Enum.each &IO.inspect&1
 
     conn
     |> put_flash(:info, "All thumbs downloaded...")

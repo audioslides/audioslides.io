@@ -9,6 +9,7 @@ defmodule Platform.Core.LessonSync do
   alias GoogleApi.Slides.V1.Model.Presentation
   alias Platform.Core
   alias Platform.Filename
+  alias Platform.VideoProcessingState
 
   require Ecto.Query
 
@@ -95,6 +96,7 @@ defmodule Platform.Core.LessonSync do
 
   def download_all_thumbs!(%Lesson{} = lesson) do
     Enum.each(lesson.slides, fn slide ->
+      send :lesson_controller, {:step, VideoProcessingState.get_processing_state(lesson)}
       download_thumb!(lesson, slide)
     end)
   end
