@@ -11,6 +11,12 @@
     <%= error_tag f, :speaker_notes %>
   </div>
 
+  <div class="form-group">
+    <%= label f, :complete_percent, class: "control-label" %>
+    <%= text_input f, :complete_percent, class: "form-control" %>
+    <%= error_tag f, :complete_percent %>
+  </div>
+
   <audio id="speaker_preview" type="audio/mpeg"></audio>
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>

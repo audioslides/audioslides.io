@@ -20,17 +20,19 @@ defmodule Platform.Core.Schema.Slide do
     field(:image_sync_pid, :string)
     field(:video_hash, :string)
     field(:video_sync_pid, :string)
+    field(:complete_percent, :integer, default: 0)
     timestamps()
 
     belongs_to(:lesson, Platform.Core.Schema.Lesson)
   end
 
   @doc false
-  @fields ~w(google_object_id name position speaker_notes_hash page_elements_hash synced_at speaker_notes audio_hash audio_sync_pid image_hash image_sync_pid video_hash video_sync_pid)a
+  @fields ~w(google_object_id name position speaker_notes_hash page_elements_hash synced_at speaker_notes audio_hash audio_sync_pid image_hash image_sync_pid video_hash video_sync_pid complete_percent)a
   def changeset(%__MODULE__{} = struct, attrs) do
     struct
     |> cast(attrs, @fields)
     |> validate_required([:google_object_id, :name, :position])
     |> unique_constraint(:google_object_id, name: :slides_lesson_id_google_object_id_index)
+    |> validate_inclusion(:complete_percent, 0..100)
   end
 end
