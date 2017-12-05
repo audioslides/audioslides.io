@@ -12,8 +12,8 @@ $(document).ready(() => {
       .receive('error', function(resp) { console.log('Unable to join', resp) })
 
     channel.on('new-processing-state', payload => {
-      console.log(payload.lesson_html)
-      elem.replaceWith(payload.lesson_html)
+      console.log(jQuery(payload.lesson_html))
+      elem.replaceWith(jQuery(payload.lesson_html)[0])
     })
   })
 });
