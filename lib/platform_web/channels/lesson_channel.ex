@@ -4,7 +4,7 @@ defmodule PlatformWeb.LessonChannel do
   """
   use PlatformWeb, :channel
 
-  def join("lesson:" <> lesson_id, _payload, socket) do
+  def join("lesson:" <> _lesson_id, _payload, socket) do
     # socket_with_lesson_id =
     #   socket
     #   |> assign(:lesson_id, lesson_id)
