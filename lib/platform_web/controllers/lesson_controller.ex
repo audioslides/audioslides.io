@@ -123,22 +123,25 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson_with_slides!()
       |> authorize_action!(conn)
 
-
-    spawn_link fn -> Video.convert_lesson_to_video(lesson)
-      |> Enum.each(fn(_) ->
-        lesson =
-        id
-        |> Core.get_lesson_with_slides!()
-
-        html =
-        Phoenix.View.render_to_string(PlatformWeb.LessonView, "_processing.html", lesson: lesson, conn: conn)
-        PlatformWeb.Endpoint.broadcast!("lesson:#{lesson.id}", "new-processing-state", %{lesson_html: html})
-      end)
+    spawn_link fn ->
+      lesson
+      |> Video.convert_lesson_to_video()
+      |> Enum.each(fn(_) -> temp_fixme_update_processing(id, conn) end)
     end
 
     conn
     |> put_flash(:info, "Generating Lesson video...")
     |> redirect(to: lesson_path(conn, :manage, lesson))
+  end
+
+  def temp_fixme_update_processing(id, conn) do
+    lesson =
+    id
+    |> Core.get_lesson_with_slides!()
+
+    html =
+    Phoenix.View.render_to_string(PlatformWeb.LessonView, "_processing.html", lesson: lesson, conn: conn)
+    PlatformWeb.Endpoint.broadcast!("lesson:#{lesson.id}", "new-processing-state", %{lesson_html: html})
   end
 
   def invalidate_all_audio_hashes(conn, %{"id" => id}) do
