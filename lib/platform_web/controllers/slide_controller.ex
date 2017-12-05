@@ -54,8 +54,6 @@ defmodule PlatformWeb.SlideController do
     end
   end
 
-
-
   def generate_video(conn, %{"lesson_id" => lesson_id, "id" => slide_id}) do
     lesson =
       lesson_id
