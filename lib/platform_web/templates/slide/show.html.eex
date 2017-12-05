@@ -1,15 +1,16 @@
 <h4>
 Last sync at <%= @slide.synced_at %>
 </h4>
+<p>
+  Complete: <%= @slide.complete_percent %>%
+</p>
 <%= if current_user(@conn) do %>
   <%= link "Generate Video", to: lesson_slide_path(@conn, :generate_video, @lesson, @slide), method: :post, class: "btn btn-primary" %>
 <% end %>
 
 <%= link "Edit speaker notes", to: lesson_slide_path(@conn, :edit, @lesson, @slide), class: "btn btn-secondary" %>
 
-<%= link "Open in Google", to: google_slides_url(@lesson, @slide), target: "_blank" %>
-
-<%= google_slides_url(@lesson, @slide) %>
+<%= link "Open in Google", to: google_slides_url(@lesson, @slide), target: "_blank", class: "btn btn-info" %>
 
 
 <section>

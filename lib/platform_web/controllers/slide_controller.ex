@@ -22,7 +22,6 @@ defmodule PlatformWeb.SlideController do
     lesson =
       lesson_id
       |> Core.get_lesson_with_slides!()
-      |> authorize_action!(conn)
 
     slide =
       slide_id
@@ -33,6 +32,29 @@ defmodule PlatformWeb.SlideController do
 
     render(conn, "edit.html", lesson: lesson, slide: slide, changeset: changeset)
   end
+
+  def update(conn, %{"lesson_id" => lesson_id, "id" => slide_id, "slide" => slide_params}) do
+    lesson =
+      lesson_id
+      |> Core.get_lesson_with_slides!()
+
+    slide =
+      slide_id
+      |> Core.get_slide!()
+      |> authorize_action!(conn)
+
+    case Core.update_slide(slide, slide_params) do
+      {:ok, slide} ->
+        conn
+        |> put_flash(:info, "Slide updated successfully.")
+        |> redirect(to: lesson_slide_path(conn, :show, lesson, slide))
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "edit.html", lesson: lesson, slide: slide, changeset: changeset)
+    end
+  end
+
+
 
   def generate_video(conn, %{"lesson_id" => lesson_id, "id" => slide_id}) do
     lesson =
@@ -51,5 +73,4 @@ defmodule PlatformWeb.SlideController do
     |> put_flash(:info, "Thumb downloaded successfully.")
     |> redirect(to: lesson_slide_path(conn, :show, lesson, slide_id))
   end
-
 end
