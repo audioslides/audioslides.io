@@ -124,7 +124,7 @@ defmodule PlatformWeb.LessonController do
       |> authorize_action!(conn)
 
 
-    spawn fn -> Video.convert_lesson_to_video(lesson)
+    spawn_link fn -> Video.convert_lesson_to_video(lesson)
       |> Enum.each(fn(_) ->
         lesson =
         id

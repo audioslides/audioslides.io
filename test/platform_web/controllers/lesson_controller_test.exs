@@ -1,5 +1,5 @@
 defmodule PlatformWeb.LessonControllerTest do
-  use PlatformWeb.ConnCase
+  use PlatformWeb.ConnCase, async: true
 
   import Mock
   import Mox
@@ -128,7 +128,7 @@ defmodule PlatformWeb.LessonControllerTest do
 
     test "renders form for editing chosen lesson", %{conn: conn, lesson: lesson} do
       conn = post(conn, lesson_path(conn, :generate_video, lesson))
-      assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+      assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
       assert length(TestAdapter.merge_videos_list()) == 1
     end
   end
@@ -146,7 +146,7 @@ defmodule PlatformWeb.LessonControllerTest do
       assert Enum.map(lesson.slides, fn slide -> slide.audio_hash end) != [nil, nil]
 
       conn = post(conn, lesson_path(conn, :invalidate_all_audio_hashes, lesson))
-      assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+      assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
 
       lesson = Platform.Core.get_lesson_with_slides!(lesson.id)
 
@@ -157,7 +157,7 @@ defmodule PlatformWeb.LessonControllerTest do
       assert Enum.map(lesson.slides, fn slide -> slide.audio_hash end) != [nil, nil]
 
       conn = post(conn, lesson_path(conn, :invalidate_all_audio_hashes, lesson))
-      assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+      assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
 
       lesson = Platform.Core.get_lesson_with_slides!(lesson.id)
 
@@ -171,7 +171,7 @@ defmodule PlatformWeb.LessonControllerTest do
     test "should call Core.sync_lesson with correct lesson", %{conn: conn, lesson: lesson} do
       with_mock Platform.Core, [:passthrough], sync_lesson: fn _ -> "" end do
         conn = post(conn, lesson_path(conn, :sync, lesson))
-        assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+        assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
 
         assert called(Platform.Core.sync_lesson(%{id: lesson.id}))
       end
@@ -184,7 +184,7 @@ defmodule PlatformWeb.LessonControllerTest do
 
         assert called(Platform.Core.sync_lesson(%{id: lesson.id}))
         assert get_flash(conn, :error) == "status : message"
-        assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+        assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
       end
     end
   end
@@ -198,7 +198,7 @@ defmodule PlatformWeb.LessonControllerTest do
 
       conn = post(conn, lesson_path(conn, :download_all_thumbs, lesson))
 
-      assert redirected_to(conn) == lesson_path(conn, :show, lesson)
+      assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
       assert get_flash(conn, :info) == "All thumbs downloaded..."
     end
   end
