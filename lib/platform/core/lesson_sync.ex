@@ -9,7 +9,6 @@ defmodule Platform.Core.LessonSync do
   alias GoogleApi.Slides.V1.Model.Presentation
   alias Platform.Core
   alias Platform.Filename
-  alias Platform.VideoProcessingState
 
   require Ecto.Query
 

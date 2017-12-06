@@ -3,8 +3,6 @@ defmodule PlatformWeb.LessonController do
 
   alias Platform.Core
   alias Platform.Core.Schema.Lesson
-  alias Platform.VideoProcessingState
-
   alias Platform.Video
   alias PlatformWeb.AccessHelper
   alias PlatformWeb.LessonChannel
