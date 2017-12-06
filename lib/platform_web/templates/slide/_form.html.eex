@@ -5,6 +5,8 @@
     </div>
   <% end %>
 
+  <button data-editor-insert='<say-as interpret-as="spell-out">$1</say-as>' class="btn btn-secondary">Spell out</button>
+
   <div class="form-group">
     <%= label f, :speaker_notes, class: "control-label" %>
     <%= textarea f, :speaker_notes, class: "form-control" %>

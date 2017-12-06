@@ -51,7 +51,21 @@ function createCodeMirrorEditor(elem) {
     audio_elem.pause();
     audio_elem.load(); //suspends and restores all audio element
     audio_elem.play();
-    })
+  })
+
+  jQuery("[data-editor-insert]").on("click", (event) => {
+    event.preventDefault();
+    let text = jQuery(event.target).data("editorInsert")
+    let selection = editor.getSelection();
+
+    if (selection.length > 0) {
+      editor.replaceSelection(text.replace("$1", selection));
+    } else {
+      let doc = editor.getDoc();
+      let cursor = doc.getCursor();
+      doc.replaceRange(text, cursor);
+    }
+  });
 }
 
 jQuery(document).ready(() => {
