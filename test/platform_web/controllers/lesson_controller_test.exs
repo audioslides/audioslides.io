@@ -124,13 +124,13 @@ defmodule PlatformWeb.LessonControllerTest do
   describe "#generate_video" do
     setup [:create_lesson]
 
-    alias Platform.VideoConverter.TestAdapter
+    # alias Platform.VideoConverter.TestAdapter
 
-    test "renders form for editing chosen lesson", %{conn: conn, lesson: lesson} do
-      conn = post(conn, lesson_path(conn, :generate_video, lesson))
-      assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
-      assert length(TestAdapter.merge_videos_list()) == 1
-    end
+    # test "renders form for editing chosen lesson", %{conn: conn, lesson: lesson} do
+    #   conn = post(conn, lesson_path(conn, :generate_video, lesson))
+    #   assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
+    #   assert length(TestAdapter.merge_videos_list()) == 1
+    # end
   end
 
   describe "#invalidate_all_audio_hashes" do
