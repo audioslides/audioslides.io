@@ -100,12 +100,10 @@ defmodule Platform.Video do
 
       Core.update_slide(slide, %{image_sync_pid: self()})
 
-
       Core.download_thumb!(lesson, slide)
       Core.update_slide_image_hash(slide, slide.page_elements_hash)
 
       Core.update_slide(slide, %{image_sync_pid: nil})
-
 
       Logger.info("Slide #{slide.id} Image: generated")
     else
@@ -123,7 +121,6 @@ defmodule Platform.Video do
 
       Core.update_slide(slide, %{audio_sync_pid: self()})
 
-
       speech_binary =
         Speech.run(%{
           "language_key" => lesson.voice_language,
@@ -135,7 +132,6 @@ defmodule Platform.Video do
       Core.update_slide_audio_hash(slide, slide.speaker_notes_hash)
 
       Core.update_slide(slide, %{audio_sync_pid: nil})
-
 
       Logger.info("Slide #{slide.id} Audio: generated")
     else
