@@ -127,7 +127,10 @@ defmodule PlatformWeb.LessonController do
     spawn_link fn ->
       lesson
       |> Video.convert_lesson_to_video()
-      |> Enum.each(fn(_) -> LessonChannel.broadcast_processing_to_socket(id, conn) end)
+      |> Enum.each(fn(_) ->
+        lesson = Core.get_lesson_with_slides!(id)
+        LessonChannel.broadcast_processing_to_socket(lesson)
+      end)
     end
 
     conn
