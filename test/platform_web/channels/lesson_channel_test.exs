@@ -3,12 +3,29 @@ defmodule PlatformWeb.LessonChannelTest do
 
   alias PlatformWeb.LessonChannel
 
+  import PlatformWeb.LessonChannel
+
   setup do
     {:ok, _, socket} =
-      socket("user_id", %{some: :assign})
+      socket()
       |> subscribe_and_join(LessonChannel, "lesson:lobby")
 
     {:ok, socket: socket}
+  end
+
+  describe "join channel" do
+    test "should assign lesson_id to the socket", %{socket: %{assigns: %{lesson_id: lesson_id}}} do
+      assert lesson_id == "lobby"
+    end
+  end
+
+  describe "#broadcast_processing_to_socket" do
+    test "should broadcast", %{conn: conn} do
+      lesson = Factory.insert(:lesson, name: "Lesson name")
+      broadcast_processing_to_socket("lobby", conn)
+
+      #assert_broadcast "new-processing-state", %{}
+    end
   end
 
   # test "ping replies with status ok", %{socket: socket} do
