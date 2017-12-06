@@ -15,6 +15,9 @@ defmodule PlatformWeb.SlideController do
       |> Core.get_slide!()
       |> authorize_action!(conn)
 
+
+    # Platform.GoogleSlidesAPI.update_speaker_notes!(lesson.google_presentation_id, slide.google_object_id, "blub123")
+
     render(conn, "show.html", lesson: lesson, slide: slide)
   end
 

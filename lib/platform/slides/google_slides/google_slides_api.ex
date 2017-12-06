@@ -51,8 +51,39 @@ defmodule Platform.GoogleSlidesAPI do
     filename
   end
 
-  # Private functions
+  def update_speaker_notes!(presentation_id, slide_id, text) do
+    slide_page = get_slide!(presentation_id, slide_id)
+    speaker_notes_object_id = slide_page.slideProperties.notesPage.notesProperties.speakerNotesObjectId
 
+    body = ~S(
+    {
+  "requests": [
+    {
+      "deleteText": {
+        "objectId": "i3",
+        "textRange": {
+          "type": "ALL"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "i3",
+        "insertionIndex": 0,
+        "text": "Robin, es geht!"
+      }
+    }
+  ]
+})
+
+
+
+    connection = get_google_slides_connection!()
+    Presentations.slides_presentations_batch_update(connection, presentation_id, body: body)
+
+  end
+
+  # Private functions
   defp get_google_slides_connection! do
     scopes = [
       "https://www.googleapis.com/auth/presentations"
