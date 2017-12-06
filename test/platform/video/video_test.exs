@@ -17,11 +17,6 @@ defmodule Platform.VideoTest do
     {Speech, [], [run: fn _ -> <<1, 2, 3>> end]},
     {FileHelper, [], [write_to_file: fn _, _ -> "" end]}
   ] do
-    lesson =
-      Factory.insert(
-        :lesson,
-        google_presentation_id: "1tGbdANGoW8BGI-S-_DcP0XsXhoaTO_KConY7-RVFnkM"
-      )
 
     slide_with_old_hash =
       Factory.insert(
@@ -43,7 +38,26 @@ defmodule Platform.VideoTest do
         audio_hash: "same_hash"
       )
 
+    lesson =
+      Factory.insert(
+        :lesson,
+        google_presentation_id: "1tGbdANGoW8BGI-S-_DcP0XsXhoaTO_KConY7-RVFnkM",
+        slides: [
+          %Slide{id: 1, name: "TestSlide", position: 1},
+          %Slide{id: 2, name: "TestSlide", position: 1}
+        ]
+      )
+
+
+
     {:ok, lesson: lesson, slide: slide_with_old_hash, slide_up_to_date: slide_up_to_date}
+  end
+
+  describe "#create_async_video_tasks" do
+    test "should create a stream", %{lesson: lesson} do
+      stream_result = convert_lesson_to_video(lesson) |> Enum.to_list
+      assert length(stream_result) == length(lesson.slides)
+    end
   end
 
   describe "the create_or_update_image_for_slide function" do
@@ -124,30 +138,6 @@ defmodule Platform.VideoTest do
       create_or_update_audio_for_slide(lesson, slide)
 
       assert called(FileHelper.write_to_file(:_, <<1, 2, 3>>))
-    end
-  end
-
-  describe "get_results_or_kill_tasks" do
-    test "should kill tasks that not ready jet" do
-      kill_me_task = Task.async(fn -> "foo" end)
-      kill_me_ref = Process.monitor(kill_me_task.pid)
-
-      ready_task = Task.async(fn -> "foo" end)
-      ready_ref = Process.monitor(ready_task.pid)
-
-      tasks_with_results = [
-        {kill_me_task, nil},
-        {ready_task, {:ok, "example result"}}
-      ]
-
-      results = get_results_or_kill_tasks(tasks_with_results)
-
-      ## results are collected
-      assert results == [nil, "example result"]
-
-      # task should down
-      assert_receive {:DOWN, ^kill_me_ref, :process, _, :killed}, 500
-      assert_receive {:DOWN, ^ready_ref, :process, _, :normal}, 500
     end
   end
 end

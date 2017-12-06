@@ -124,18 +124,38 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson_with_slides!()
       |> authorize_action!(conn)
 
-    spawn_link fn ->
       lesson
       |> Video.convert_lesson_to_video()
-      |> Enum.each(fn(_) ->
-        lesson = Core.get_lesson_with_slides!(id)
-        LessonChannel.broadcast_processing_to_socket(lesson)
-      end)
-    end
+      |> Enum.each(fn(_) -> broadcast_processing_update(id) end)
+
 
     conn
     |> put_flash(:info, "Generating Lesson video...")
+    #|> put_private(:generate_video_task, task_ref)
     |> redirect(to: lesson_path(conn, :manage, lesson))
+  end
+
+  def merge_videos(conn, %{"id" => id}) do
+    lesson =
+      id
+      |> Core.get_lesson_with_slides!()
+      |> authorize_action!(conn)
+
+    task_ref =
+      Task.async fn ->
+        Video.merge_videos(lesson)
+        broadcast_processing_update(id)
+      end
+
+    conn
+    |> put_flash(:info, "Merge all videos...")
+    |> put_private(:merge_videos_task, task_ref)
+    |> redirect(to: lesson_path(conn, :manage, lesson))
+  end
+
+  def broadcast_processing_update(id) do
+    lesson = Core.get_lesson_with_slides!(id)
+    LessonChannel.broadcast_processing_to_socket(lesson)
   end
 
   def invalidate_all_audio_hashes(conn, %{"id" => id}) do

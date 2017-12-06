@@ -1,5 +1,5 @@
 defmodule PlatformWeb.LessonControllerTest do
-  use PlatformWeb.ConnCase, async: true
+  use PlatformWeb.ConnCase
 
   import Mock
   import Mox
@@ -124,13 +124,35 @@ defmodule PlatformWeb.LessonControllerTest do
   describe "#generate_video" do
     setup [:create_lesson]
 
-    # alias Platform.VideoConverter.TestAdapter
+    alias Platform.VideoConverter.TestAdapter
 
-    # test "renders form for editing chosen lesson", %{conn: conn, lesson: lesson} do
-    #   conn = post(conn, lesson_path(conn, :generate_video, lesson))
-    #   assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
-    #   assert length(TestAdapter.merge_videos_list()) == 1
-    # end
+    test "should redirect to manage", %{conn: conn, lesson: lesson} do
+      conn = post(conn, lesson_path(conn, :generate_video, lesson))
+      assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
+
+      # wait for async process to complete
+      # ref = conn.private.generate_video_task.ref
+      # assert_receive {:DOWN, ^ref, :process, _, :normal}, 500
+
+      #assert length(TestAdapter.generate_video_list()) == 1
+    end
+  end
+
+  describe "#merge_video" do
+    setup [:create_lesson]
+
+    alias Platform.VideoConverter.TestAdapter
+
+    test "should redirect to manage", %{conn: conn, lesson: lesson} do
+      conn = post(conn, lesson_path(conn, :merge_videos, lesson))
+      assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
+
+      # wait for async process to complete
+      ref = conn.private.merge_videos_task.ref
+      assert_receive {:DOWN, ^ref, :process, _, :normal}, 500
+
+      assert length(TestAdapter.merge_videos_list()) == 1
+    end
   end
 
   describe "#invalidate_all_audio_hashes" do

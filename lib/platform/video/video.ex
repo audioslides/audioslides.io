@@ -8,59 +8,25 @@ defmodule Platform.Video do
   alias Platform.FileHelper
   alias Platform.Speech
   alias Platform.VideoConverter
-  alias Platform.VideoProcessingState
 
   alias Platform.Core
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
 
   def convert_lesson_to_video(%Lesson{} = lesson) do
-    #final_output_filename = Filename.get_filename_for_lesson_video(lesson)
-
-    #### ASync Version Start
-    # start async creation of the videos
-    lesson
-    |> create_async_video_tasks()
-    #|> Enum.each(&IO.inspect(&1))
-
-    # wait 60 seconds for all video generator processes
-    # tasks_with_results = Task.yield_many(video_generation_tasks, 60_000)
-
-    #generated_video_filenames = get_results_or_kill_tasks(tasks_with_results)
-    #### ASync Version END
-
-    #### Sync Version Start
-    #
-    # Core.update_lesson(lesson, %{video_sync_pid: self()})
-
-    # generated_video_filenames = Enum.map(lesson.slides, fn slide -> generate_video_for_slide(lesson, slide) end)
-    # VideoConverter.merge_videos(
-    #   video_filename_list: generated_video_filenames,
-    #   output_filename: final_output_filename
-    # )
-
-
-    # Core.update_lesson(lesson, %{video_sync_pid: nil})
-    # send :processing_stream,{:done, VideoProcessingState.get_processing_state(lesson)}
-    #### Sync Version End
-
-  end
-
-  def create_async_video_tasks(lesson) do
     Task.async_stream(lesson.slides, fn(slide) -> generate_video_for_slide(lesson, slide) end, timeout: 120_000)
   end
 
-  def get_results_or_kill_tasks(tasks_with_results) do
-    Enum.map(tasks_with_results, fn {task, res} ->
-      # Shutdown the tasks that did not reply nor exit
-      case res do
-        {:ok, value} ->
-          value
+  def merge_videos(lesson) do
+    Logger.info("Videos for Lesson ##{lesson.id} will be merged ...")
+    generated_video_filenames = Enum.map(lesson.slides, fn slide -> Filename.get_relative_filename_for_slide_video(lesson, slide) end)
+    final_output_filename = Filename.get_filename_for_lesson_video(lesson)
 
-        nil ->
-          Task.shutdown(task, :brutal_kill)
-      end
-    end)
+    VideoConverter.merge_videos(
+      video_filename_list: generated_video_filenames,
+      output_filename: final_output_filename
+    )
+    Logger.info("Lesson ##{lesson.id} merge complete")
   end
 
   def generate_video_for_slide(%Lesson{} = lesson, %Slide{} = slide) do
@@ -88,10 +54,6 @@ defmodule Platform.Video do
     else
       Logger.info("Slide #{slide.id} Video: skipped")
     end
-
-    # relative_output_filename, important for ffmmpeg concat method
-    # "#{lesson.id}/#{slide.id}.mp4"
-    Filename.get_relative_filename_for_slide_video(lesson, slide)
   end
 
   @doc """
