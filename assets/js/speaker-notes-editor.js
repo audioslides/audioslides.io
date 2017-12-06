@@ -1,5 +1,6 @@
 import jQuery from "jquery";
 import CodeMirror from "codemirror";
+import "codemirror/mode/xml/xml";
 import socket from "./socket";
 
 function getTextFromCurrentWordTillEnd(editor) {
@@ -17,6 +18,7 @@ function getTextFromCurrentWordTillEndOfSentence(editor) {
 
 function createCodeMirrorEditor(elem) {
   let editor = CodeMirror.fromTextArea(elem, {
+    mode: "text/html",
     theme: "default",
     lineNumbers: false,
     lineWrapping: true,
@@ -63,7 +65,7 @@ function createCodeMirrorEditor(elem) {
     } else {
       let doc = editor.getDoc();
       let cursor = doc.getCursor();
-      doc.replaceRange(text, cursor);
+      doc.replaceRange(text.replace("$1", ""), cursor);
     }
   });
 }
