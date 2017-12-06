@@ -55,32 +55,28 @@ defmodule Platform.GoogleSlidesAPI do
     slide_page = get_slide!(presentation_id, slide_id)
     speaker_notes_object_id = slide_page.slideProperties.notesPage.notesProperties.speakerNotesObjectId
 
-    body = ~S(
-    {
-  "requests": [
-    {
-      "deleteText": {
-        "objectId": "i3",
-        "textRange": {
-          "type": "ALL"
+    body = %{
+      requests: [
+        %{
+          deleteText: %{
+            objectId: speaker_notes_object_id,
+            textRange: %{
+              type: "ALL"
+            }
+          }
+        },
+        %{
+          insertText: %{
+            objectId: speaker_notes_object_id,
+            insertionIndex: 0,
+            text: text
+          }
         }
-      }
-    },
-    {
-      "insertText": {
-        "objectId": "i3",
-        "insertionIndex": 0,
-        "text": "Robin, es geht!"
-      }
+      ]
     }
-  ]
-})
-
-
 
     connection = get_google_slides_connection!()
-    Presentations.slides_presentations_batch_update(connection, presentation_id, body: body)
-
+    Presentations.slides_presentations_batch_update(connection, presentation_id, body: Poison.encode!(body))
   end
 
   # Private functions

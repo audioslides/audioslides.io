@@ -15,9 +15,6 @@ defmodule PlatformWeb.SlideController do
       |> Core.get_slide!()
       |> authorize_action!(conn)
 
-
-    # Platform.GoogleSlidesAPI.update_speaker_notes!(lesson.google_presentation_id, slide.google_object_id, "blub123")
-
     render(conn, "show.html", lesson: lesson, slide: slide)
   end
 
@@ -36,6 +33,7 @@ defmodule PlatformWeb.SlideController do
     render(conn, "edit.html", lesson: lesson, slide: slide, changeset: changeset)
   end
 
+  @slide_api Application.get_env(:platform, Platform.SlideAPI, [])[:adapter]
   def update(conn, %{"lesson_id" => lesson_id, "id" => slide_id, "slide" => slide_params}) do
     lesson =
       lesson_id
@@ -48,6 +46,8 @@ defmodule PlatformWeb.SlideController do
 
     case Core.update_slide(slide, slide_params) do
       {:ok, slide} ->
+        @slide_api.update_speaker_notes!(lesson.google_presentation_id, slide.google_object_id, slide.speaker_notes)
+
         conn
         |> put_flash(:info, "Slide updated successfully.")
         |> redirect(to: lesson_slide_path(conn, :show, lesson, slide))

@@ -20,4 +20,8 @@ defmodule Platform.SlidesAPIMock do
   def download_slide_thumb!(_presentation_id, _slide_id, filename) do
     filename
   end
+
+  def update_speaker_notes!(_presentation_id, _slide_id, _text) do
+    {}
+  end
 end

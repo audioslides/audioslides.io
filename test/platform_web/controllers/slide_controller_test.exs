@@ -1,5 +1,6 @@
 defmodule PlatformWeb.SlideControllerTest do
   use PlatformWeb.ConnCase
+  import Mox
 
   alias Platform.VideoConverter.TestAdapter
 
@@ -31,6 +32,9 @@ defmodule PlatformWeb.SlideControllerTest do
     setup :create_slide
 
     test "redirects when data is valid", %{conn: orig_conn, lesson: lesson, slide: slide} do
+      Platform.SlidesAPIMock
+      |> expect(:update_speaker_notes!, fn _x, _y, z -> z end)
+
       conn = put(orig_conn, lesson_slide_path(orig_conn, :update, lesson, slide), slide: @update_attrs)
       assert redirected_to(conn) == lesson_slide_path(conn, :show, lesson, slide)
 

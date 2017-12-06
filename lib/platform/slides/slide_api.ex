@@ -32,4 +32,10 @@ defmodule Platform.SlideAPI do
 
   """
   @callback download_slide_thumb!(String.t(), String.t(), String.t()) :: {}
+
+  @doc """
+  Get a download a slide thump from the api
+
+  """
+  @callback update_speaker_notes!(String.t(), String.t(), String.t()) :: {}
 end
