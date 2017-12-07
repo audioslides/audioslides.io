@@ -4,6 +4,7 @@ defmodule Platform.Core.Schema.Slide do
   """
   use Ecto.Schema
   import Ecto.Changeset
+  require require Ecto.Query
 
   @timestamps_opts [type: :utc_datetime, usec: false]
   schema "slides" do
@@ -34,5 +35,27 @@ defmodule Platform.Core.Schema.Slide do
     |> validate_required([:google_object_id, :name, :position])
     |> unique_constraint(:google_object_id, name: :slides_lesson_id_google_object_id_index)
     |> validate_inclusion(:complete_percent, 0..100)
+    |> update_total_complete_percent()
+  end
+
+  defp update_total_complete_percent(changeset) do
+    changeset
+    |> prepare_changes(fn changeset ->
+        lesson = Ecto.assoc(changeset.data, :lesson)
+
+        avg =
+          __MODULE__
+          |> Ecto.Query.where(lesson_id: ^changeset.data.lesson_id)
+          |> changeset.repo.aggregate(:avg, :complete_percent)
+
+        if avg do
+          rounded_avg = round(Decimal.to_float(avg))
+
+          lesson
+          |> changeset.repo.update_all(set: [complete_percent: rounded_avg])
+        end
+
+        changeset
+      end)
   end
 end
