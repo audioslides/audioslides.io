@@ -15,7 +15,8 @@
         <div class="media-body">
           <h2 class="mt-0"><%= course_lesson.lesson.name %></h2>
           <div style="max-width: 600px;">
-            ....
+            <%= progress_badge(course_lesson.lesson.complete_percent) %>
+
           </div>
         </div>
       </div>

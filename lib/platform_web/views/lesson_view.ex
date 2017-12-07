@@ -42,27 +42,33 @@ defmodule PlatformWeb.LessonView do
 
   def progressbar(number) when is_integer(number) do
     content_tag(:div, class: "progress") do
-      content_tag(:div, class: progressbar_class(number), role: "progressbar", style: "width: #{number}%") do
+      content_tag(:div, class: "progress-bar bg-#{completeness_class_suffix(number)}", role: "progressbar", style: "width: #{number}%") do
         "#{number}%"
       end
     end
   end
 
+  def progress_badge(number) when is_integer(number) do
+    content_tag(:span, class: "badge badge-#{completeness_class_suffix(number)}") do
+      "#{number}%"
+    end
+  end
+
   @doc """
-  iex> progressbar_class(29)
-  "progress-bar bg-danger"
+  iex> completeness_class_suffix(29)
+  "danger"
 
-  iex> progressbar_class(50)
-  "progress-bar bg-warning"
+  iex> completeness_class_suffix(50)
+  "warning"
 
-  iex> progressbar_class(70)
-  "progress-bar bg-success"
+  iex> completeness_class_suffix(70)
+  "success"
   """
-  def progressbar_class(number) do
+  def completeness_class_suffix(number) do
     cond do
-      number < 30 -> "progress-bar bg-danger"
-      number < 70 -> "progress-bar bg-warning"
-      number >= 70 -> "progress-bar bg-success"
+      number < 30 -> "danger"
+      number < 70 -> "warning"
+      number >= 70 -> "success"
     end
   end
 end

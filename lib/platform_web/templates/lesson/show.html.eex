@@ -9,6 +9,7 @@
 <% end %>
 
 <%= progressbar(@lesson.complete_percent) %>
+<%= progress_badge(@lesson.complete_percent) %>
 
 <section>
   <div class="embed-responsive embed-responsive-16by9">
