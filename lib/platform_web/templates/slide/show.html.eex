@@ -1,9 +1,15 @@
 <h4>
 Last sync at <%= @slide.synced_at %>
 </h4>
+
 <p>
   Complete: <%= @slide.complete_percent %>%
 </p>
+
+<p>
+  Lesson: <%= @lesson.complete_percent %>%
+</p>
+
 <%= if current_user(@conn) do %>
   <%= link "Generate Video", to: lesson_slide_path(@conn, :generate_video, @lesson, @slide), method: :post, class: "btn btn-primary" %>
 <% end %>
