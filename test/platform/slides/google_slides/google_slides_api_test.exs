@@ -15,11 +15,14 @@ defmodule Platform.GoogleSlidesAPITest do
 
   setup_with_mocks [
     {Presentations, [], [
-      slides_presentations_get: fn _con, _presentation_id, _opts -> {:ok, %{}} end,
-      slides_presentations_pages_get: fn _con, _presentation_id, _slide_id -> {:ok, %{}} end,
+      slides_presentations_get: fn _con, _presentation_id, _opts -> {:ok, %{ }} end,
+      slides_presentations_pages_get: fn _con, _presentation_id, _slide_id -> {:ok, %{
+        slideProperties: %{ notesPage: %{notesProperties: %{speakerNotesObjectId: "p"}}}
+      }} end,
       slides_presentations_pages_get_thumbnail: fn _con, _presentation_id, _slide_id ->
         {:ok, %{contentUrl: "https://some.content/for/you.png"}}
-      end
+      end,
+      slides_presentations_batch_update: fn _con, _presentation_id, _opts -> {:ok, %{}} end
     ]},
     {Connection, [], [new: fn _ -> %{} end]},
     {Token, [], [for_scope: fn _ -> {:ok, %{token: "SUPER_TOKEN"}} end]},
@@ -46,7 +49,7 @@ defmodule Platform.GoogleSlidesAPITest do
   end
 
   describe "get_slide_thumb!" do
-    test "should get a slide via GoogleAPI" do
+    test "gets a slide via GoogleAPI" do
       get_slide_thumb!("presentation_id", "slide_id")
 
       assert called(
@@ -60,10 +63,24 @@ defmodule Platform.GoogleSlidesAPITest do
   end
 
   describe "download_slide_thumb!" do
-    test "should get a slide via GoogleAPI" do
+    test "gets a slide via GoogleAPI" do
       download_slide_thumb!("presentation_id", "slide_id", "file/name/example.png")
 
       assert called(FileHelper.write_to_file("file/name/example.png", "data"))
+    end
+  end
+
+  describe "update_speaker_notes!" do
+    test "updates a slide via GoogleAPI" do
+      update_speaker_notes!("presentation_id", "slide_id", "New speaker notes")
+
+      assert called(
+               Presentations.slides_presentations_batch_update(
+                 :_,
+                 "presentation_id",
+                 :_
+               )
+             )
     end
   end
 end
