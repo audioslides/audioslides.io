@@ -8,6 +8,8 @@
   </div>
 <% end %>
 
+<%= progressbar(@lesson.complete_percent) %>
+
 <section>
   <div class="embed-responsive embed-responsive-16by9">
       <video controls>
