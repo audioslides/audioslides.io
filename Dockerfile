@@ -108,6 +108,7 @@ WORKDIR /opt/app
 
 # copy compiled exilir app
 COPY --from=builder /opt/app/_build/ ./_build
+COPY --from=builder /opt/app/deps/ ./deps
 
 # Copy compiled javascript modules
 COPY --from=builder /opt/app/priv/static/ ./priv/static/
