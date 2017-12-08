@@ -115,6 +115,7 @@ COPY --from=builder /opt/app/gcsfuse.sh ./gcsfuse.sh
 COPY --from=builder /opt/app/startup.sh ./startup.sh
 COPY --from=builder /opt/app/mix.exs ./mix.exs
 COPY --from=builder /opt/app/mix.lock ./mix.lock
+COPY --from=builder /opt/app/config/config.exs ./config/config.exs
 COPY --from=builder /opt/app/config/prod.exs ./config/prod.exs
 
 # Run the startup script
