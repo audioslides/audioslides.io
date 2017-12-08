@@ -60,8 +60,6 @@ RUN cd assets && \
     cd .. && \
     mix do compile, phx.digest
 
-RUN mix release --env=prod
-
 # Run the startup script
 #CMD ["./startup.sh"]
 
@@ -106,7 +104,22 @@ RUN \
 
 WORKDIR /opt/app
 
-COPY --from=builder /opt/app/_build/prod/rel/platform .
+RUN mix do local.hex --force
+
+# copy compiled exilir app
+COPY --from=builder /opt/app/_build/ ./_build
+COPY --from=builder /opt/app/deps/ ./deps
+
+# Copy compiled javascript modules
+COPY --from=builder /opt/app/priv/static/ ./priv/static/
+
+# Copy startup scripts
+COPY --from=builder /opt/app/gcsfuse.sh ./gcsfuse.sh
+COPY --from=builder /opt/app/startup.sh ./startup.sh
+COPY --from=builder /opt/app/mix.exs ./mix.exs
+COPY --from=builder /opt/app/mix.lock ./mix.lock
+COPY --from=builder /opt/app/config/config.exs ./config/config.exs
+COPY --from=builder /opt/app/config/prod.exs ./config/prod.exs
 
 # Run the startup script
 CMD ["./startup.sh"]

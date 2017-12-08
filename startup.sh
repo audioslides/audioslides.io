@@ -4,5 +4,4 @@
 ./gcsfuse.sh start
 
 # start phx webserver
-#elixir --name $MY_POD_NAME@$MY_POD_IP -S mix phx.server --no-deps-check --no-compile --no-halt
-./platform foreground
+elixir --name $MY_POD_NAME@$MY_POD_IP -S mix phx.server --no-deps-check --no-compile --no-halt
