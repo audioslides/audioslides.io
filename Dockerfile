@@ -113,6 +113,9 @@ COPY --from=builder /opt/app/priv/static/ ./priv/static/
 # Copy startup scripts
 COPY --from=builder /opt/app/gcsfuse.sh ./gcsfuse.sh
 COPY --from=builder /opt/app/startup.sh ./startup.sh
+COPY --from=builder /opt/app/mix.exs ./mix.exs
+COPY --from=builder /opt/app/mix.lock ./mix.lock
+COPY --from=builder /opt/app/config/prod.exs ./config/prod.exs
 
 # Run the startup script
 CMD ["./startup.sh"]
