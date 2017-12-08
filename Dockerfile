@@ -105,10 +105,10 @@ RUN \
 WORKDIR /opt/app
 
 # copy compiled exilir app
-COPY --from=builder /home/app/_build/ ./_build
+COPY --from=builder /opt/app/_build/ ./_build
 
 # Copy compiled javascript modules
-COPY --from=builder /home/app/priv/static/ ./priv/static/
+COPY --from=builder /opt/app/priv/static/ ./priv/static/
 
 # Run the startup script
 CMD ["./startup.sh"]
