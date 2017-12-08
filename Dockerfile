@@ -89,7 +89,8 @@ RUN apt-get update && \
         ffmpeg \
         locales \
         gcsfuse \
-        imagemagick
+        imagemagick \
+        ca-certificates
 
 # Set the locale
 RUN locale-gen en_US.UTF-8 && \
