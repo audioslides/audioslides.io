@@ -102,6 +102,8 @@ RUN \
     chmod -R 777 /opt/app && \
     update-ca-certificates --fresh
 
+RUN mix local.hex --force
+
 WORKDIR /opt/app
 
 # copy compiled exilir app
