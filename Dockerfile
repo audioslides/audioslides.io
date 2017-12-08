@@ -104,8 +104,6 @@ RUN \
 
 WORKDIR /opt/app
 
-RUN mix do local.hex --force
-
 # copy compiled exilir app
 COPY --from=builder /opt/app/_build/ ./_build
 COPY --from=builder /opt/app/deps/ ./deps
