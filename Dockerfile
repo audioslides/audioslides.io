@@ -67,7 +67,7 @@ RUN cd assets && \
 # minimal run image
 ###########
 # FROM alpine:latest
-FROM debian:jessie
+FROM elixir:1.5.2-slim
 
 # Setup ENV
 ENV HOME=/opt/app \
