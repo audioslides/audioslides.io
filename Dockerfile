@@ -11,16 +11,21 @@ ENV HOME=/opt/app \
 
 # Add package sources
 RUN sed -i "s/jessie main/jessie main contrib non-free/" /etc/apt/sources.list
+RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-jessie main" | tee /etc/apt/sources.list.d/gcsfuse.list;
 RUN echo "deb http://http.debian.net/debian jessie-backports main contrib non-free" >> /etc/apt/sources.list
 RUN apt-get update && \
-        apt-get -y install \
-        locales \
+        apt-get --allow-unauthenticated -y install \
+        ffmpeg \
+        gcsfuse \
         make \
         git \
         g++ \
         wget \
         curl \
         build-essential \
+        locales \
+        mysql-client \
+        imagemagick && \
         curl -sL https://deb.nodesource.com/setup_8.x | bash && \
         apt-get -y install nodejs && \
         rm -rf /var/lib/apt/lists/*
@@ -30,8 +35,10 @@ RUN locale-gen en_US.UTF-8 && \
     localedef -i en_US -f UTF-8 en_US.UTF-8 && \
     update-locale LANG=en_US.UTF-8
 
-RUN mkdir -p /opt/app && \
-    chmod -R 777 /opt/app
+RUN \
+    mkdir -p /opt/app && \
+    chmod -R 777 /opt/app && \
+    update-ca-certificates --fresh
 
 RUN mix do local.hex --force, local.rebar --force
 
@@ -52,6 +59,9 @@ RUN cd assets && \
     brunch build --production && \
     cd .. && \
     mix do compile, phx.digest
+
+# Run the startup script
+#CMD ["./startup.sh"]
 
 ###########
 # minimal run image
