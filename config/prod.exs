@@ -17,7 +17,11 @@ config :platform, PlatformWeb.Endpoint,
   load_from_system_env: true,
   url: [host: "audioslides.io", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json",
-  secret_key_base: System.get_env("SECRET_KEY_BASE")
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
+  server: true,
+  root: ".",
+  version: Application.spec(:platform, :vsn)
+
 
 # Do not print debug messages in production
 config :logger, level: :info

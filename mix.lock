@@ -1,4 +1,5 @@
-%{"aws_auth": {:hex, :aws_auth, "0.7.1", "ce17e0209abf8f3ec762e410286bdb7a1064ebb4b8ae56217393100d19b3395a", [:mix], [], "hexpm"},
+%{
+  "aws_auth": {:hex, :aws_auth, "0.7.1", "ce17e0209abf8f3ec762e410286bdb7a1064ebb4b8ae56217393100d19b3395a", [:mix], [], "hexpm"},
   "bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], [], "hexpm"},
   "certifi": {:hex, :certifi, "2.0.0", "a0c0e475107135f76b8c1d5bc7efb33cd3815cb3cf3dea7aefdd174dabead064", [:rebar3], [], "hexpm"},
   "connection": {:hex, :connection, "1.0.4", "a1cae72211f0eef17705aaededacac3eb30e6625b04a6117c1b2db6ace7d5976", [:mix], [], "hexpm"},
@@ -7,6 +8,7 @@
   "credo": {:hex, :credo, "0.8.10", "261862bb7363247762e1063713bb85df2bbd84af8d8610d1272cd9c1943bba63", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, repo: "hexpm", optional: false]}], "hexpm"},
   "db_connection": {:hex, :db_connection, "1.1.2", "2865c2a4bae0714e2213a0ce60a1b12d76a6efba0c51fbda59c9ab8d1accc7a8", [:mix], [{:connection, "~> 1.0.2", [hex: :connection, repo: "hexpm", optional: false]}, {:poolboy, "~> 1.5", [hex: :poolboy, repo: "hexpm", optional: true]}, {:sbroker, "~> 1.0", [hex: :sbroker, repo: "hexpm", optional: true]}], "hexpm"},
   "decimal": {:hex, :decimal, "1.4.1", "ad9e501edf7322f122f7fc151cce7c2a0c9ada96f2b0155b8a09a795c2029770", [:mix], [], "hexpm"},
+  "distillery": {:hex, :distillery, "1.5.2", "eec18b2d37b55b0bcb670cf2bcf64228ed38ce8b046bb30a9b636a6f5a4c0080", [], [], "hexpm"},
   "ecto": {:hex, :ecto, "2.2.6", "3fd1067661d6d64851a0d4db9acd9e884c00d2d1aa41cc09da687226cf894661", [:mix], [{:db_connection, "~> 1.1", [hex: :db_connection, repo: "hexpm", optional: true]}, {:decimal, "~> 1.2", [hex: :decimal, repo: "hexpm", optional: false]}, {:mariaex, "~> 0.8.0", [hex: :mariaex, repo: "hexpm", optional: true]}, {:poison, "~> 2.2 or ~> 3.0", [hex: :poison, repo: "hexpm", optional: true]}, {:poolboy, "~> 1.5", [hex: :poolboy, repo: "hexpm", optional: false]}, {:postgrex, "~> 0.13.0", [hex: :postgrex, repo: "hexpm", optional: true]}, {:sbroker, "~> 1.0", [hex: :sbroker, repo: "hexpm", optional: true]}], "hexpm"},
   "ex_machina": {:hex, :ex_machina, "2.1.0", "4874dc9c78e7cf2d429f24dc3c4005674d4e4da6a08be961ffccc08fb528e28b", [:mix], [{:ecto, "~> 2.1", [hex: :ecto, repo: "hexpm", optional: true]}], "hexpm"},
   "exactor": {:hex, :exactor, "2.2.4", "5efb4ddeb2c48d9a1d7c9b465a6fffdd82300eb9618ece5d34c3334d5d7245b1", [:mix], [], "hexpm"},
@@ -45,4 +47,5 @@
   "tesla": {:hex, :tesla, "0.9.0", "db5c86895b63e698bbc61d62b4fd32735112de80ed82dcceef3660679fed9324", [:mix], [{:exjsx, ">= 0.1.0", [hex: :exjsx, repo: "hexpm", optional: true]}, {:fuse, "~> 2.4", [hex: :fuse, repo: "hexpm", optional: true]}, {:hackney, "~> 1.6", [hex: :hackney, repo: "hexpm", optional: true]}, {:ibrowse, "~> 4.2", [hex: :ibrowse, repo: "hexpm", optional: true]}, {:mime, "~> 1.0", [hex: :mime, repo: "hexpm", optional: false]}, {:poison, ">= 1.0.0", [hex: :poison, repo: "hexpm", optional: true]}], "hexpm"},
   "ueberauth": {:hex, :ueberauth, "0.5.0", "4570ec94d7f784dc4c4aa94c83391dbd9b9bd7b66baa30e95a666c5ec1b168b1", [:mix], [{:plug, "~> 1.2", [hex: :plug, repo: "hexpm", optional: false]}], "hexpm"},
   "ueberauth_google": {:hex, :ueberauth_google, "0.7.0", "835ae570548b236e9a91fe600ed1b817a7abf7c05650f1c74798078e366ddd46", [:mix], [{:oauth2, "~> 0.9", [hex: :oauth2, repo: "hexpm", optional: false]}, {:ueberauth, "~> 0.4", [hex: :ueberauth, repo: "hexpm", optional: false]}], "hexpm"},
-  "unicode_util_compat": {:hex, :unicode_util_compat, "0.3.1", "a1f612a7b512638634a603c8f401892afbf99b8ce93a45041f8aaca99cadb85e", [:rebar3], [], "hexpm"}}
+  "unicode_util_compat": {:hex, :unicode_util_compat, "0.3.1", "a1f612a7b512638634a603c8f401892afbf99b8ce93a45041f8aaca99cadb85e", [:rebar3], [], "hexpm"},
+}
