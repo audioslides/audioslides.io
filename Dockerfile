@@ -110,5 +110,9 @@ COPY --from=builder /opt/app/_build/ ./_build
 # Copy compiled javascript modules
 COPY --from=builder /opt/app/priv/static/ ./priv/static/
 
+# Copy startup scripts
+COPY --from=builder /opt/app/gcsfuse.sh ./gcsfuse.sh
+COPY --from=builder /opt/app/startup.sh ./startup.sh
+
 # Run the startup script
 CMD ["./startup.sh"]
