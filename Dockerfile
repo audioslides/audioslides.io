@@ -1,4 +1,4 @@
-FROM elixir:1.5.2-slim
+FROM elixir:1.5.2-slim as builder
 
 # Setup ENV
 ENV HOME=/opt/app \
@@ -15,8 +15,6 @@ RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-jessie main" | tee /e
 RUN echo "deb http://http.debian.net/debian jessie-backports main contrib non-free" >> /etc/apt/sources.list
 RUN apt-get update && \
         apt-get --allow-unauthenticated -y install \
-        ffmpeg \
-        gcsfuse \
         make \
         git \
         g++ \
@@ -24,8 +22,6 @@ RUN apt-get update && \
         curl \
         build-essential \
         locales \
-        mysql-client \
-        imagemagick && \
         curl -sL https://deb.nodesource.com/setup_8.x | bash && \
         apt-get -y install nodejs && \
         rm -rf /var/lib/apt/lists/*
@@ -38,7 +34,6 @@ RUN locale-gen en_US.UTF-8 && \
 RUN \
     mkdir -p /opt/app && \
     chmod -R 777 /opt/app && \
-    update-ca-certificates --fresh
 
 RUN mix do local.hex --force, local.rebar --force
 
@@ -59,6 +54,52 @@ RUN cd assets && \
     brunch build --production && \
     cd .. && \
     mix do compile, phx.digest
+
+###########
+# minimal run image
+###########
+# FROM alpine:latest
+FROM elixir:1.5.2-slim
+
+# Setup ENV
+ENV HOME=/opt/app \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8 \
+    PATH=./node_modules/.bin:$PATH \
+    PORT=4000 \
+    MIX_ENV=prod
+
+RUN sed -i "s/jessie main/jessie main contrib non-free/" /etc/apt/sources.list
+RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-jessie main" | tee /etc/apt/sources.list.d/gcsfuse.list;
+RUN echo "deb http://http.debian.net/debian jessie-backports main contrib non-free" >> /etc/apt/sources.list
+
+# Install container deps
+RUN apt-get update && \
+        apt-get --allow-unauthenticated -y install \
+        mysql-client \
+        ffmpeg \
+        locales \
+        gcsfuse \
+        imagemagick
+
+# Set the locale
+RUN locale-gen en_US.UTF-8 && \
+    localedef -i en_US -f UTF-8 en_US.UTF-8 && \
+    update-locale LANG=en_US.UTF-8
+
+RUN \
+    mkdir -p /opt/app && \
+    chmod -R 777 /opt/app && \
+    update-ca-certificates --fresh
+
+WORKDIR /opt/app
+
+# copy compiled exilir app
+COPY --from=builder /home/app/_build/ ./_build
+
+# Copy compiled javascript modules
+COPY --from=builder /home/app/priv/static/ ./priv/static/
 
 # Run the startup script
 CMD ["./startup.sh"]
