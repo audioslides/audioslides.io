@@ -8,7 +8,7 @@ defmodule PlatformWeb.LessonChannelTest do
 
   setup do
     {:ok, _, socket} =
-      socket
+      socket()
       |> subscribe_and_join(LessonChannel, "lesson:lobby")
 
     {:ok, socket: socket}
