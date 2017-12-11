@@ -1,4 +1,4 @@
-defmodule Platform.Video do
+defmodule Platform.VideoProcessing do
   @moduledoc """
   Context for the video converter
   """
@@ -26,6 +26,9 @@ defmodule Platform.Video do
       video_filename_list: generated_video_filenames,
       output_filename: final_output_filename
     )
+
+    Core.update_lesson(lesson, %{video_hash: generate_video_hash(lesson)})
+
     Logger.info("Lesson ##{lesson.id} merge complete")
   end
 

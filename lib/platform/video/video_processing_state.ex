@@ -5,7 +5,7 @@ defmodule Platform.VideoProcessingState do
 
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
-  alias Platform.Video
+  alias Platform.VideoProcessing
 
   def get_processing_state(%Lesson{slides: slides} = lesson) when is_list(slides) do
     %{
@@ -24,7 +24,7 @@ defmodule Platform.VideoProcessingState do
 
   def get_state_for_lesson_video(%Lesson{video_hash: nil}), do: "NEEDS_UPDATE"
   def get_state_for_lesson_video(%Lesson{video_hash: video_hash} = lesson) do
-    case Video.generate_video_hash(lesson) == video_hash do
+    case VideoProcessing.generate_video_hash(lesson) == video_hash do
       true -> "UP_TO_DATE"
       false -> "NEEDS_UPDATE"
     end
@@ -60,7 +60,7 @@ defmodule Platform.VideoProcessingState do
   def get_state_for_slide_video(%Slide{video_hash: nil}), do: "NEEDS_UPDATE"
   def get_state_for_slide_video(%Slide{video_sync_pid: video_sync_pid}) when not is_nil(video_sync_pid), do: "UPDATING"
   def get_state_for_slide_video(%Slide{video_hash: video_hash} = slide) do
-    case Video.generate_video_hash(slide) == video_hash do
+    case VideoProcessing.generate_video_hash(slide) == video_hash do
       true -> "UP_TO_DATE"
       false -> "NEEDS_UPDATE"
     end

@@ -2,7 +2,7 @@ defmodule PlatformWeb.SlideController do
   use PlatformWeb, :controller
 
   alias Platform.Core
-  alias Platform.Video
+  alias Platform.VideoProcessing
 
   def show(conn, %{"lesson_id" => lesson_id, "id" => slide_id}) do
     lesson =
@@ -68,7 +68,7 @@ defmodule PlatformWeb.SlideController do
       |> Core.get_slide!()
       |> authorize_action!(conn)
 
-    Video.generate_video_for_slide(lesson, slide)
+    VideoProcessing.generate_video_for_slide(lesson, slide)
 
     conn
     |> put_flash(:info, "Thumb downloaded successfully.")

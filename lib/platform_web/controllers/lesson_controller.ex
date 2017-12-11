@@ -3,7 +3,7 @@ defmodule PlatformWeb.LessonController do
 
   alias Platform.Core
   alias Platform.Core.Schema.Lesson
-  alias Platform.Video
+  alias Platform.VideoProcessing
   alias PlatformWeb.AccessHelper
   alias PlatformWeb.LessonChannel
 
@@ -62,7 +62,7 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson!()
       |> authorize_action!(conn)
 
-    # Video.convert_lesson(lesson.google_presentation_id)
+    # VideoProcessing.convert_lesson(lesson.google_presentation_id)
     changeset = Core.change_lesson(lesson)
     render(conn, "edit.html", lesson: lesson, changeset: changeset)
   end
@@ -123,7 +123,7 @@ defmodule PlatformWeb.LessonController do
       |> authorize_action!(conn)
 
       lesson
-      |> Video.convert_lesson_to_video()
+      |> VideoProcessing.convert_lesson_to_video()
       |> Enum.each(fn(_) -> broadcast_processing_update(id) end)
 
     conn
@@ -140,7 +140,7 @@ defmodule PlatformWeb.LessonController do
 
     task_ref =
       Task.async fn ->
-        Video.merge_videos(lesson)
+        VideoProcessing.merge_videos(lesson)
         broadcast_processing_update(id)
       end
 

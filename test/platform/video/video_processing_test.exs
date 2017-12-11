@@ -1,7 +1,7 @@
-defmodule Platform.VideoTest do
+defmodule Platform.VideoProcessingTest do
   use PlatformWeb.ConnCase
   import Mock
-  import Platform.Video
+  import Platform.VideoProcessing
   import Mox
 
   alias Platform.Core.Schema.Slide
@@ -9,7 +9,7 @@ defmodule Platform.VideoTest do
   alias Platform.Speech
   alias Platform.FileHelper
 
-  doctest Platform.Video
+  doctest Platform.VideoProcessing
 
   setup :verify_on_exit!
 
