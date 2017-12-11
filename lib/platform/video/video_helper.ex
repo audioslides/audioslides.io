@@ -31,6 +31,12 @@ defmodule Platform.VideoHelper do
   iex> generate_video_hash(%Slide{audio_hash: "A", image_hash: "A"})
   "58BB119C35513A451D24DC20EF0E9031EC85B35BFC919D263E7E5D9868909CB5"
 
+  iex> generate_video_hash(%Lesson{slides: [%Slide{video_hash: "58BB119C35513A451D24DC20EF0E9031EC85B35BFC919D263E7E5D9868909CB5"}]})
+  "76B046E95980250B3AB05876B67C980FD633102BC8FA5E07717436CA2A360A23"
+
+  iex> generate_video_hash(%Lesson{slides: [%Slide{video_hash: "58BB119C35513A451D24DC20EF0E9031EC85B35BFC919D263E7E5D9868909CB5"}, %Slide{video_hash: "38164FBD17603D73F696B8B4D72664D735BB6A7C88577687FD2AE33FD6964153"}]})
+  "A8E7D8763FFE66018653AFAD824C05861BE02BC325CB026EA622D43B599BBCC6"
+
   """
   def generate_video_hash(%Slide{audio_hash: audio_hash, image_hash: image_hash})
       when is_binary(audio_hash) and is_binary(image_hash) do

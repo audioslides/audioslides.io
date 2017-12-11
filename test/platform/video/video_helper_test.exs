@@ -3,6 +3,7 @@ defmodule Platform.VideoHelperTest do
   import Platform.VideoHelper
 
   alias Platform.Core.Schema.Slide
+  alias Platform.Core.Schema.Lesson
 
   doctest Platform.VideoHelper
 end

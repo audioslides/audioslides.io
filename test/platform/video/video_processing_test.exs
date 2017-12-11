@@ -8,6 +8,7 @@ defmodule Platform.VideoProcessingTest do
   alias Platform.Core
   alias Platform.Speech
   alias Platform.FileHelper
+  alias Platform.VideoHelper
 
   doctest Platform.VideoProcessing
 
@@ -41,10 +42,11 @@ defmodule Platform.VideoProcessingTest do
     lesson =
       Factory.insert(
         :lesson,
+        video_hash: nil,
         google_presentation_id: "1tGbdANGoW8BGI-S-_DcP0XsXhoaTO_KConY7-RVFnkM",
         slides: [
-          %Slide{id: 1, name: "TestSlide", position: 1},
-          %Slide{id: 2, name: "TestSlide", position: 1}
+          %Slide{id: 1, name: "TestSlide", position: 1, video_hash: "X"},
+          %Slide{id: 2, name: "TestSlide", position: 1, video_hash: "Y"}
         ]
       )
 
@@ -58,6 +60,17 @@ defmodule Platform.VideoProcessingTest do
       stream_result = convert_lesson_to_video(lesson) |> Enum.to_list
       assert length(stream_result) == length(lesson.slides)
     end
+  end
+
+  describe "#merge_videos" do
+
+    test "should update video_hash after merge", %{lesson: lesson} do
+      merge_videos(lesson)
+
+      assert Core.get_lesson!(lesson.id).video_hash != nil
+      assert Core.get_lesson!(lesson.id).video_hash == VideoHelper.generate_video_hash(lesson)
+    end
+
   end
 
   describe "the create_or_update_image_for_slide function" do
