@@ -34,14 +34,13 @@ defmodule Platform.VideoProcessing do
   end
 
   def generate_video_for_slide(%Lesson{} = lesson, %Slide{} = slide) do
-    image_filename = create_or_update_image_for_slide(lesson, slide)
-    audio_filename = create_or_update_audio_for_slide(lesson, slide)
-
-    video_filename = Filename.get_filename_for_slide_video(lesson, slide)
-
     # Only generate video of audio or video changed
     if VideoHelper.generate_video_hash(slide) != slide.video_hash do
       Logger.info("Slide #{slide.id} Video: need update")
+
+      image_filename = create_or_update_image_for_slide(lesson, slide)
+      audio_filename = create_or_update_audio_for_slide(lesson, slide)
+      video_filename = Filename.get_filename_for_slide_video(lesson, slide)
 
       Core.update_slide(slide, %{video_sync_pid: self()})
 
