@@ -12,12 +12,6 @@
       <%= if can?(@conn, :merge_videos, @lesson) do %>
         <span><%= link "Merge partial sequences to lesson", to: lesson_path(@conn, :merge_videos, @lesson), method: :post, class: "btn btn-secondary" %></span>
       <% end %>
-      <%= if can?(@conn, :invalidate_all_audio_hashes, @lesson) do %>
-        <%= link "Invalidate generate audio", to: lesson_path(@conn, :invalidate_all_audio_hashes, @lesson), method: :post, class: "btn btn-danger" %>
-      <% end %>
-      <%= if can?(@conn, :invalidate_all_video_hashes, @lesson) do %>
-      <%= link "Invalidate generate video", to: lesson_path(@conn, :invalidate_all_video_hashes, @lesson), method: :post, class: "btn btn-danger" %>
-    <% end %>
     </div>
 
   <ul>
