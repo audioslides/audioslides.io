@@ -78,4 +78,6 @@ defmodule PlatformWeb.ViewHelper do
 
   def get_class_for_processing_state("UP_TO_DATE"), do: "bg-success"
   def get_class_for_processing_state("NEEDS_UPDATE"), do: "bg-warning"
+  def get_class_for_processing_state("UPDATING"), do: "bg-info"
+  def get_class_for_processing_state(_), do: ""
 end
