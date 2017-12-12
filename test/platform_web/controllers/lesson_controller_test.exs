@@ -16,9 +16,11 @@ defmodule PlatformWeb.LessonControllerTest do
   setup [:set_current_user_as_admin, :verify_on_exit!]
 
   describe "#index" do
-    test "lists all lessons", %{conn: conn} do
+    setup [:create_lesson]
+
+    test "lists all lessons", %{conn: conn, lesson: lesson} do
       conn = get(conn, lesson_path(conn, :index))
-      assert html_response(conn, 200) =~ ~s(<main role="main">)
+      assert html_response(conn, 200) =~ lesson.name
     end
   end
 

@@ -4,7 +4,7 @@ defmodule PlatformWeb.PageControllerTest do
   describe "#index" do
     test "shows the homepage", %{conn: conn} do
       conn = get(conn, page_path(conn, :index))
-      assert html_response(conn, 200) =~ ~s(<main role="main">)
+      assert html_response(conn, 200) =~ ~s(<main)
     end
 
     test "show only visible lessons if no admin", %{conn: conn} do

@@ -206,14 +206,12 @@ defmodule Platform.VideoProcessingStateTest do
       slide2 = Factory.insert(:slide, video_hash: VideoHelper.sha256("SAME_HASHSAME_HASH"), audio_hash: "SAME_HASH" , image_hash: "SAME_HASH", speaker_notes_hash: "SAME_HASH", page_elements_hash: "SAME_HASH")
       lesson = Factory.insert(:lesson, video_hash: VideoHelper.sha256("SAME_HASHSAME_HASH"), slides: [slide1, slide2])
 
-      IO.inspect get_processing_state(lesson)
       set_processing_state(lesson)
 
       updated_slide1 = Core.get_slide!(slide1.id)
       processing_state_for_slide1 = get_processing_state_for_slide(updated_slide1)
 
       updated_slide2 = Core.get_slide!(slide2.id)
-      IO.inspect updated_slide2
       processing_state_for_slide2 = get_processing_state_for_slide(updated_slide2)
 
       assert processing_state_for_slide1.video_state == "UPDATING"
