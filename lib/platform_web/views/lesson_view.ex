@@ -23,8 +23,10 @@ defmodule PlatformWeb.LessonView do
   def page("show.html", conn),
     do: %{
       parent: page("index.html", conn),
-      title: "#{conn.assigns.lesson.name}",
-      path: lesson_path(conn, :show, conn.assigns.lesson)
+      title: "123#{conn.assigns.lesson.name}",
+      path: lesson_path(conn, :show, conn.assigns.lesson),
+      no_container: true,
+      no_header: true
     }
 
   def page("edit.html", conn),

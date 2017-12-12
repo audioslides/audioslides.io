@@ -1,26 +1,30 @@
-<%= if can?(@conn, :edit, @lesson) do %>
-<section>
-  <h3>Manage Video</h3>
-  <div class="btn-toolbar mb-4">
-      <span><%= link "Edit", to: lesson_path(@conn, :edit, @lesson), class: "btn btn-secondary" %></span>
-      <span><%= link "Manage", to: lesson_path(@conn, :manage, @lesson), class: "btn btn-info text-white" %></span>
-      <span><%= link "Delete", to: lesson_path(@conn, :delete, @lesson), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></span>
-  </div>
-<% end %>
+<div class="embed-responsive embed-responsive-16by9" style="">
+    <video controls>
+      <source src="/content/<%= @lesson.id %>.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+</div>
 
-<%= progressbar(@lesson.complete_percent) %>
-<%= progress_badge(@lesson.complete_percent) %>
 
 <section>
-  <div class="embed-responsive embed-responsive-16by9">
-      <video controls>
-        <source src="/content/<%= @lesson.id %>.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+  <div class="container">
+    <%= if can?(@conn, :edit, @lesson) do %>
+      <div class="btn-toolbar mb-4">
+          <span><%= link "Edit", to: lesson_path(@conn, :edit, @lesson), class: "btn btn-secondary" %></span>
+          <span><%= link "Manage", to: lesson_path(@conn, :manage, @lesson), class: "btn btn-info text-white" %></span>
+          <span><%= link "Delete", to: lesson_path(@conn, :delete, @lesson), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></span>
+      </div>
+    <% end %>
+
+    <%= progress_badge(@lesson.complete_percent) %>
   </div>
 </section>
 
+
 <section>
-  <h3>Comments</h3>
+  <div class="container">
+    <h3>Comments</h3>
     <%= render PlatformWeb.LayoutView, "_disqus.html", conn: @conn, lesson: @lesson %>
+  </div>
 </section>
+
