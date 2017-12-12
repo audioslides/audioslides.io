@@ -13,7 +13,7 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
         audio_filename: audio_filename,
         output_filename: output_filename
       ) do
-    duration = get_audio_duration(audio_filename)
+    duration = get_duration(audio_filename)
 
     opts =
       "-loop 1 -t #{duration} -i #{image_filename} -i #{audio_filename} -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -y #{
@@ -35,13 +35,13 @@ defmodule Platform.VideoConverter.FFMpegAdapter do
     FileHelper.remove_file(concat_input_filename)
   end
 
-  def get_audio_duration(audio_filename) do
-    opts = "-i #{audio_filename}"
+  def get_duration(filename) do
+    opts = "-i #{filename}"
     {result, _} = System.cmd("ffmpeg", String.split(opts, " "), stderr_to_stdout: true)
-    get_audiofile_duration_from_ffmpeg_response(result)
+    get_duration_from_ffmpeg_response(result)
   end
 
-  def get_audiofile_duration_from_ffmpeg_response(ffmpeg_response) do
+  def get_duration_from_ffmpeg_response(ffmpeg_response) do
     # get the duration from the
     duration_regex = ~r/Duration: \d\d:(\d\d:\d\d\.\d\d)/
     [_, duration] = Regex.run(duration_regex, ffmpeg_response)
