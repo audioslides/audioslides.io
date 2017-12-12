@@ -83,14 +83,14 @@ defmodule PlatformWeb.ViewHelper do
 
   def seconds_to_string(seconds) do
     minute = 60
-    hour = minute*60
-    day = hour*24
-    week =  day*7
+    hour = minute * 60
+    day = hour * 24
+    week =  day * 7
     divisor = [week, day, hour, minute, 1]
 
     {_, [s, m, h, d, w]} =
-        Enum.reduce(divisor, {seconds,[]}, fn divisor,{n,acc} ->
-          {rem(n,divisor), [div(n,divisor) | acc]}
+        Enum.reduce(divisor, {seconds, []}, fn divisor, {n, acc} ->
+          {rem(n, divisor), [div(n, divisor) | acc]}
         end)
     ["#{w} wk", "#{d} d", "#{h} hr", "#{m} min", "#{s} sec"]
     |> Enum.reject(fn str -> String.starts_with?(str, "0") end)
