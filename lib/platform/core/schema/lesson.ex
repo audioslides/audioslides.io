@@ -22,6 +22,7 @@ defmodule Platform.Core.Schema.Lesson do
     field(:video_sync_pid, :string)
     field(:synced_at, :utc_datetime)
     field(:complete_percent, :integer, default: 0)
+    field(:duration, :integer, default: 0)
     timestamps()
 
     has_many(:course_lessons, CourseLesson)
