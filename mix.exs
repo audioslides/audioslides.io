@@ -33,7 +33,11 @@ defmodule Platform.Mixfile do
   def application do
     [
       mod: {Platform.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [
+        :logger,
+        :runtime_tools,
+        :timex
+      ]
     ]
   end
 
@@ -60,6 +64,7 @@ defmodule Platform.Mixfile do
       {:httpoison, "~> 0.13"},
       {:ueberauth_google, "~> 0.5"},
       {:ueberauth, "~> 0.4"},
+      {:timex, "~> 3.1"},
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:ex_machina, "~> 2.1", only: :test},
