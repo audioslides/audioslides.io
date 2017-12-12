@@ -73,6 +73,33 @@ defmodule Platform.VideoProcessingTest do
 
   end
 
+  describe "#parse_duration" do
+    test "should parse a string to seconds in interger with only seconds" do
+      seconds = parse_duration("00:00:34.12")
+
+      assert seconds == 34
+    end
+
+    test "should parse a string to seconds in interger with seconds and minutes" do
+      seconds = parse_duration("00:01:34.12")
+
+      assert seconds == 94
+    end
+
+    test "should parse a string to seconds in interger with seconds, minutes and hours" do
+      seconds = parse_duration("01:01:34.12")
+
+      assert seconds == 3694
+    end
+
+    test "should also parse if hour part is missing" do
+      seconds = parse_duration("01:34.12")
+
+      assert seconds == 94
+    end
+
+  end
+
   describe "the create_or_update_image_for_slide function" do
     test "should call the GoogleSlide.download_slide_thumb! function when image_hash is different", %{
       lesson: lesson,

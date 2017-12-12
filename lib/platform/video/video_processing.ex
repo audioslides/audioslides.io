@@ -38,13 +38,14 @@ defmodule Platform.VideoProcessing do
     Logger.info("Lesson ##{lesson.id} merge complete")
   end
 
-  def parse_duration(<<hours_as_string::bytes-size(2)>> <> ":" <> <<minutes_as_string::bytes-size(2)>> <> "." <> seconds_as_string) do
+  def parse_duration(<<minutes_as_string::bytes-size(2)>> <> ":" <> <<seconds_as_string::bytes-size(2)>> <> "." <> miliseconds_as_string), do: parse_duration("00:#{minutes_as_string}:#{seconds_as_string}.#{miliseconds_as_string}")
+  def parse_duration(<<hours_as_string::bytes-size(2)>> <> ":" <> <<minutes_as_string::bytes-size(2)>> <> ":" <> <<seconds_as_string::bytes-size(2)>> <> "." <> _miliseconds_as_string) do
     hours = String.to_integer(hours_as_string)
     minutes = String.to_integer(minutes_as_string)
     seconds = String.to_integer(seconds_as_string)
     seconds + (minutes * 60) + (hours * 3600)
   end
-  def parse_duration(duration), do: duration
+  def parse_duration(_), do: 0
 
   def generate_video_for_slide(%Lesson{} = lesson, %Slide{} = slide) do
     # Only generate video of audio or video changed
