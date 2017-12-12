@@ -5,8 +5,9 @@
       </div>
       <div class="card-body">
         <p class="card-text">
-          <%= @lesson.name %>
-          <span class="pull-right text-muted"><%= seconds_to_string(@lesson.duration) %></span>
+          <span><%= @lesson.name %></span>
+          <br>
+          <span class="text-muted"><%= seconds_to_string(@lesson.duration) %></span>
         </p>
       </div>
       <div class="card-footer text-muted">
