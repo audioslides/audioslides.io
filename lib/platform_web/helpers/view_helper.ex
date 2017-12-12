@@ -1,6 +1,8 @@
 defmodule PlatformWeb.ViewHelper do
   @moduledoc false
 
+  alias Platform.Core.Schema.Course
+
   @example_image "/images/example-slide.png"
 
   @doc """
@@ -95,5 +97,11 @@ defmodule PlatformWeb.ViewHelper do
     ["#{w} wk", "#{d} d", "#{h} hr", "#{m} min", "#{s} sec"]
     |> Enum.reject(fn str -> String.starts_with?(str, "0") end)
     |> Enum.join(" ")
+  end
+
+  def get_overall_duration(%Course{} = course) do
+    course.course_lessons
+    |> Enum.map(fn(course_lesson) -> course_lesson.lesson.duration end)
+    |> Enum.sum()
   end
 end

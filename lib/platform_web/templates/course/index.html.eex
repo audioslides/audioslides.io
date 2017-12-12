@@ -1,28 +1,9 @@
-<table class="table">
-  <thead>
-    <tr>
+<div class="hover-zoom-cards row">
+    <%= for course <- @courses do %>
+      <%= render PlatformWeb.CourseView, "_course.html", conn: @conn, course: course %>
+    <% end %>
+  </div>
 
-      <th>Name</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for course <- @courses do %>
-    <tr>
-
-      <td><%= link course.name, to: course_path(@conn, :show, course) %></td>
-      <td class="text-right">
-        <%= if can?(@conn, :edit, course) do %>
-          <span><%= link "Edit", to: course_path(@conn, :edit, course), class: "btn btn-default btn-xs" %></span>
-        <% end %>
-        <%= if can?(@conn, :delete, course) do %>
-          <span><%= link "Delete", to: course_path(@conn, :delete, course), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-        <% end %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
 
 <%= if can?(@conn, :delete, Course) do %>
   <%= link "New Course", to: course_path(@conn, :new), class: "btn btn-primary" %>

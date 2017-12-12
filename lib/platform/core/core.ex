@@ -175,7 +175,9 @@ defmodule Platform.Core do
 
   """
   def list_courses do
-    Repo.all(Course)
+    Course
+    |> Repo.all()
+    |> Repo.preload(course_lessons: :lesson)
   end
 
   @doc """

@@ -1,0 +1,24 @@
+  <a class="col-12 col-md-4 p-3" href="<%= course_path(@conn, :show, @course) %>">
+    <div class="card" >
+      <div class="card-image">
+          <%= img_tag(get_course_front_slide_image(@course), class: "card-img-top img-fluid", alt: "Card image #{@course.name}") %>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          <span><%= @course.name %></span>
+          <br>
+          <span class="text-muted"><%= length(@course.course_lessons) %> Lessons</span>
+          <br>
+          <span class="text-muted"><%= seconds_to_string(get_overall_duration(@course)) %></span>
+        </p>
+      </div>
+      <div class="card-footer text-muted">
+        <span>
+          Created <%= Timex.from_now(@course.inserted_at) %>
+        </span>
+        <span class="pull-right">
+          <%=# lang_icon(@course.voice_language) %>
+        </span>
+      </div>
+    </div>
+  </a>
