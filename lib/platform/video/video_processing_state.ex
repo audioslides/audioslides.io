@@ -18,7 +18,6 @@ defmodule Platform.VideoProcessingState do
       set_image_processing_state(state)
     end)
 
-
     Core.update_lesson(lesson, %{video_sync_pid: "self()"})
 
     lesson
