@@ -6,7 +6,7 @@
 </div>
 
 
-<section>
+<section class="py-5">
   <div class="container">
     <%= if can?(@conn, :edit, @lesson) do %>
       <div class="btn-toolbar mb-4">
@@ -21,7 +21,7 @@
 </section>
 
 
-<section>
+<section style="background-color: #f3f3f3;" class="py-5">
   <div class="container">
     <h3>Comments</h3>
     <%= render PlatformWeb.LayoutView, "_disqus.html", conn: @conn, lesson: @lesson %>

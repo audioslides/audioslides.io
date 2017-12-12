@@ -9,13 +9,15 @@
 
 <ul class="list-group mb-4">
   <%= for course_lesson <- @course.course_lessons do %>
-    <li class="list-group-item p-4">
-      <div class="media">
+    <li class="list-group-item p-0">
+    <%= progressbar(course_lesson.lesson.complete_percent) %>
+
+      <div class="media m-4">
       <%= link img_tag(get_course_front_slide_image(course_lesson.lesson), class: "d-flex mr-4", width: 200, alt: "Card image #{course_lesson.lesson.name}"), to: lesson_path(@conn, :show, course_lesson.lesson) %>
         <div class="media-body">
           <h2 class="mt-0"><%= course_lesson.lesson.name %></h2>
           <div style="max-width: 600px;">
-            <%= progress_badge(course_lesson.lesson.complete_percent) %>
+            <%#= progress_badge(course_lesson.lesson.complete_percent) %>
 
           </div>
         </div>

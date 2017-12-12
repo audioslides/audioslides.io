@@ -35,13 +35,6 @@ defmodule PlatformWeb.LessonView do
       title: "Edit lesson"
     }
 
-  def state_view(lesson) do
-    state = Platform.VideoProcessingState.get_state_for_lesson_video(lesson)
-    case state do
-      _ -> state
-    end
-  end
-
   def progressbar(number) when is_integer(number) do
     content_tag(:div, class: "progress") do
       content_tag(:div, class: "progress-bar bg-#{completeness_class_suffix(number)}", role: "progressbar", style: "width: #{number}%") do

@@ -1,7 +1,7 @@
 defmodule PlatformWeb.CourseView do
   use PlatformWeb, :view
   import PlatformWeb.ViewHelper
-  import PlatformWeb.LessonView, only: [progress_badge: 1]
+  import PlatformWeb.LessonView, only: [progressbar: 1]
 
   alias Platform.Core.Schema.CourseLesson
   alias Platform.Core.Schema.Course

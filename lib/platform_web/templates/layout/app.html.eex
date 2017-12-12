@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <%= render "_ga.html", conn: @conn %>
 
-    <title>Hello Platform!</title>
+    <title><%= page(@conn)[:title] %> | audioslides.io</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
