@@ -7,7 +7,12 @@
         <p class="card-text"><%= @lesson.name %></p>
       </div>
       <div class="card-footer text-muted">
-        <%= Timex.from_now(@lesson.inserted_at) %>
+        <span>
+          Created <%= Timex.from_now(@lesson.inserted_at) %>
+        </span>
+        <span class="pull-right">
+          <%= lang_icon(@lesson.voice_language) %>
+        </span>
       </div>
     </div>
   </a>
