@@ -31,7 +31,7 @@ defmodule Platform.Core.Schema.Lesson do
   end
 
   @doc false
-  @fields [:visible, :google_presentation_id, :name, :voice_language, :voice_gender, :video_hash, :video_sync_pid]
+  @fields [:visible, :google_presentation_id, :name, :voice_language, :voice_gender, :video_hash, :video_sync_pid, :duration]
   def changeset(%__MODULE__{} = struct, attrs) do
     struct
     |> cast(attrs, @fields)

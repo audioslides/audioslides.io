@@ -26,4 +26,14 @@ defmodule Platform.VideoConverter do
   @callback merge_videos(video_filename_list: list(String.t()), output_filename: String.t()) ::
               {:ok, String.t()} | {:error, String.t()}
   defdelegate merge_videos(opts), to: @adapter
+
+  @doc """
+  Get the duration of an input file
+
+  The return value is the duration of the given file as {:ok, filename}
+  If an error occurs the an {:error, reason will be returned}
+  """
+  @callback get_duration(filename: String.t()) ::
+              {:ok, String.t()} | {:error, String.t()}
+  defdelegate get_duration(opts), to: @adapter
 end

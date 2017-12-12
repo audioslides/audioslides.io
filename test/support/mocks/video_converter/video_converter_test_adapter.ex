@@ -23,6 +23,10 @@ defmodule Platform.VideoConverter.TestAdapter do
     end)
   end
 
+  def get_duration(_) do
+    "01:02.34"
+  end
+
   def start_link do
     Agent.start_link(fn -> {[], []} end, name: __MODULE__)
   end

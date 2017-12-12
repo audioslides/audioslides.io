@@ -28,10 +28,23 @@ defmodule Platform.VideoProcessing do
       output_filename: final_output_filename
     )
 
-    Core.update_lesson(lesson, %{video_hash: VideoHelper.generate_video_hash(lesson)})
+    duration_in_seconds =
+      final_output_filename
+      |> VideoConverter.get_duration()
+      |> parse_duration()
+
+    Core.update_lesson(lesson, %{duration: duration_in_seconds, video_hash: VideoHelper.generate_video_hash(lesson)})
 
     Logger.info("Lesson ##{lesson.id} merge complete")
   end
+
+  def parse_duration(<<hours_as_string::bytes-size(2)>> <> ":" <> <<minutes_as_string::bytes-size(2)>> <> "." <> seconds_as_string) do
+    hours = String.to_integer(hours_as_string)
+    minutes = String.to_integer(minutes_as_string)
+    seconds = String.to_integer(seconds_as_string)
+    seconds + (minutes * 60) + (hours * 3600)
+  end
+  def parse_duration(duration), do: duration
 
   def generate_video_for_slide(%Lesson{} = lesson, %Slide{} = slide) do
     # Only generate video of audio or video changed
