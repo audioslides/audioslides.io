@@ -1,13 +1,42 @@
-FROM elixir:1.5.2-slim as builder
+################################################################################################
+################################################################################################
+FROM elixir:1.5.2-slim as elixir-dependency-cache
+
+# Setup ENV
+ENV HOME=/opt/app
+WORKDIR $HOME
+
+RUN mix do local.hex --force, local.rebar --force
+ADD mix.exs mix.lock $HOME/
+
+RUN mix deps.get
+
+################################################################################################
+################################################################################################
+
+FROM node:8 as node-asset-builder
+
+ENV HOME=/opt/app
+WORKDIR $HOME
+
+COPY --from=elixir-dependency-cache /opt/app/deps/phoenix $HOME/deps/phoenix
+COPY --from=elixir-dependency-cache /opt/app/deps/phoenix_html $HOME/deps/phoenix_html
+
+WORKDIR $HOME/assets
+
+COPY assets/ ./
+RUN npm install
+RUN ./node_modules/.bin/brunch build --production
+
+################################################################################################
+################################################################################################
+FROM elixir:1.5.2-slim as elixir-builder
 
 # Setup ENV
 ENV HOME=/opt/app \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
-    LC_ALL=en_US.UTF-8 \
-    PATH=./node_modules/.bin:$PATH \
-    PORT=4000 \
-    MIX_ENV=prod
+    LC_ALL=en_US.UTF-8
 
 # Add package sources
 RUN sed -i "s/jessie main/jessie main contrib non-free/" /etc/apt/sources.list
@@ -15,50 +44,38 @@ RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-jessie main" | tee /e
 RUN echo "deb http://http.debian.net/debian jessie-backports main contrib non-free" >> /etc/apt/sources.list
 RUN apt-get update && \
         apt-get --allow-unauthenticated -y install \
-        ffmpeg \
-        gcsfuse \
-        make \
-        git \
-        g++ \
-        wget \
-        curl \
-        build-essential \
-        locales \
-        mysql-client \
-        imagemagick && \
-        curl -sL https://deb.nodesource.com/setup_8.x | bash && \
-        apt-get -y install nodejs && \
-        rm -rf /var/lib/apt/lists/*
+        locales
 
 # Set the locale
 RUN locale-gen en_US.UTF-8 && \
     localedef -i en_US -f UTF-8 en_US.UTF-8 && \
     update-locale LANG=en_US.UTF-8
 
-RUN \
-    mkdir -p /opt/app && \
-    chmod -R 777 /opt/app && \
-    update-ca-certificates --fresh
-
 RUN mix do local.hex --force, local.rebar --force
 
 WORKDIR /opt/app
 
-# Install elixir deps
-ADD mix.exs mix.lock ./
-RUN mix do deps.get, deps.compile
+######## COMPILE DEPS ##########
+# Copy cached dependency modules
+COPY --from=elixir-dependency-cache /opt/app/deps $HOME/deps
 
-# Install npm deps
-ADD ./assets/package.json ./assets/package.json
-RUN cd assets && npm install
+ADD mix.exs mix.lock $HOME/
+
+# Compile deps
+RUN mix deps.compile
+######## COMPILE DEPS ##########
+
+######## GET AND DIGEST ASSETS ##########
+# Copy compiled javascript modules
+COPY --from=node-asset-builder $HOME/priv/static/ ./priv/static/
+
+# Run frontend build, compile, and digest assets
+RUN mix phx.digest
+######## GET AND DIGEST ASSETS ##########
 
 ADD . .
 
-# Run frontend build, compile, and digest assets
-RUN cd assets && \
-    brunch build --production && \
-    cd .. && \
-    mix do compile, phx.digest
+RUN mix do compile
 
 # Run the startup script
 #CMD ["./startup.sh"]
@@ -107,19 +124,19 @@ RUN mix local.hex --force
 WORKDIR /opt/app
 
 # copy compiled exilir app
-COPY --from=builder /opt/app/_build/ ./_build
-COPY --from=builder /opt/app/deps/ ./deps
+COPY --from=elixir-builder /opt/app/_build/ ./_build
+COPY --from=elixir-builder /opt/app/deps/ ./deps
 
 # Copy compiled javascript modules
-COPY --from=builder /opt/app/priv/static/ ./priv/static/
+COPY --from=elixir-builder /opt/app/priv/static/ ./priv/static/
 
 # Copy startup scripts
-COPY --from=builder /opt/app/gcsfuse.sh ./gcsfuse.sh
-COPY --from=builder /opt/app/startup.sh ./startup.sh
-COPY --from=builder /opt/app/mix.exs ./mix.exs
-COPY --from=builder /opt/app/mix.lock ./mix.lock
-COPY --from=builder /opt/app/config/config.exs ./config/config.exs
-COPY --from=builder /opt/app/config/prod.exs ./config/prod.exs
+COPY --from=elixir-builder /opt/app/gcsfuse.sh ./gcsfuse.sh
+COPY --from=elixir-builder /opt/app/startup.sh ./startup.sh
+COPY --from=elixir-builder /opt/app/mix.exs ./mix.exs
+COPY --from=elixir-builder /opt/app/mix.lock ./mix.lock
+COPY --from=elixir-builder /opt/app/config/config.exs ./config/config.exs
+COPY --from=elixir-builder /opt/app/config/prod.exs ./config/prod.exs
 
 # Run the startup script
 CMD ["./startup.sh"]
