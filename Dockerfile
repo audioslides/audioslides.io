@@ -119,7 +119,7 @@ RUN \
     chmod -R 777 /opt/app && \
     update-ca-certificates --fresh
 
-RUN mix local.hex --force
+RUN mix local.hex --force, local.rebar --force
 
 WORKDIR /opt/app
 
