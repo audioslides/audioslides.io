@@ -1,5 +1,11 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test', '.' ]
+  args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test:latest' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '--cache-from', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test:latest',
+    '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test',
+    '.' ]
 images:
 - 'eu.gcr.io/$PROJECT_ID/audioslides-io-test'
