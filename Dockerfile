@@ -77,7 +77,7 @@ ADD . .
 
 RUN mix do compile --warnings-as-errors
 RUN MIX_ENV=test mix credo --strict
-RUN MIX_ENV=test mix coveralls
+#RUN MIX_ENV=test mix coveralls
 
 ### DOCKER RUN IMAGE ###
 
