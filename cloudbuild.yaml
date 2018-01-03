@@ -1,6 +1,8 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test:latest' ]
+- name: 'gcr.io/cloud-builders/docker-compose'
+  args: [ 'run', 'test' ]
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'build',

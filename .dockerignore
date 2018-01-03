@@ -6,7 +6,6 @@ README.md
 _build
 deps
 assets/node_modules
-test
 priv/static/content
 Dockerfile
 docker-compose.yml
