@@ -4,9 +4,9 @@ steps:
 - name: 'docker/compose:1.18.0'
   args: [ 'run',
     '-e', 'MIX_ENV=test',
+    '-e', 'COVERALLS_REPO_TOKEN=$_COVERALLS_REPO_TOKEN',
     'test',
     'mix', 'coveralls.post',
-    '--token', '"$_COVERALLS_REPO_TOKEN"',
     '--branch', '"$BRANCH_NAME"',
     '--sha', '"$COMMIT_SHA"'
     ]
