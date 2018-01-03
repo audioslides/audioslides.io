@@ -11,9 +11,10 @@ services:
       - DATABASE_MYSQL_PORT=3306
       - DATABASE_MYSQL_USERNAME=root
       - DATABASE_MYSQL_PASSWORD=""
+      - BRANCH=$BRANCH
     depends_on:
       - db
-    command: mix coveralls.post --branch "$BRANCH" --sha "$SHA"
+    command: mix coveralls
   db:
     image: 'mysql:latest'
     environment:
