@@ -7,7 +7,7 @@ ENV HOME=/opt/app \
     LC_ALL=en_US.UTF-8 \
     PATH=./node_modules/.bin:$PATH \
     PORT=4000 \
-    MIX_ENV=test
+    MIX_ENV=prod
 
 # Add package sources
 RUN sed -i "s/jessie main/jessie main contrib non-free/" /etc/apt/sources.list

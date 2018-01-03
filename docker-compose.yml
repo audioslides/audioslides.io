@@ -5,8 +5,6 @@ services:
       context: .
       cache_from:
         - 'eu.gcr.io/symetics.com/audioslides-io-test:latest'
-      args:
-        MIX_ENV: test
     environment:
       - MIX_ENV=test
       - DATABASE_MYSQL_HOSTNAME=db
