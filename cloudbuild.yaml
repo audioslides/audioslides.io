@@ -5,7 +5,7 @@ steps:
   args: [ 'run',
     '-e', 'COVERALLS_REPO_TOKEN=$_COVERALLS_REPO_TOKEN',
     '-e', 'BRANCH=$BRANCH_NAME',
-    '-e', 'SHA=$SHORT_SHA'
+    '-e', 'SHA=$SHORT_SHA',
     'test' ]
 - name: 'gcr.io/cloud-builders/docker'
   args: [
