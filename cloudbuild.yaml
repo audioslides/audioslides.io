@@ -5,7 +5,7 @@ steps:
   args: [ 'run',
     '-e', "MIX_ENV=test",
     'test',
-    'mix', 'coveralls.post'
+    'mix', 'coveralls.post',
     '--branch', '"$BRANCH_NAME"',
     '--sha', '"$SHORT_SHA"',
     '--token', '"$_COVERALLS_REPO_TOKEN"'
