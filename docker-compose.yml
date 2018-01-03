@@ -30,9 +30,10 @@ services:
       - DATABASE_MYSQL_PORT=3306
       - DATABASE_MYSQL_USERNAME=root
       - DATABASE_MYSQL_PASSWORD=""
+      - COVERALLS_REPO_TOKEN=$_COVERALLS_REPO_TOKEN
     depends_on:
       - db
-    command: mix coveralls
+    command: mix coveralls.post
   db:
     image: 'mysql:latest'
     environment:
