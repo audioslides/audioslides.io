@@ -3,7 +3,7 @@ steps:
   args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test:latest' ]
 - name: 'docker/compose:1.18.0'
   args: [ 'run',
-    '-e', 'MIX_ENV=test'
+    '-e', 'MIX_ENV=test',
     'test',
     'mix', 'coveralls.post',
     '--token', '"$_COVERALLS_REPO_TOKEN"',
