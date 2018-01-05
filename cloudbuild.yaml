@@ -13,7 +13,6 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'build',
-    '-e', 'COVERALLS_REPO_TOKEN=$_COVERALLS_REPO_TOKEN',
     '--cache-from', 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest',
     '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest',
     '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io:prod',
