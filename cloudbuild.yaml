@@ -1,6 +1,6 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test:latest' ]
+  args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest' ]
 - name: 'docker/compose:1.18.0'
   args: [ 'run',
     '-e', 'MIX_ENV=test',
@@ -13,8 +13,8 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'build',
-    '--cache-from', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test:latest',
-    '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test',
+    '--cache-from', 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest',
+    '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io',
     '.' ]
 images:
-- 'eu.gcr.io/$PROJECT_ID/audioslides-io-test'
+- 'eu.gcr.io/$PROJECT_ID/audioslides-io'

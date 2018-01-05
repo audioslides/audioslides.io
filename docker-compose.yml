@@ -4,7 +4,7 @@ services:
     build:
       context: .
       cache_from:
-        - 'eu.gcr.io/symetics.com/audioslides-io-test:latest'
+        - 'eu.gcr.io/symetics.com/audioslides-io:latest'
     environment:
       - MIX_ENV=test
       - DATABASE_MYSQL_HOSTNAME=db
