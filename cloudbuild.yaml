@@ -18,4 +18,5 @@ steps:
     '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io:prod',
     '.' ]
 images:
-- ['eu.gcr.io/$PROJECT_ID/audioslides-io:latest', 'eu.gcr.io/$PROJECT_ID/audioslides-io:prod']
+- 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest'
+- 'eu.gcr.io/$PROJECT_ID/audioslides-io:prod'
