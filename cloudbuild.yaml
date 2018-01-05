@@ -14,7 +14,8 @@ steps:
   args: [
     'build',
     '--cache-from', 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest',
-    '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io',
+    '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest',
+    '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io:prod',
     '.' ]
 images:
 - 'eu.gcr.io/$PROJECT_ID/audioslides-io'
