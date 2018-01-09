@@ -52,13 +52,15 @@ RUN mix do deps.get, deps.compile
 ADD ./assets/package.json ./assets/package.json
 RUN cd assets && npm install
 
-ADD . .
-
-# Run frontend build, compile, and digest assets
+# Run frontend build
 RUN cd assets && \
     brunch build --production && \
-    cd .. && \
-    mix do compile, phx.digest
+    cd ..
+
+ADD . .
+
+# Run compile and digest assets
+RUN mix do compile, phx.digest
 
 # Run the startup script
 CMD ["./startup.sh"]
