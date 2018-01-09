@@ -1,4 +1,10 @@
 steps:
+# Load images for cachig
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'pull', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test-runner:latest' ]
+# Build test-runner image
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'build',
@@ -6,5 +12,27 @@ steps:
     '--cache-from', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test-runner:latest',
     '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io-test-runner:latest',
     '.' ]
+# Run Tests with test-runner
+- name: 'docker/compose:1.18.0'
+  args: [ 'run',
+    '-e', 'COVERALLS_REPO_TOKEN=$_COVERALLS_REPO_TOKEN',
+    'test',
+    'mix', 'coveralls.post',
+    '--branch', '$BRANCH_NAME',
+    '--sha', '$COMMIT_SHA'
+    ]
+# Build production image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '--cache-from', 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest',
+    '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest',
+    '-t', 'eu.gcr.io/$PROJECT_ID/audioslides-io:prod',
+    '.' ]
+# publish following images
 images:
+- 'eu.gcr.io/$PROJECT_ID/audioslides-io:latest'
+- 'eu.gcr.io/$PROJECT_ID/audioslides-io:prod'
 - 'eu.gcr.io/$PROJECT_ID/audioslides-io-test-runner:latest'
+# Timeout 20min (Default 10min)
+timeout: 1200s
