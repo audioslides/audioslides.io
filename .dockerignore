@@ -1,13 +1,15 @@
 .git
-.DS_Store
+**/.DS_Store
 .gitignore
 README.md
 .vscode
 .credo.exs
 _build
+.elixir_ls
 deps
 assets/node_modules
-priv/static/content
+priv/static
+rel/
 Dockerfile
 .dockerignore
 docker-compose.yml
@@ -15,5 +17,6 @@ docker-compose.yml
 .formatter.exs
 cloudbuild.yaml
 coveralls.json
+cover/
 erl_crash.dump
 
