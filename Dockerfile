@@ -48,12 +48,10 @@ WORKDIR /opt/app
 ADD mix.exs mix.lock ./
 RUN mix do deps.get, deps.compile
 
-# Install npm deps
+# Install npm deps & run frontend build
 ADD ./assets/package.json ./assets/package.json
-RUN cd assets && npm install
-
-# Run frontend build
 RUN cd assets && \
+    npm install && \
     brunch build --production && \
     cd ..
 
