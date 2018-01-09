@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   test:
-    image: 'eu.gcr.io/$PROJECT_ID/audioslides-io-test-runner:latest'
+    image: 'eu.gcr.io/symetics-com/audioslides-io-test-runner:latest'
     environment:
       - MIX_ENV=test
       - DATABASE_MYSQL_HOSTNAME=db
