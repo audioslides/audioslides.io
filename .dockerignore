@@ -3,10 +3,17 @@
 .gitignore
 README.md
 .vscode
+.credo.exs
 _build
 deps
 assets/node_modules
 priv/static/content
 Dockerfile
+.dockerignore
 docker-compose.yml
 .semaphore-cache
+.formatter.exs
+cloudbuild.yaml
+coveralls.json
+erl_crash.dump
+
