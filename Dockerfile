@@ -50,12 +50,15 @@ RUN mix do deps.get, deps.compile
 
 # Install npm deps & run frontend build
 ADD ./assets/package.json ./assets/package.json
-RUN cd assets && \
-    npm install && \
-    cd .. && \
-    brunch build --production
+RUN cd assets && npm install
 
 ADD . .
+
+# Run frontend build, compile, and digest assets
+RUN cd assets && \
+    brunch build --production && \
+    cd .. && \
+    mix do compile, phx.digest
 
 # Run compile and digest assets
 RUN mix do compile, phx.digest
