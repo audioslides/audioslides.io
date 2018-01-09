@@ -52,8 +52,8 @@ RUN mix do deps.get, deps.compile
 ADD ./assets/package.json ./assets/package.json
 RUN cd assets && \
     npm install && \
-    brunch build --production && \
-    cd ..
+    cd .. && \
+    brunch build --production &&
 
 ADD . .
 
