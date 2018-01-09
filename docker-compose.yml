@@ -1,10 +1,7 @@
 version: '3.2'
 services:
   test:
-    build:
-      context: .
-      cache_from:
-        - 'eu.gcr.io/symetics.com/audioslides-io:latest'
+    image: 'eu.gcr.io/$PROJECT_ID/audioslides-io-test-runner:latest'
     environment:
       - MIX_ENV=test
       - DATABASE_MYSQL_HOSTNAME=db
