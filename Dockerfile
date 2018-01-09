@@ -53,7 +53,7 @@ ADD ./assets/package.json ./assets/package.json
 RUN cd assets && \
     npm install && \
     cd .. && \
-    brunch build --production &&
+    brunch build --production
 
 ADD . .
 
