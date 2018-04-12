@@ -14,7 +14,7 @@ config :platform, PlatformWeb.Endpoint,
 
 config :platform, ecto_repos: [Platform.Repo]
 
-config :platform, :speech_api, Platform.Speech.AWS.Polly
+config :platform, :speech_api, Platform.Speech.Google.TextToSpeech
 
 config :platform, :content_dir, "priv/static/content/"
 
