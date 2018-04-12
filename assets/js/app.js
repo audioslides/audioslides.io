@@ -1,9 +1,10 @@
 import css from '../css/app.scss';
 
 import fontawesome from '@fortawesome/fontawesome';
-import {faCheck} from '@fortawesome/fontawesome-free-solid';
+// import {faCheck} from '@fortawesome/fontawesome-free-solid';
+import solid from '@fortawesome/fontawesome-free-solid';
 
-fontawesome.library.add(faCheck)
+fontawesome.library.add(solid)
 
 
 // Brunch automatically concatenates all files in your
