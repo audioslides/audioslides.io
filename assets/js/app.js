@@ -1,5 +1,11 @@
 import css from '../css/app.scss';
 
+import fontawesome from '@fortawesome/fontawesome';
+import {faCheck} from '@fortawesome/fontawesome-free-solid';
+
+fontawesome.library.add(faCheck)
+
+
 // Brunch automatically concatenates all files in your
 // watched paths. Those paths can be configured at
 // config.paths.watched in "brunch-config.js".
