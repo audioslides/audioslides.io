@@ -19,7 +19,7 @@ defmodule Platform.Speech.Google.TextToSpeech do
 
     params = %{
       "input": %{
-        "text": text # TODO - check for SSML
+        "ssml": text
       },
       "voice": %{
         "languageCode": language_key,
