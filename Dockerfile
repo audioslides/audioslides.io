@@ -56,7 +56,7 @@ ADD . .
 
 # Run frontend build, compile, and digest assets
 RUN cd assets && \
-    brunch build --production && \
+    npm run deploy && \
     cd .. && \
     mix do compile, phx.digest
 
