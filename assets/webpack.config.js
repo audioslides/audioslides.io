@@ -32,7 +32,8 @@ module.exports = (env, options) => ({
             options: {
               sourceMap: true,
               includePaths: [
-                path.resolve(__dirname, 'node_modules/bootstrap/scss')
+                path.resolve(__dirname, 'node_modules/bootstrap/scss'),
+                path.resolve(__dirname, 'node_modules/font-awesome/scss')
               ]
             }
           }

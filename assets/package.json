@@ -10,6 +10,8 @@
     "phoenix_html": "file:../deps/phoenix_html",
     "popper.js": "^1.14.3",
     "jquery": "^3.3.1",
+    "font-awesome": "^4.7.0",
+    "codemirror": "^5.27.4",
     "bootstrap": "^4.0.0"
   },
   "devDependencies": {
