@@ -4,6 +4,9 @@
 /deps
 /*.ez
 
+# Ignore elixir language server files.
+/.elixir_ls
+
 # Generated on crash by the VM
 erl_crash.dump
 
@@ -28,6 +31,7 @@ npm-debug.log
 /config/*.secret.exs
 
 /test/support/fixtures/slide.mp4
+/test/support/fixtures/wavenet.mp3
 
 /.mix_tasks
 /cover
