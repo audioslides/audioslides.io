@@ -40,7 +40,7 @@ defmodule Platform.Speech.Google.TextToSpeech do
 
     case HTTPoison.post("https://texttospeech.googleapis.com/v1beta1/text:synthesize", data, headers) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        %{ "audioContent" => audio_content_base64} = Poison.decode!(body)
+        %{"audioContent" => audio_content_base64} = Poison.decode!(body)
         Base.decode64!(audio_content_base64)
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         raise "404 - Not found"
@@ -61,18 +61,6 @@ defmodule Platform.Speech.Google.TextToSpeech do
     {:ok, file} = File.open filename, [:write]
     IO.binwrite(file, data)
   end
-
-
-  # defp get_binary_speech(url, data) do
-  #   case HTTPoison.post(url, data) do
-  #     {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-  #       body
-  #     {:ok, %HTTPoison.Response{status_code: 404}} ->
-  #       raise "404 - Not found"
-  #     {:error, %HTTPoison.Error{reason: reason}} ->
-  #       raise "Error in AWS Speech Polly at HTTP: #{reason}"
-  #   end
-  # end
 
   @doc """
   Is given Text SSML or normal text?
