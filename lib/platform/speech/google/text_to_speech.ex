@@ -19,7 +19,7 @@ defmodule Platform.Speech.Google.TextToSpeech do
 
     params = %{
       "input": %{
-        "ssml": text
+        "ssml": get_text(text)
       },
       "voice": %{
         "languageCode": language_key,
@@ -125,56 +125,5 @@ defmodule Platform.Speech.Google.TextToSpeech do
   def contains_text_ssml?(text) do
     Regex.match?(@regex_ssml, text)
   end
-
-  @doc """
-  signs a url for speech with Amazon v4 API
-
-  Example:
-  "https://polly.eu-central-1.amazonaws.com:443/v1/speech/?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAISGI2ES3XMIAV23Q%2F20171019%2Feu-central-1%2Fpolly%2Faws4_request&X-Amz-Date=20171019T082646Z&X-Amz-Expires=86400&X-Amz-Signature=b487f67c26926e71cf6d8711e68ce4f5e015138621869375b0681bfcba2e8757&X-Amz-SignedHeaders=host"
-
-  Just do a basic smoke-test, function AWSAuth is already tested
-
-  iex> params = Poison.encode!(%{"param1" => "x"})
-  iex> result = get_signed_url(params)
-  iex> result =~ "polly"
-  true
-
-  iex> params = Poison.encode!(%{"param1" => "x"})
-  iex> result = get_signed_url(params)
-  iex> result =~ "X-Amz-Algorithm=AWS4-HMAC-SHA256"
-  true
-
-  iex> params = Poison.encode!(%{"param1" => "x"})
-  iex> result = get_signed_url(params)
-  iex> result =~ "X-Amz-Signature="
-  true
-
-  """
-  # def get_signed_url(params) do
-  #   AWSAuth.QueryParameters.sign(
-  #     @access_key,
-  #     @secret_key,
-  #     "POST",
-  #     "https://polly.us-east-1.amazonaws.com:443/v1/speech/",
-  #     "us-east-1",
-  #     "polly",
-  #     Map.new,
-  #     DateTime.utc_now |> DateTime.to_naive,
-  #     params
-  #     )
-  # end
-
-  # ### Private functions
-
-  # defp get_binary_speech(url, data) do
-  #   case HTTPoison.post(url, data) do
-  #     {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-  #       body
-  #     {:ok, %HTTPoison.Response{status_code: 404}} ->
-  #       raise "404 - Not found"
-  #     {:error, %HTTPoison.Error{reason: reason}} ->
-  #       raise "Error in AWS Speech Polly at HTTP: #{reason}"
-  #   end
-  # end
 
 end
