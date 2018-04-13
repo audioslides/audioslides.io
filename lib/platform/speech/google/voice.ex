@@ -20,6 +20,6 @@ defmodule Platform.Speech.Google.Voice do
   """
   def get_voice([voice_gender: "male", language: "de-DE"]), do: "de-DE-Standard-A"
   def get_voice([voice_gender: "female", language: "de-DE"]), do: "de-DE-Standard-B"
-  def get_voice([voice_gender: "male", language: "en-US"]), do: "en-US-Wavenet-A"
-  def get_voice([voice_gender: "female", language: "en-US"]), do: "en-US-Wavenet-C"
+  def get_voice([voice_gender: "male", language: "en-US"]), do: "en-US-Wavenet-D"
+  def get_voice([voice_gender: "female", language: "en-US"]), do: "en-US-Wavenet-E"
 end
