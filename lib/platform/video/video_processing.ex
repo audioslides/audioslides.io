@@ -70,7 +70,7 @@ defmodule Platform.VideoProcessing do
 
       Logger.info("Slide #{slide.id} Video: generated")
     else
-     # Logger.info("Slide #{slide.id} Video: skipped")
+      Logger.info("Slide #{slide.id} Video: skipped")
     end
   end
 
