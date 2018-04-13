@@ -49,7 +49,7 @@ defmodule Platform.VideoProcessing do
 
   def generate_video_for_slide(%Lesson{} = lesson, %Slide{} = slide) do
     # Only generate video of audio or video changed
-    if VideoHelper.generate_video_hash(slide) != slide.video_hash do
+    #if VideoHelper.generate_video_hash(slide) != slide.video_hash do
       Logger.info("Slide #{slide.id} Video: need update")
 
       image_filename = create_or_update_image_for_slide(lesson, slide)
@@ -68,9 +68,9 @@ defmodule Platform.VideoProcessing do
       Core.update_slide(slide, %{video_sync_pid: nil})
 
       Logger.info("Slide #{slide.id} Video: generated")
-    else
-      Logger.info("Slide #{slide.id} Video: skipped")
-    end
+    #else
+    #  Logger.info("Slide #{slide.id} Video: skipped")
+    #end
   end
 
   def create_or_update_image_for_slide(lesson, slide) do
