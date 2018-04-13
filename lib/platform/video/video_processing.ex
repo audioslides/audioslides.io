@@ -15,7 +15,7 @@ defmodule Platform.VideoProcessing do
   alias Platform.Core.Schema.Slide
 
   def convert_lesson_to_video(%Lesson{} = lesson) do
-    Task.async_stream(lesson.slides, fn(slide) -> generate_video_for_slide(lesson, slide) end, timeout: 120_000)
+    Task.async_stream(lesson.slides, fn(slide) -> generate_video_for_slide(lesson, slide) end, timeout: 240_000)
   end
 
   def merge_videos(lesson) do
