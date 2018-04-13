@@ -12,10 +12,10 @@ defmodule Platform.Speech.Google.Voice do
   "de-DE-Standard-B"
 
   iex> get_voice(voice_gender: "male", language: "en-US")
-  "en-US-Wavenet-A"
+  "en-US-Wavenet-D"
 
   iex> get_voice(voice_gender: "female", language: "en-US")
-  "en-US-Wavenet-C"
+  "en-US-Wavenet-E"
 
   """
   def get_voice([voice_gender: "male", language: "de-DE"]), do: "de-DE-Standard-A"
