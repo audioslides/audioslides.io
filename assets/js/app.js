@@ -1,11 +1,5 @@
 import css from '../css/app.scss';
 
-import fontawesome from '@fortawesome/fontawesome';
-// import {faCheck} from '@fortawesome/fontawesome-free-solid';
-import solid from '@fortawesome/fontawesome-free-solid';
-
-fontawesome.library.add(solid)
-
 
 // Brunch automatically concatenates all files in your
 // watched paths. Those paths can be configured at
@@ -30,6 +24,7 @@ import "phoenix_html"
 // import socket from "./socket"
 import "./jquery-initializer";
 import "./popover-initializer";
+import "./font-awesome-initializer";
 import "./speaker-notes-editor";
 import "./lesson-state-updater";
 
