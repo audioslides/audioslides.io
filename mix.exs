@@ -61,6 +61,7 @@ defmodule Platform.Mixfile do
       {:goth, "~> 0.8.2"},
       {:cowboy, "~> 2.3"},
       {:aws_auth, "~> 0.7.1"},
+      {:honeydew, "~> 1.0.4"},
       {:httpoison, "~> 1.1.0"},
       {:ueberauth_google, "~> 0.5"},
       {:ueberauth, "~> 0.4"},
