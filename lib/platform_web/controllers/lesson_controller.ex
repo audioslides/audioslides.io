@@ -104,6 +104,8 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson_with_slides!()
       |> authorize_action!(conn)
 
+      {:work_really_hard, [10]} |> Honeydew.async(:my_queue)
+
     case Core.sync_lesson(lesson) do
       {:error, error} ->
         conn
@@ -123,33 +125,17 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson_with_slides!()
       |> authorize_action!(conn)
 
-      lesson
-      |> VideoProcessingState.set_processing_state()
-      |> broadcast_processing_update()
-      |> VideoProcessing.convert_lesson_to_video()
-      |> Enum.each(fn(_) -> broadcast_processing_update(id) end)
+      {:work_really_hard, [lesson]} |> Honeydew.async(:my_queue)
+
+      #lesson
+      #|> VideoProcessingState.set_processing_state()
+      #|> broadcast_processing_update()
+      #|> VideoProcessing.convert_lesson_to_video()
+      #|> Enum.each(fn(_) -> broadcast_processing_update(id) end)
 
     conn
     |> put_flash(:info, "Generating Lesson video...")
     #|> put_private(:generate_video_task, task_ref)
-    |> redirect(to: lesson_path(conn, :manage, lesson))
-  end
-
-  def merge_videos(conn, %{"id" => id}) do
-    lesson =
-      id
-      |> Core.get_lesson_with_slides!()
-      |> authorize_action!(conn)
-
-    task_ref =
-      Task.async fn ->
-        VideoProcessing.merge_videos(lesson)
-        broadcast_processing_update(id)
-      end
-
-    conn
-    |> put_flash(:info, "Merge all videos...")
-    |> put_private(:merge_videos_task, task_ref)
     |> redirect(to: lesson_path(conn, :manage, lesson))
   end
 
