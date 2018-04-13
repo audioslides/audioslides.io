@@ -96,6 +96,7 @@ defmodule Platform.Core.LessonSync do
   def download_all_thumbs!(%Lesson{} = lesson) do
     Enum.each(lesson.slides, fn slide ->
       download_thumb!(lesson, slide)
+      Core.update_slide_image_hash(slide, slide.page_elements_hash)
     end)
   end
 
