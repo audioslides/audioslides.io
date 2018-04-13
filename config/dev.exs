@@ -29,7 +29,7 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
 config :platform, PlatformWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+      ~r{priv/static/(?!content).*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/platform_web/views/.*(ex)$},
       ~r{lib/platform_web/templates/.*(eex)$}
