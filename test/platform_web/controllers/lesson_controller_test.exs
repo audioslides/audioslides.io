@@ -140,23 +140,6 @@ defmodule PlatformWeb.LessonControllerTest do
     end
   end
 
-  describe "#merge_video" do
-    setup [:create_lesson]
-
-    alias Platform.VideoConverter.TestAdapter
-
-    test "should redirect to manage", %{conn: conn, lesson: lesson} do
-      conn = post(conn, lesson_path(conn, :merge_videos, lesson))
-      assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
-
-      # wait for async process to complete
-      ref = conn.private.merge_videos_task.ref
-      assert_receive {:DOWN, ^ref, :process, _, :normal}, 500
-
-      assert length(TestAdapter.merge_videos_list()) == 1
-    end
-  end
-
   describe "#invalidate_all_audio_hashes" do
     setup do
       slide_1 = Factory.insert(:slide, audio_hash: "VALID_HASH")

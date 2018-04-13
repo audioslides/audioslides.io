@@ -104,8 +104,6 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson_with_slides!()
       |> authorize_action!(conn)
 
-      {:work_really_hard, [10]} |> Honeydew.async(:my_queue)
-
     case Core.sync_lesson(lesson) do
       {:error, error} ->
         conn
