@@ -24,7 +24,7 @@ import "phoenix_html"
 // import socket from "./socket"
 import "./jquery-initializer";
 import "./popover-initializer";
-import "./font-awesome-initializer";
+//import "./font-awesome-initializer";
 import "./speaker-notes-editor";
 import "./lesson-state-updater";
 
