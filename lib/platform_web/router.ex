@@ -18,7 +18,6 @@ defmodule PlatformWeb.Router do
 
     post "/lessons/:id/sync", LessonController, :sync
     post"/lessons/:id/generate_video", LessonController, :generate_video
-    post"/lessons/:id/merge_videos", LessonController, :merge_videos
 
     post"/lessons/:id/invalidate_all_audio_hashes", LessonController, :invalidate_all_audio_hashes
     post"/lessons/:id/invalidate_all_video_hashes", LessonController, :invalidate_all_video_hashes
