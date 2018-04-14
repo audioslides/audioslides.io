@@ -1,4 +1,7 @@
-defmodule Platform.ProcessingQueue.HeavyTask do
+defmodule Platform.ProcessingQueue.GenerateVideoTask do
+  @moduledoc """
+  Task for processing the generation of videos
+  """
   require Logger
 
   use Honeydew.Progress
