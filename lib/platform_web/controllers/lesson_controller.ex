@@ -30,9 +30,11 @@ defmodule PlatformWeb.LessonController do
 
     case Core.create_lesson(lesson_params) do
       {:ok, lesson} ->
+        Core.sync_lesson(lesson)
+
         conn
         |> put_flash(:info, "Lesson created successfully.")
-        |> redirect(to: lesson_path(conn, :show, lesson))
+        |> redirect(to: lesson_path(conn, :manage, lesson))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
