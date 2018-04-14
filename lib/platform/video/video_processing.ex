@@ -14,10 +14,6 @@ defmodule Platform.VideoProcessing do
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
 
-  def convert_lesson_to_video(%Lesson{} = lesson) do
-    Task.async_stream(lesson.slides, fn(slide) -> generate_video_for_slide(lesson, slide) end, timeout: 240_000)
-  end
-
   def merge_videos(lesson) do
     Logger.info("Videos for Lesson ##{lesson.id} will be merged ...")
     generated_video_filenames = Enum.map(lesson.slides, fn slide -> Filename.get_relative_filename_for_slide_video(lesson, slide) end)

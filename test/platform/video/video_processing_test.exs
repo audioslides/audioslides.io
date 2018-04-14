@@ -55,13 +55,6 @@ defmodule Platform.VideoProcessingTest do
     {:ok, lesson: lesson, slide: slide_with_old_hash, slide_up_to_date: slide_up_to_date}
   end
 
-  describe "#create_async_video_tasks" do
-    test "should create a stream", %{lesson: lesson} do
-      stream_result = convert_lesson_to_video(lesson) |> Enum.to_list
-      assert length(stream_result) == length(lesson.slides)
-    end
-  end
-
   describe "#merge_videos" do
 
     test "should update video_hash after merge", %{lesson: lesson} do

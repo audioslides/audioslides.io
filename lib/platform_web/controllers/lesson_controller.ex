@@ -126,24 +126,9 @@ defmodule PlatformWeb.LessonController do
 
       {:generate_video, [lesson]} |> Honeydew.async(:my_queue)
 
-      #lesson
-      #|> VideoProcessingState.set_processing_state()
-      #|> broadcast_processing_update()
-      #|> VideoProcessing.convert_lesson_to_video()
-      #|> Enum.each(fn(_) -> broadcast_processing_update(id) end)
-
     conn
     |> put_flash(:info, "Generating Lesson video...")
-    #|> put_private(:generate_video_task, task_ref)
     |> redirect(to: lesson_path(conn, :manage, lesson))
-  end
-
-  def broadcast_processing_update(%Lesson{id: id}), do: broadcast_processing_update(id)
-  def broadcast_processing_update(id) do
-    lesson = Core.get_lesson_with_slides!(id)
-    LessonChannel.broadcast_processing_to_socket(lesson)
-
-    lesson
   end
 
   def invalidate_all_audio_hashes(conn, %{"id" => id}) do
