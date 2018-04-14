@@ -65,6 +65,7 @@ defmodule PlatformWeb.LessonController do
 
     # VideoProcessing.convert_lesson(lesson.google_presentation_id)
     changeset = Core.change_lesson(lesson)
+
     render(conn, "edit.html", lesson: lesson, changeset: changeset)
   end
 
@@ -123,7 +124,7 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson_with_slides!()
       |> authorize_action!(conn)
 
-      {:work_really_hard, [lesson]} |> Honeydew.async(:video_processing_queue)
+      {:generate_video, [lesson]} |> Honeydew.async(:my_queue)
 
       #lesson
       #|> VideoProcessingState.set_processing_state()
