@@ -27,7 +27,6 @@ defmodule PlatformWeb.Router do
 
     resources "/lessons", LessonController do
       post "/slides/:id/generate_video", SlideController, :generate_video
-      post "/slides/:id/get_speech_preview", SlideController, :get_speech_preview
       resources "/slides", SlideController, only: [:show, :edit, :update]
     end
 
