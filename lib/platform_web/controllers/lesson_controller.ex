@@ -123,7 +123,7 @@ defmodule PlatformWeb.LessonController do
       |> Core.get_lesson_with_slides!()
       |> authorize_action!(conn)
 
-      {:work_really_hard, [lesson]} |> Honeydew.async(:my_queue)
+      {:work_really_hard, [lesson]} |> Honeydew.async(:video_processing_queue)
 
       #lesson
       #|> VideoProcessingState.set_processing_state()
