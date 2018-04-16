@@ -47,6 +47,9 @@ defmodule Platform.VideoProcessing do
     image_filename = create_or_update_image_for_slide(lesson, slide)
     audio_filename = create_or_update_audio_for_slide(lesson, slide)
 
+    # Get current slide-data to check for newest hash
+    slide = Core.get_slide!(slide.id)
+
     # Only generate video of audio or video changed
     if VideoHelper.generate_video_hash(slide) != slide.video_hash do
       Logger.info("Slide #{slide.id} Video: need update")
