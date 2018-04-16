@@ -1,6 +1,8 @@
 defmodule PlatformWeb.LessonControllerTest do
   use PlatformWeb.ConnCase
 
+  alias GoogleApi.Slides.V1.Model.Presentation
+
   import Mock
   import Mox
 
@@ -49,13 +51,24 @@ defmodule PlatformWeb.LessonControllerTest do
   end
 
   describe "#create" do
-    test "redirects to show when data is valid", %{conn: orig_conn} do
+    setup [:create_lesson]
+
+    test "redirects to show when data is valid", %{conn: orig_conn, lesson: lesson} do
+
+      google_presentation = %Presentation{
+        presentationId: lesson.google_presentation_id,
+        slides: []
+      }
+
+      Platform.SlidesAPIMock
+      |> expect(:get_presentation, fn _x -> {:ok, google_presentation} end)
+
       conn = post(orig_conn, lesson_path(orig_conn, :create), lesson: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == lesson_path(conn, :show, id)
+      assert redirected_to(conn) == lesson_path(conn, :manage, id)
 
-      conn = get(orig_conn, lesson_path(orig_conn, :show, id))
+      conn = get(orig_conn, lesson_path(orig_conn, :manage , id))
       assert html_response(conn, 200) =~ "name"
     end
 
@@ -68,12 +81,20 @@ defmodule PlatformWeb.LessonControllerTest do
         voice_language: "de-DE"
       }
 
+      google_presentation = %Presentation{
+        presentationId: "1",
+        slides: []
+      }
+
+      Platform.SlidesAPIMock
+      |> expect(:get_presentation, fn _x -> {:ok, google_presentation} end)
+
       conn = post(orig_conn, lesson_path(orig_conn, :create), lesson: attrs_with_google_slide_url)
 
       assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == lesson_path(conn, :show, id)
+      assert redirected_to(conn) == lesson_path(conn, :manage, id)
 
-      conn = get(orig_conn, lesson_path(orig_conn, :show, id))
+      conn = get(orig_conn, lesson_path(orig_conn, :manage, id))
       assert html_response(conn, 200) =~ "name"
 
       assert Platform.Core.get_lesson!(id).google_presentation_id == "1tgbdANGoW8BGI-S-_DcP0XsxhoaTO_KConY7-R3FnkM"
