@@ -1,5 +1,23 @@
 <% processing_state = Platform.VideoProcessingState.get_processing_state(@lesson) %>
 
+<div class="row">
+  <div class="col">
+    Slide ID
+  </div>
+  <div class="col">
+    <i class="fas fa-file-audio" aria-hidden="true"></i>
+    Audio State
+  </div>
+  <div class="col">
+      <i class="fas fa-file-image" aria-hidden="true"></i>
+    Image State
+  </div>
+  <div class="col">
+      <i class="fas fa-file-video" aria-hidden="true"></i>
+    Video State
+  </div>
+</div>
+
   <%= for slide_state <- processing_state.slides do %>
     <div class="row">
       <div class="col">
