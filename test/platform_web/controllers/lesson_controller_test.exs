@@ -150,14 +150,19 @@ defmodule PlatformWeb.LessonControllerTest do
     alias Platform.VideoConverter.TestAdapter
 
     test "should redirect to manage", %{conn: conn, lesson: lesson} do
-      conn = post(conn, lesson_path(conn, :generate_video, lesson))
-      assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
+      with_mock Honeydew, async: fn _, _-> "" end do
+        conn = post(conn, lesson_path(conn, :generate_video, lesson))
+        assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
+      end
+    end
 
-      # wait for async process to complete
-      # ref = conn.private.generate_video_task.ref
-      # assert_receive {:DOWN, ^ref, :process, _, :normal}, 500
+    test "should add lesson to the video_render_queue", %{conn: conn, lesson: lesson} do
+      with_mock Honeydew, async: fn _, _ -> "" end do
+        conn = post(conn, lesson_path(conn, :generate_video, lesson))
+        assert redirected_to(conn) == lesson_path(conn, :manage, lesson)
 
-      #assert length(TestAdapter.generate_video_list()) == 1
+        assert called(Honeydew.async({:generate_video, [%{id: lesson.id}]}, :my_queue))
+      end
     end
   end
 
