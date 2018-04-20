@@ -1,6 +1,6 @@
-defmodule Platform.VideoConverter.FFMpegAdapterIntegrationTest do
+defmodule VideoConverter.FFMpegAdapterIntegrationTest do
   use ExUnit.Case
-  import Platform.VideoConverter.FFMpegAdapter
+  import VideoConverter.FFMpegAdapter
 
   @moduletag integration: true
 

@@ -27,9 +27,9 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :platform, Platform.VideoConverter, adapter: Platform.VideoConverter.FFMpegAdapter
+config :platform, VideoConverter, adapter: VideoConverter.FFMpegAdapter
 
-config :platform, Platform.FileHelper, adapter: Platform.FileHelper.FileSystemAdapter
+config :platform, FileHelper, adapter: FileHelper.FileSystemAdapter
 
 config :platform, Platform.SlideAPI, adapter: Platform.GoogleSlidesAPI
 

@@ -147,7 +147,7 @@ defmodule PlatformWeb.LessonControllerTest do
   describe "#generate_video" do
     setup [:create_lesson]
 
-    alias Platform.VideoConverter.TestAdapter
+    alias VideoConverter.TestAdapter
 
     test "should redirect to manage", %{conn: conn, lesson: lesson} do
       with_mock Honeydew, async: fn _, _-> "" end do

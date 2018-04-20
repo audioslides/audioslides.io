@@ -4,10 +4,10 @@ defmodule Platform.VideoProcessing do
   """
   require Logger
 
-  alias Platform.Filename
-  alias Platform.FileHelper
+  alias Filename
+  alias FileHelper
   alias Platform.Speech
-  alias Platform.VideoConverter
+  alias VideoConverter
   alias Platform.VideoHelper
 
   alias Platform.Core

@@ -8,7 +8,7 @@ defmodule Platform.Core.LessonSync do
   alias Platform.Core.Schema.Slide
   alias GoogleApi.Slides.V1.Model.Presentation
   alias Platform.Core
-  alias Platform.Filename
+  alias Filename
 
   require Ecto.Query
 

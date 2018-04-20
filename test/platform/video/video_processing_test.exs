@@ -7,7 +7,7 @@ defmodule Platform.VideoProcessingTest do
   alias Platform.Core.Schema.Slide
   alias Platform.Core
   alias Platform.Speech
-  alias Platform.FileHelper
+  alias FileHelper
   alias Platform.VideoHelper
 
   doctest Platform.VideoProcessing

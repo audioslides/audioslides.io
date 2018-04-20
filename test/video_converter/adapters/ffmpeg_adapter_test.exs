@@ -1,13 +1,13 @@
-defmodule Platform.VideoConverter.FFMpegAdapterTest do
+defmodule VideoConverter.FFMpegAdapterTest do
   @moduledoc """
   This test mocks all System.cmd and File Write calls.
   There is also an integration test for this calls.
   """
   use ExUnit.Case
-  import Platform.VideoConverter.FFMpegAdapter
+  import VideoConverter.FFMpegAdapter
   import Mock
 
-  doctest Platform.VideoConverter.FFMpegAdapter
+  doctest VideoConverter.FFMpegAdapter
 
   test "generate_video" do
     with_mocks [

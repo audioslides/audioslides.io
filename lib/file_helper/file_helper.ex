@@ -1,4 +1,4 @@
-defmodule Platform.FileHelper do
+defmodule FileHelper do
   @moduledoc """
   Context for the general converter
   """

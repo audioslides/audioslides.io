@@ -1,9 +1,9 @@
-defmodule Platform.VideoConverter.TestAdapter do
+defmodule VideoConverter.TestAdapter do
   @moduledoc """
   A video converter test adapter
   """
 
-  @behaviour Platform.VideoConverter
+  @behaviour VideoConverter
 
   def generate_video(
         [

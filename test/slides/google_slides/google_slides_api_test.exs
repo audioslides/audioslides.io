@@ -9,7 +9,7 @@ defmodule Platform.GoogleSlidesAPITest do
   alias Goth.Token
   alias GoogleApi.Slides.V1.Api.Presentations
   alias GoogleApi.Slides.V1.Connection
-  alias Platform.FileHelper
+  alias FileHelper
 
   import Platform.GoogleSlidesAPI
 

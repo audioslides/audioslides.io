@@ -10,8 +10,8 @@ defmodule Platform.Core do
   alias Platform.Core.Schema.Course
   alias Platform.Core.Schema.CourseLesson
   alias Platform.Core.LessonSync
-  alias Platform.FileHelper
-  alias Platform.Filename
+  alias FileHelper
+  alias Filename
 
   ### ################################################################### ###
   ### Lesson                                                        ###

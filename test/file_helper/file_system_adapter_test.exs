@@ -1,7 +1,7 @@
 defmodule Platform.FileSystemAdapterTest do
   use ExUnit.Case, async: false
   import Mock
-  import Platform.FileHelper.FileSystemAdapter
+  import FileHelper.FileSystemAdapter
 
   setup_with_mocks [
     {File, [], [

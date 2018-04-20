@@ -6,7 +6,7 @@ defmodule Platform.GoogleSlidesAPI do
   alias Goth.Token
   alias GoogleApi.Slides.V1.Api.Presentations
   alias GoogleApi.Slides.V1.Connection
-  alias Platform.FileHelper
+  alias FileHelper
 
   @behaviour Platform.SlideAPI
 

@@ -1,4 +1,4 @@
-defmodule Platform.VideoConverter do
+defmodule VideoConverter do
   @moduledoc """
   Context for the general converter
   """

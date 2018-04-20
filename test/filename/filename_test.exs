@@ -1,9 +1,9 @@
-defmodule Platform.FilenameTest do
+defmodule FilenameTest do
   use ExUnit.Case
-  import Platform.Filename
+  import Filename
 
   alias Platform.Core.Schema.Lesson
   alias Platform.Core.Schema.Slide
 
-  doctest Platform.Filename
+  doctest Filename
 end

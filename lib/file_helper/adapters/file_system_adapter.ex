@@ -1,9 +1,9 @@
-defmodule Platform.FileHelper.FileSystemAdapter do
+defmodule FileHelper.FileSystemAdapter do
   @moduledoc """
   Simple
   """
 
-  @behaviour Platform.FileHelper
+  @behaviour FileHelper
 
   def write_to_file(filename, data) do
     [_, directory, _] = Regex.run(~r/^(.*\/)([^\/]*)$/, filename)

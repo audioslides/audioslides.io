@@ -2,7 +2,7 @@ defmodule PlatformWeb.SlideControllerTest do
   use PlatformWeb.ConnCase
   import Mox
 
-  alias Platform.VideoConverter.TestAdapter
+  alias VideoConverter.TestAdapter
 
   @update_attrs %{complete_percent: 55}
   @invalid_attrs %{complete_percent: 999}

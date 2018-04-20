@@ -1,12 +1,12 @@
-defmodule Platform.VideoConverter.FFMpegAdapter do
+defmodule VideoConverter.FFMpegAdapter do
   @moduledoc """
   Context for the ffmpeg converter
   """
 
-  alias Platform.Filename
-  alias Platform.FileHelper
+  alias Filename
+  alias FileHelper
 
-  @behaviour Platform.VideoConverter
+  @behaviour VideoConverter
 
   def generate_video(
         image_filename: image_filename,
