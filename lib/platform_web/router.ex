@@ -10,12 +10,10 @@ defmodule PlatformWeb.Router do
     plug(PlatformWeb.CurrentUserPlug)
   end
 
-  @basic_auth_username System.get_env("BASIC_AUTH_USERNAME")
-  @basic_auth_password System.get_env("BASIC_AUTH_PASSWORD")
   pipeline :basic_auth do
-    if Mix.env == :prod do
-      plug PlatformWeb.BasicAuthPlug, username: @basic_auth_username, password: @basic_auth_password
-    end
+    # if Mix.env == :prod do
+      plug PlatformWeb.BasicAuthPlug, username: "audioslides", password: "demo"
+    # end
   end
 
   scope "/", PlatformWeb do
@@ -47,7 +45,7 @@ defmodule PlatformWeb.Router do
   end
 
   scope "/auth", PlatformWeb do
-    pipe_through([:browser])
+    pipe_through([:browser, :basic_auth])
 
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
