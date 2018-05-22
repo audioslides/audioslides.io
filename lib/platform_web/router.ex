@@ -10,9 +10,15 @@ defmodule PlatformWeb.Router do
     plug(PlatformWeb.CurrentUserPlug)
   end
 
+  pipeline :basic_auth do
+    if Mix.env == :prod do
+      plug PlatformWeb.BasicAuthPlug, username: System.get_env("BASIC_AUTH_USERNAME"), password: System.get_env("BASIC_AUTH_PASSWORD")
+    end
+  end
+
   scope "/", PlatformWeb do
     # Use the default browser stack
-    pipe_through(:browser)
+    pipe_through([:browser, :basic_auth])
 
     get("/", PageController, :index)
 
