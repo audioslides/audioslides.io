@@ -10,9 +10,11 @@ defmodule PlatformWeb.Router do
     plug(PlatformWeb.CurrentUserPlug)
   end
 
+  @basic_auth_username System.get_env("BASIC_AUTH_USERNAME")
+  @basic_auth_password System.get_env("BASIC_AUTH_PASSWORD")
   pipeline :basic_auth do
     if Mix.env == :prod do
-      plug PlatformWeb.BasicAuthPlug, username: System.get_env("BASIC_AUTH_USERNAME"), password: System.get_env("BASIC_AUTH_PASSWORD")
+      plug PlatformWeb.BasicAuthPlug, username: @basic_auth_username, password: @basic_auth_password
     end
   end
 
