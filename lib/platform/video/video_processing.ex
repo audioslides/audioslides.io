@@ -104,7 +104,7 @@ defmodule Platform.VideoProcessing do
         Speech.run(%{
           "language_key" => lesson.voice_language,
           "voice_gender" => lesson.voice_gender,
-          "text" => slide.speaker_notes
+          "text" => slide.speaker_notes || "<break strength=\"strong\"/>"
         })
 
       FileHelper.write_to_file(audio_filename, speech_binary)
