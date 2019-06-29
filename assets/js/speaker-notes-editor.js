@@ -31,12 +31,12 @@ function createCodeMirrorEditor(elem) {
     "Cmd-Enter": function (cm) {
       let text = getTextFromCurrentWordTillEndOfSentence(editor);
       console.log(text);
-      slideChannel.push('speech', {language_key: 'en-US', voice_gender: 'female', text: text})
+      slideChannel.push('speech', {language_key: 'en-GB', voice_gender: 'male', text: text})
     },
     "Shift-Cmd-Enter": function (cm) {
       let text = getTextFromCurrentWordTillEnd(editor);
       console.log(text);
-      slideChannel.push('speech', {language_key: 'en-US', voice_gender: 'female', text: text})
+      slideChannel.push('speech', {language_key: 'en-GB', voice_gender: 'male', text: text})
     }
   }
   editor.addKeyMap(map);
