@@ -66,6 +66,7 @@ defmodule Platform.Mixfile do
       {:ueberauth_google, "~> 0.5"},
       {:ueberauth, "~> 0.4"},
       {:timex, "~> 3.1"},
+      {:uuid, "~> 1.1" },
       {:credo, "~> 0.9", only: [:dev, :test], runtime: false},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:ex_machina, "~> 2.1", only: :test},
