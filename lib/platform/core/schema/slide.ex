@@ -32,7 +32,7 @@ defmodule Platform.Core.Schema.Slide do
   def changeset(%__MODULE__{} = struct, attrs) do
     struct
     |> cast(attrs, @fields)
-    |> validate_required([:google_object_id, :name, :position])
+    |> validate_required([:google_object_id, :position])
     |> unique_constraint(:google_object_id, name: :slides_lesson_id_google_object_id_index)
     |> validate_inclusion(:complete_percent, 0..100)
     |> update_total_complete_percent()
