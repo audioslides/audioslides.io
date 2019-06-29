@@ -17,9 +17,12 @@ defmodule Platform.Speech.Google.Voice do
   iex> get_voice(voice_gender: "female", language: "en-US")
   "en-US-Wavenet-E"
 
+  iex> get_voice(voice_gender: "male", language: "en-GB")
+  "en-GB-Wavenet-B"
   """
   def get_voice([voice_gender: "male", language: "de-DE"]), do: "de-DE-Standard-A"
   def get_voice([voice_gender: "female", language: "de-DE"]), do: "de-DE-Standard-B"
   def get_voice([voice_gender: "male", language: "en-US"]), do: "en-US-Wavenet-D"
   def get_voice([voice_gender: "female", language: "en-US"]), do: "en-US-Wavenet-E"
+  def get_voice([voice_gender: "male", language: "en-GB"]), do: "en-GB-Wavenet-B"
 end

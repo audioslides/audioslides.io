@@ -38,7 +38,7 @@ defmodule Platform.Core.Schema.Lesson do
     |> extract_presentation_id()
     |> validate_format(:google_presentation_id, ~r{^[a-zA-Z0-9\-_]+$}, allow_blank: false)
     |> validate_required([:google_presentation_id, :name, :voice_language, :voice_gender])
-    |> validate_inclusion(:voice_language, ["de-DE", "en-US"])
+    |> validate_inclusion(:voice_language, ["de-DE", "en-US", "en-GB"])
     |> validate_inclusion(:voice_gender, ["female", "male"])
   end
 
