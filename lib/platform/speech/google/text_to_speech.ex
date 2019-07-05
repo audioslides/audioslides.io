@@ -26,7 +26,9 @@ defmodule Platform.Speech.Google.TextToSpeech do
         "name": voice
       },
       "audioConfig": %{
-        "audioEncoding": "MP3"
+        "audioEncoding": "LINEAR16",
+        "pitch": -6,
+        "speakingRate": 1.11
       }
     }
 

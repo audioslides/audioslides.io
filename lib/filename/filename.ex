@@ -57,13 +57,13 @@ defmodule Filename do
   @doc """
 
   iex> get_filename_for_slide_audio(%{id: 1}, %{id: 2})
-  "priv/static/content/1/2.mp3"
+  "priv/static/content/1/2.wav"
 
   iex> get_filename_for_slide_audio(%{id: 3}, %{id: 7})
-  "priv/static/content/3/7.mp3"
+  "priv/static/content/3/7.wav"
   """
   def get_filename_for_slide_audio(%{} = lesson, %{} = slide) do
-    "#{@content_dir}#{lesson.id}/#{slide.id}.mp3"
+    "#{@content_dir}#{lesson.id}/#{slide.id}.wav"
   end
 
   @doc """
