@@ -3,6 +3,9 @@
       <%= if can?(@conn, :sync, @lesson) do %>
         <%= link "Re-Sync with Google API", to: lesson_path(@conn, :sync, @lesson), method: :post, class: "btn btn-primary" %>
       <% end %>
+      <%= if can?(@conn, :invalidate_all, @lesson) do %>
+        <span><%= link "Invalidate All", to: lesson_path(@conn, :invalidate_all_audio_hashes, @lesson), method: :post, class: "btn btn-warning" %></span>
+      <% end %>
       <%= if can?(@conn, :generate_video, @lesson) do %>
         <span><%= link "Generate Video", to: lesson_path(@conn, :generate_video, @lesson), method: :post, class: "btn btn-secondary" %></span>
       <% end %>
