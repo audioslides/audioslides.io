@@ -27,8 +27,8 @@ defmodule Platform.Speech.Google.TextToSpeech do
       },
       "audioConfig": %{
         "audioEncoding": "LINEAR16",
-        "pitch": -6,
-        "speakingRate": 1.11
+        "pitch": -4,
+        "speakingRate": 1.00
       }
     }
 
