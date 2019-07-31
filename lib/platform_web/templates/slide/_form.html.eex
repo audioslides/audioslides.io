@@ -10,7 +10,7 @@
     <%= label f, :speaker_notes, class: "control-label" %><br>
     <div class="btn-group" role="group" aria-label="...">
       <button data-editor-insert='<say-as interpret-as="spell-out">$1</say-as>' class="btn btn-sm btn-secondary">Spell out</button>
-      <button data-editor-insert='$1<break strength="strong"/>' class="btn btn-sm btn-secondary">Break</button>
+      <button data-editor-insert='$1<break time="300ms"/>' class="btn btn-sm btn-secondary">Break</button>
     </div>
     <%= textarea f, :speaker_notes, class: "form-control" %>
     <%= error_tag f, :speaker_notes %>
