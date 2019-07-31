@@ -19,7 +19,7 @@ defmodule Platform.Speech.Google.TextToSpeech do
 
     params = %{
       "input": %{
-        "ssml": "<speak>" <> text <> "</speak>"
+        "ssml": "<speak><emphasis level=\"strong\">" <> text <> "</emphasis></speak>"
       },
       "voice": %{
         "languageCode": language_key,
@@ -28,7 +28,7 @@ defmodule Platform.Speech.Google.TextToSpeech do
       "audioConfig": %{
         "audioEncoding": "LINEAR16",
         "pitch": -4,
-        "speakingRate": 1.00
+        "speakingRate": 1.125
       }
     }
 
