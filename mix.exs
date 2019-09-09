@@ -69,9 +69,9 @@ defmodule Platform.Mixfile do
       {:uuid, "~> 1.1" },
       {:credo, "~> 0.9", only: [:dev, :test], runtime: false},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:ex_machina, "~> 2.1", only: :test},
-      {:mox, "~> 0.3", only: :test},
-      {:mock, "~> 0.3.1", only: :test},
+      {:ex_machina, "~> 2.3", only: :test},
+      {:mox, "~> 0.5.1", only: :test},
+      {:mock, "~> 0.3.3", only: :test},
       {:excoveralls, "~> 0.7", only: :test},
       {:exvcr, "~> 0.10", only: :test},
       {:mix_test_watch, "~> 0.3", only: :dev}

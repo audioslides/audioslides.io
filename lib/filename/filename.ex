@@ -30,6 +30,20 @@ defmodule Filename do
     "#{@content_dir}#{lesson.id}/#{slide.id}.mp4"
   end
 
+
+  @doc """
+
+  iex> contains_text_video?("Normal Text")
+  false
+
+  iex> contains_text_video?("<video>Video Source</video>")
+  true
+
+  """
+  defp contains_text_video?(text) do
+    Regex.run(@video_ssml, text)
+  end
+
   @doc """
 
   iex> get_relative_filename_for_slide_video(%{id: 1}, %{id: 2})

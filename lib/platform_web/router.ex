@@ -11,9 +11,9 @@ defmodule PlatformWeb.Router do
   end
 
   pipeline :basic_auth do
-    # if Mix.env == :prod do
+    if Mix.env == :prod do
       plug PlatformWeb.BasicAuthPlug, username: "audioslides", password: "demo"
-    # end
+    end
   end
 
   scope "/", PlatformWeb do
