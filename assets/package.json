@@ -24,7 +24,7 @@
     "copy-webpack-plugin": "^4.5.0",
     "css-loader": "^0.28.10",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.13.1",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.2",
     "webpack": "^4.0.0",
