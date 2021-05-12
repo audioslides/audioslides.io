@@ -11,7 +11,7 @@
     "@fortawesome/fontawesome-free-regular": "^5.0.10",
     "@fortawesome/fontawesome-free-solid": "^5.0.10",
     "bootstrap": "^4.0.0",
-    "codemirror": "^5.27.4",
+    "codemirror": "^5.58.2",
     "jquery": "^3.3.1",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
